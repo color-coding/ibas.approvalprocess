@@ -20,7 +20,7 @@ export class ApprovalProcessView extends ibas.BOResidentView implements IApprova
         // 不重复创建工具条钮
         if (ibas.objects.isNull(this.bar)) {
             this.bar = new sap.m.Button("", {
-                icon: "sap-icon://approvals",
+                icon: "sap-icon://bell",
                 type: sap.m.ButtonType.Transparent,
                 press: function (): void {
                     that.fireViewEvents(that.showFullViewEvent);
