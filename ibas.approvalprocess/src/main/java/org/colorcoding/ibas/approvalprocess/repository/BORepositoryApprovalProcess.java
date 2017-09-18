@@ -2,7 +2,6 @@ package org.colorcoding.ibas.approvalprocess.repository;
 
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.common.OperationResult;
-import org.colorcoding.ibas.bobas.ownership.PermissionGroup;
 import org.colorcoding.ibas.initialfantasy.bo.approvalrequest.ApprovalRequest;
 import org.colorcoding.ibas.initialfantasy.bo.approvalrequest.IApprovalRequest;
 import org.colorcoding.ibas.initialfantasy.repository.BORepositoryInitialFantasy;
@@ -10,7 +9,6 @@ import org.colorcoding.ibas.initialfantasy.repository.BORepositoryInitialFantasy
 /**
  * ApprovalProcess仓库
  */
-@PermissionGroup("ApprovalProcess")
 public class BORepositoryApprovalProcess extends BORepositoryInitialFantasy
 		implements IBORepositoryApprovalProcessApp, IBORepositoryApprovalProcessSvc {
 
