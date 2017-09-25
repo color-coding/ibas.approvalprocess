@@ -7,7 +7,10 @@
  */
 
 import * as ibas from "ibas/index";
-
+import { BORepositoryApprovalProcess } from "../../borep/BORepositories";
+import * as bo from "../../3rdparty/initialfantasy/index";
+import { ApprovalProcessViewApp } from "./ApprovalProcessViewApp";
+import { ApprovalRequestProcessListApp } from "./ApprovalRequestProcessListApp";
 /** 应用-审批流程 */
 export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProcessView> {
 
@@ -26,10 +29,65 @@ export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProces
     protected registerView(): void {
         super.registerView();
         // 其他事件
+        this.view.fetchApprovalRequestEvent = this.fetchApprovalRequest;
+        this.view.showApprovalRequestDetailEvent = this.showApprovalRequestDetail;
+        this.view.showApprovalRequestListEvent = this.showApprovalRequestList;
+    }
+    protected showApprovalRequestDetail(data: bo.IApprovalRequest): void {
+        let appviewapp: ApprovalProcessViewApp = new ApprovalProcessViewApp();
+        appviewapp.viewShower = this.viewShower;
+        appviewapp.navigation = this.navigation;
+        appviewapp.run(data);
+    }
+    protected showApprovalRequestList(): void {
+        let listApp: ApprovalRequestProcessListApp = new ApprovalRequestProcessListApp();
+        listApp.viewShower = this.viewShower;
+        listApp.navigation = this.navigation;
+        listApp.run();
+    }
+    protected fetchApprovalRequest(pcri: ibas.ICriteria): void {
+        let that: this = this;
+
+        let cri: ibas.ICriteria;
+        if (!ibas.objects.isNull(pcri)) {
+            cri = pcri;
+        } else {
+            cri = new ibas.Criteria();
+            cri.result = 4;
+            let con: ibas.ICondition = cri.conditions.create();
+            con.alias = "ApprovalStatus";
+            con.value = "P";
+            let childCriteris: ibas.IChildCriteria = cri.childCriterias.create();
+            childCriteris.propertyPath = "ApprovalRequestSteps";
+            con = childCriteris.conditions.create();
+            con.alias = "StepOwner";
+            con.value = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_CODE);
+            con = childCriteris.conditions.create();
+            con.alias = "StepStatus";
+            con.value = "P";
+        }
+        // this.busy(true);
+        let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
+        boRepository.fetchUserApprovalRequest({
+            criteria: cri,
+            onCompleted(opRslt: ibas.IOperationResult<bo.IApprovalRequest>): void {
+                try {
+                    if (opRslt.resultCode !== 0) {
+                        throw new Error(opRslt.message);
+                    }
+                    that.view.showData(opRslt.resultObjects, cri);
+                    that.busy(false);
+                } catch (error) {
+                    that.messages(error);
+                }
+            }
+        });
     }
     /** 视图显示后 */
     protected viewShowed(): void {
         // 视图加载完成
+        this.fetchApprovalRequest(null);
+
     }
     /** 运行,覆盖原方法 */
     run(...args: any[]): void {
@@ -38,5 +96,9 @@ export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProces
 }
 /** 视图-审批流程 */
 export interface IApprovalProcessView extends ibas.IResidentView {
-
+    /** 查找用户审批项目 */
+    showApprovalRequestDetailEvent: Function;
+    fetchApprovalRequestEvent: Function;
+    showApprovalRequestListEvent: Function;
+    showData(datas: bo.IApprovalRequest[], cri: ibas.ICriteria): void;
 }

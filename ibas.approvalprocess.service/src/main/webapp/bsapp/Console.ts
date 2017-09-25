@@ -7,8 +7,7 @@
  */
 
 import * as ibas from "ibas/index";
-import { ApprovalProcessApp } from "./approvalprocess/index";
-
+import { ApprovalProcessApp,ApprovalProcessViewApp } from "./approvalprocess/index";
 /** 模块控制台 */
 export class Console extends ibas.ModuleConsole {
     /** 模块-标识 */
@@ -32,6 +31,7 @@ export class Console extends ibas.ModuleConsole {
         // 注册服务应用
         // 注册常驻应用
         this.register(new ApprovalProcessApp());
+        this.register(new ApprovalProcessViewApp());
     }
     /** 运行 */
     run(): void {
