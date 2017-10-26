@@ -2,5 +2,13 @@
   "approvalprocess": "审批流程",
   "approvalprocess_icon": "sap-icon://approvals",
   "approvalprocess_app_approvalprocess": "审批流程",
-  "approvalprocess_closing_delimiter": "----结束----"
+  "approvalprocess_closing_delimiter": "----结束----",
+  "approvalprocess_app_approvalprocessview": "审批明细",
+  "ui_bobs_but_reset": "重置",
+  "ui_bobs_but_approval": "批准",
+  "ui_bobs_but_reject": "拒绝",
+  "ui_bobs_but_detail":"详情",
+  "ui_title_approvalrequest_infor":"审批信息",
+  "ui_title_approvalrequest_orderinfor":"单据信息",
+  "ui_approvalrequest_link_seemore":"更多>>"
 }

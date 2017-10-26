@@ -16,6 +16,7 @@ hs_err_pid*
 *.tmp
 *.class
 *.js
+*.map
 *.glf
 
 

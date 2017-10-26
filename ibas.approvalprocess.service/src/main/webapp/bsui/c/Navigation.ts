@@ -25,6 +25,12 @@ export default class Navigation extends ibas.ViewNavigation {
             case approvalprocessApps.ApprovalProcessApp.APPLICATION_ID:
                 view = new approvalprocessViews.ApprovalProcessView();
                 break;
+            case approvalprocessApps.ApprovalProcessViewApp.APPLICATION_ID:
+                view = new approvalprocessViews.ApprovalProcessViewView();
+                break;
+            case approvalprocessApps.ApprovalRequestProcessListApp.APPLICATION_ID:
+                view = new approvalprocessViews.ApprovalRequestProcessListView();
+                break;
             default:
                 break;
         }
