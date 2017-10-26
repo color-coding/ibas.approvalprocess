@@ -4,11 +4,17 @@ import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.ApprovalTemplate;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplate;
+import org.colorcoding.ibas.bobas.approval.IApprovalProcess;
+import org.colorcoding.ibas.bobas.approval.initial.ApprovalProcess;
+import org.colorcoding.ibas.bobas.approval.initial.ApprovalProcessManager;
 import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.common.OperationMessages;
 import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.bobas.data.emApprovalResult;
+import org.colorcoding.ibas.bobas.i18n.I18N;
+import org.colorcoding.ibas.bobas.messages.Logger;
+import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
 import org.colorcoding.ibas.bobas.repository.BORepositoryServiceApplication;
 
 /**
@@ -135,8 +141,28 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 	@Override
 	public OperationMessages approval(int apRequestId, int apStepId, emApprovalResult apResult, String judgment,
 			String token) {
-		// TODO Auto-generated method stub
-		return null;
+		OperationMessages operationMessages = new OperationMessages();
+		try {
+			this.setUserToken(token);
+			ApprovalProcessManager apManager = new ApprovalProcessManager();
+			IApprovalProcess ap = apManager.loadApprovalProcess(apRequestId);
+			if (ap == null) {
+				throw new Exception(I18N.prop("msg_ap_not_exist_approval_request", apRequestId));
+			}
+			if (ap instanceof ApprovalProcess) {
+				// 提前加载涉及的业务对象类型
+				ApprovalProcess myAP = (ApprovalProcess) ap;
+				myAP.loadClasses();
+			}
+			this.getRepository().setCurrentUser(OrganizationFactory.SYSTEM_USER);
+			ap.setRepository(this.getRepository());
+			ap.approval(apStepId, apResult, token, judgment);
+			ap.save();
+		} catch (Exception e) {
+			Logger.log(e);
+			operationMessages.setError(e);
+		}
+		return operationMessages;
 	}
 
 }

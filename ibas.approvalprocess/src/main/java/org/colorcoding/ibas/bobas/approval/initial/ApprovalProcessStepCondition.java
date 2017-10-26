@@ -1,4 +1,4 @@
-package org.colorcoding.ibas.bobas.approval.fantasy;
+package org.colorcoding.ibas.bobas.approval.initial;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -30,11 +30,13 @@ import org.colorcoding.ibas.bobas.serialization.SerializerFactory;
 @XmlRootElement()
 public class ApprovalProcessStepCondition implements org.colorcoding.ibas.bobas.approval.IApprovalProcessStepCondition {
 
+	public static final String NAMESPACE = "http://colorcoding.org/ibas/approval/initial";
+
 	public static IApprovalProcessStepCondition[] create(String condition) {
 		if (condition != null) {
 			ISerializer<?> serializer = SerializerFactory.create().createManager().create(ISerializerManager.TYPE_JSON);
 			@SuppressWarnings("unchecked")
-			java.util.ArrayList<ApprovalProcessStepCondition> stepConditions = (java.util.ArrayList<ApprovalProcessStepCondition>) serializer
+			ArrayList<ApprovalProcessStepCondition> stepConditions = (ArrayList<ApprovalProcessStepCondition>) serializer
 					.deserialize(condition, ArrayList.class, ApprovalProcessStepCondition.class);
 			return stepConditions.toArray(new IApprovalProcessStepCondition[] {});
 		}

@@ -1,4 +1,4 @@
-package org.colorcoding.ibas.bobas.approval.fantasy;
+package org.colorcoding.ibas.bobas.approval.initial;
 
 import java.util.Iterator;
 

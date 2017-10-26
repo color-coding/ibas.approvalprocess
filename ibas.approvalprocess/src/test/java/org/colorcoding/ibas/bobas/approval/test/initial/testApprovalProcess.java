@@ -1,4 +1,4 @@
-package org.colorcoding.ibas.bobas.approval.test.fantasy;
+package org.colorcoding.ibas.bobas.approval.test.initial;
 
 import org.colorcoding.ibas.approvalprocess.MyConfiguration;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequest;

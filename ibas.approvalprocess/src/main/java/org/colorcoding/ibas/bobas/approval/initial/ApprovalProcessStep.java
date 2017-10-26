@@ -1,4 +1,4 @@
-package org.colorcoding.ibas.bobas.approval.fantasy;
+package org.colorcoding.ibas.bobas.approval.initial;
 
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequestStep;
 import org.colorcoding.ibas.bobas.approval.IApprovalProcessStepCondition;
