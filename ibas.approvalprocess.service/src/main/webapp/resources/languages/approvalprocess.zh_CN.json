@@ -1,14 +1,15 @@
 {
-  "approvalprocess": "审批流程",
-  "approvalprocess_icon": "sap-icon://approvals",
-  "approvalprocess_app_approvalprocess": "审批流程",
-  "approvalprocess_closing_delimiter": "----结束----",
-  "approvalprocess_app_approvalprocessview": "审批明细",
-  "ui_bobs_but_reset": "重置",
-  "ui_bobs_but_approval": "批准",
-  "ui_bobs_but_reject": "拒绝",
-  "ui_bobs_but_detail":"详情",
-  "ui_title_approvalrequest_infor":"审批信息",
-  "ui_title_approvalrequest_orderinfor":"单据信息",
-  "ui_approvalrequest_link_seemore":"更多>>"
+  "approvalprocess": "${Domain.getDescription()}",
+  "approvalprocess_icon": "",
+  "approvalprocess_func_approvalrequest": "审批请求",
+  "approvalprocess_app_approvalrequest_list": "审批请求列表",
+  "approvalprocess_app_approvalrequest_choose": "审批请求选择",
+  "approvalprocess_app_approvalrequest_view": "审批请求查看",
+  "approvalprocess_app_approvalrequest_edit": "审批请求编辑",
+  "approvalprocess_func_approvaltemplate": "审批模板",
+  "approvalprocess_app_approvaltemplate_list": "审批模板列表",
+  "approvalprocess_app_approvaltemplate_choose": "审批模板选择",
+  "approvalprocess_app_approvaltemplate_view": "审批模板查看",
+  "approvalprocess_app_approvaltemplate_edit": "审批模板编辑",
+  "approvalprocess_closing_delimiter": "----结束----"
 }

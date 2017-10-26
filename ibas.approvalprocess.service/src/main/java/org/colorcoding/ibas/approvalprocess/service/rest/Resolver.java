@@ -6,6 +6,8 @@ import javax.ws.rs.ext.Provider;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequest;
+import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.ApprovalTemplate;
 import org.colorcoding.ibas.bobas.bo.UserFieldProxy;
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.OperationResult;
@@ -22,7 +24,8 @@ public class Resolver implements ContextResolver<JAXBContext> {
 	public JAXBContext getContext(Class<?> type) {
 		try {
 			if (jaxbContext == null) {
-				jaxbContext = JAXBContext.newInstance(Criteria.class, OperationResult.class, UserFieldProxy.class);
+				jaxbContext = JAXBContext.newInstance(Criteria.class, OperationResult.class, UserFieldProxy.class,
+						ApprovalTemplate.class, ApprovalRequest.class);
 			}
 		} catch (JAXBException e) {
 			e.printStackTrace();

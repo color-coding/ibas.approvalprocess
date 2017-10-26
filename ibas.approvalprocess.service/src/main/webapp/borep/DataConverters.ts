@@ -7,7 +7,9 @@
  */
 
 import * as ibas from "ibas/index";
-import * as bo from "../3rdparty/initialfantasy/index";
+import * as bo from "./bo/index";
+import {
+} from "../api/index";
 
 /** 数据转换者 */
 export class DataConverter4ap extends ibas.DataConverter4j {
@@ -37,7 +39,19 @@ class BOConverter4ap extends ibas.BOConverter {
      * @param value 值
      * @returns 转换的值
      */
-    protected convertData(boName: string, property: string, value: any): any {
+    protected convertData(boName: string, property: string, value: any): any { 
+        if (boName === bo.ApprovalTemplateStepCondition.name) {
+            if (property === bo.ApprovalTemplateStepCondition.PROPERTY_CONDITIONTYPE_NAME) {
+                return ibas.enums.toString(bo.emApprovalConditionType, value);
+            } else if (property === bo.ApprovalTemplateStepCondition.PROPERTY_RELATIONSHIP_NAME) {
+                return ibas.enums.toString(ibas.emConditionRelationship, value);
+            } else if (property === bo.ApprovalTemplateStepCondition.PROPERTY_OPERATION_NAME) {
+                return ibas.enums.toString(ibas.emConditionOperation, value);
+            }
+        } else if (boName === bo.ApprovalTemplateStep.name) {
+            if (property === bo.ApprovalTemplateStep.PROPERTY_STEPOWNERTYPE_NAME) {
+                return ibas.enums.toString(bo.emApprovalStepOwnerType, value);
+        }
         return super.convertData(boName, property, value);
     }
 
@@ -49,6 +63,19 @@ class BOConverter4ap extends ibas.BOConverter {
      * @returns 解析的值
      */
     protected parsingData(boName: string, property: string, value: any): any {
+        if (boName === bo.ApprovalTemplateStepCondition.name) {
+            if (property === bo.ApprovalTemplateStepCondition.PROPERTY_CONDITIONTYPE_NAME) {
+                return ibas.enums.valueOf(bo.emApprovalConditionType, value);
+            } else if (property === bo.ApprovalTemplateStepCondition.PROPERTY_RELATIONSHIP_NAME) {
+                return ibas.enums.valueOf(ibas.emConditionRelationship, value);
+            } else if (property === bo.ApprovalTemplateStepCondition.PROPERTY_OPERATION_NAME) {
+                return ibas.enums.valueOf(ibas.emConditionOperation, value);
+            }
+        } else if (boName === bo.ApprovalTemplateStep.name) {
+            if (property === bo.ApprovalTemplateStep.PROPERTY_STEPOWNERTYPE_NAME) {
+                return ibas.enums.valueOf(bo.emApprovalStepOwnerType, value);
+            }
+        }
         return super.parsingData(boName, property, value);
     }
 }

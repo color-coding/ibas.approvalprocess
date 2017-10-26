@@ -1,15 +1,62 @@
 package org.colorcoding.ibas.approvalprocess.repository;
 
+import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequest;
+import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.ApprovalTemplate;
+import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.OperationMessages;
 import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.bobas.data.emApprovalResult;
 import org.colorcoding.ibas.bobas.repository.IBORepositorySmartService;
-import org.colorcoding.ibas.initialfantasy.bo.approvalrequest.ApprovalRequest;
 
 /**
  * ApprovalProcess仓库服务
  */
 public interface IBORepositoryApprovalProcessSvc extends IBORepositorySmartService {
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-审批模板
+	 * 
+	 * @param criteria
+	 *            查询
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	OperationResult<ApprovalTemplate> fetchApprovalTemplate(ICriteria criteria, String token);
+
+	/**
+	 * 保存-审批模板
+	 * 
+	 * @param bo
+	 *            对象实例
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	OperationResult<ApprovalTemplate> saveApprovalTemplate(ApprovalTemplate bo, String token);
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-审批记录
+	 * 
+	 * @param criteria
+	 *            查询
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	OperationResult<ApprovalRequest> fetchApprovalRequest(ICriteria criteria, String token);
+
+	/**
+	 * 保存-审批记录
+	 * 
+	 * @param bo
+	 *            对象实例
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	OperationResult<ApprovalRequest> saveApprovalRequest(ApprovalRequest bo, String token);
 
 	// --------------------------------------------------------------------------------------------//
 	/**

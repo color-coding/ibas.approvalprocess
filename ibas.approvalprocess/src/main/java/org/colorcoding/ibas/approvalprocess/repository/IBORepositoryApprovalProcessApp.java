@@ -1,15 +1,54 @@
 package org.colorcoding.ibas.approvalprocess.repository;
 
+import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequest;
+import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplate;
+import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.IOperationMessages;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.data.emApprovalResult;
 import org.colorcoding.ibas.bobas.repository.IBORepositoryApplication;
-import org.colorcoding.ibas.initialfantasy.bo.approvalrequest.IApprovalRequest;
 
 /**
  * ApprovalProcess仓库应用
  */
 public interface IBORepositoryApprovalProcessApp extends IBORepositoryApplication {
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-审批模板
+	 * 
+	 * @param criteria
+	 *            查询
+	 * @return 操作结果
+	 */
+	IOperationResult<IApprovalTemplate> fetchApprovalTemplate(ICriteria criteria);
+
+	/**
+	 * 保存-审批模板
+	 * 
+	 * @param bo
+	 *            对象实例
+	 * @return 操作结果
+	 */
+	IOperationResult<IApprovalTemplate> saveApprovalTemplate(IApprovalTemplate bo);
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-审批记录
+	 * 
+	 * @param criteria
+	 *            查询
+	 * @return 操作结果
+	 */
+	IOperationResult<IApprovalRequest> fetchApprovalRequest(ICriteria criteria);
+
+	/**
+	 * 保存-审批记录
+	 * 
+	 * @param bo
+	 *            对象实例
+	 * @return 操作结果
+	 */
+	IOperationResult<IApprovalRequest> saveApprovalRequest(IApprovalRequest bo);
 
 	// --------------------------------------------------------------------------------------------//
 	/**

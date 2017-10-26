@@ -12,3 +12,7 @@ import {
 
 /** 业务仓库名称 */
 export const BO_REPOSITORY_APPROVALPROCESS: string = "BORepositoryApprovalProcess";
+/** 业务对象编码-审批请求 */
+export const BO_CODE_APPROVALREQUEST: string = "CC_AP_APPROVALREQU";
+/** 业务对象编码-审批模板 */
+export const BO_CODE_APPROVALTEMPLATE: string = "CC_AP_APPROVALTPLT";

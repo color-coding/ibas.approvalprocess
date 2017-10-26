@@ -4,8 +4,12 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequest;
+import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.ApprovalTemplate;
 import org.colorcoding.ibas.approvalprocess.repository.BORepositoryApprovalProcess;
+import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.OperationMessages;
+import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.bobas.cxf.WebServicePath;
 import org.colorcoding.ibas.bobas.data.emApprovalResult;
 
@@ -15,6 +19,67 @@ import org.colorcoding.ibas.bobas.data.emApprovalResult;
 @WebService
 @WebServicePath("data")
 public class DataService extends BORepositoryApprovalProcess {
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-审批模板
+	 * 
+	 * @param criteria
+	 *            查询
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	@WebMethod
+	public OperationResult<ApprovalTemplate> fetchApprovalTemplate(@WebParam(name = "criteria") Criteria criteria,
+			@WebParam(name = "token") String token) {
+		return super.fetchApprovalTemplate(criteria, token);
+	}
+
+	/**
+	 * 保存-审批模板
+	 * 
+	 * @param bo
+	 *            对象实例
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	@WebMethod
+	public OperationResult<ApprovalTemplate> saveApprovalTemplate(@WebParam(name = "bo") ApprovalTemplate bo,
+			@WebParam(name = "token") String token) {
+		return super.saveApprovalTemplate(bo, token);
+	}
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-审批记录
+	 * 
+	 * @param criteria
+	 *            查询
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	@WebMethod
+	public OperationResult<ApprovalRequest> fetchApprovalRequest(@WebParam(name = "criteria") Criteria criteria,
+			@WebParam(name = "token") String token) {
+		return super.fetchApprovalRequest(criteria, token);
+	}
+
+	/**
+	 * 保存-审批记录
+	 * 
+	 * @param bo
+	 *            对象实例
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	@WebMethod
+	public OperationResult<ApprovalRequest> saveApprovalRequest(@WebParam(name = "bo") ApprovalRequest bo,
+			@WebParam(name = "token") String token) {
+		return super.saveApprovalRequest(bo, token);
+	}
 
 	// --------------------------------------------------------------------------------------------//
 	/**

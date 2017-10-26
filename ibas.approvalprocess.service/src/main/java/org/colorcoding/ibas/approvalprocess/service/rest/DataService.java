@@ -7,8 +7,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequest;
+import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.ApprovalTemplate;
 import org.colorcoding.ibas.approvalprocess.repository.BORepositoryApprovalProcess;
+import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.OperationMessages;
+import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.bobas.data.emApprovalResult;
 
 /**
@@ -16,6 +20,77 @@ import org.colorcoding.ibas.bobas.data.emApprovalResult;
  */
 @Path("data")
 public class DataService extends BORepositoryApprovalProcess {
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-审批模板
+	 * 
+	 * @param criteria
+	 *            查询
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("fetchApprovalTemplate")
+	public OperationResult<ApprovalTemplate> fetchApprovalTemplate(Criteria criteria,
+			@QueryParam("token") String token) {
+		return super.fetchApprovalTemplate(criteria, token);
+	}
+
+	/**
+	 * 保存-审批模板
+	 * 
+	 * @param bo
+	 *            对象实例
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("saveApprovalTemplate")
+	public OperationResult<ApprovalTemplate> saveApprovalTemplate(ApprovalTemplate bo,
+			@QueryParam("token") String token) {
+		return super.saveApprovalTemplate(bo, token);
+	}
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-审批记录
+	 * 
+	 * @param criteria
+	 *            查询
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("fetchApprovalRequest")
+	public OperationResult<ApprovalRequest> fetchApprovalRequest(Criteria criteria, @QueryParam("token") String token) {
+		return super.fetchApprovalRequest(criteria, token);
+	}
+
+	/**
+	 * 保存-审批记录
+	 * 
+	 * @param bo
+	 *            对象实例
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("saveApprovalRequest")
+	public OperationResult<ApprovalRequest> saveApprovalRequest(ApprovalRequest bo, @QueryParam("token") String token) {
+		return super.saveApprovalRequest(bo, token);
+	}
 
 	// --------------------------------------------------------------------------------------------//
 	/**

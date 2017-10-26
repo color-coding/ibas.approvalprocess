@@ -7,9 +7,10 @@
  */
 
 import * as ibas from "ibas/index";
+import * as bo from "./bo/index";
 import { IBORepositoryApprovalProcess, BO_REPOSITORY_APPROVALPROCESS } from "../api/index";
 import { DataConverter4ap } from "./DataConverters";
-import * as bo from "../3rdparty/initialfantasy/index";
+
 /** 业务对象仓库 */
 export class BORepositoryApprovalProcess extends ibas.BORepositoryApplication implements IBORepositoryApprovalProcess {
 
@@ -17,21 +18,35 @@ export class BORepositoryApprovalProcess extends ibas.BORepositoryApplication im
     protected createConverter(): ibas.IDataConverter {
         return new DataConverter4ap;
     }
+
     /**
      * 查询 审批请求
      * @param fetcher 查询者
      */
-    fetchUserApprovalRequest(fetcher: ibas.FetchCaller<bo.IApprovalRequest>): void {
-    let ifbo:bo.IBORepositoryInitialFantasy= ibas.boFactory.create<bo.IBORepositoryInitialFantasy>(bo.BO_REPOSITORY_INITIALFANTASY);
-    ifbo.fetchApprovalRequest(fetcher);
+    fetchApprovalRequest(fetcher: ibas.FetchCaller<bo.ApprovalRequest>): void {
+        super.fetch(bo.ApprovalRequest.name, fetcher);
     }
     /**
      * 保存 审批请求
      * @param saver 保存者
      */
-    saveApprovalRequest(saver: ibas.SaveCaller<bo.IApprovalRequest>): void {
-        let ifbo:bo.IBORepositoryInitialFantasy= ibas.boFactory.create<bo.IBORepositoryInitialFantasy>(bo.BO_REPOSITORY_INITIALFANTASY);
-        ifbo.saveApprovalRequest(saver);
+    saveApprovalRequest(saver: ibas.SaveCaller<bo.ApprovalRequest>): void {
+        super.save(bo.ApprovalRequest.name, saver);
+    }
+
+    /**
+     * 查询 审批模板
+     * @param fetcher 查询者
+     */
+    fetchApprovalTemplate(fetcher: ibas.FetchCaller<bo.ApprovalTemplate>): void {
+        super.fetch(bo.ApprovalTemplate.name, fetcher);
+    }
+    /**
+     * 保存 审批模板
+     * @param saver 保存者
+     */
+    saveApprovalTemplate(saver: ibas.SaveCaller<bo.ApprovalTemplate>): void {
+        super.save(bo.ApprovalTemplate.name, saver);
     }
 
 }

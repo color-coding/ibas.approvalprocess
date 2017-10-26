@@ -7,7 +7,9 @@
  */
 
 import * as ibas from "ibas/index";
-import { ApprovalProcessApp,ApprovalProcessViewApp } from "./approvalprocess/index";
+import { ApprovalRequestFunc, ApprovalRequestChooseServiceMapping, ApprovalRequestLinkServiceMapping } from "./approvalrequest/index";
+import { ApprovalTemplateFunc, ApprovalTemplateChooseServiceMapping, ApprovalTemplateLinkServiceMapping } from "./approvaltemplate/index";
+
 /** 模块控制台 */
 export class Console extends ibas.ModuleConsole {
     /** 模块-标识 */
@@ -28,15 +30,22 @@ export class Console extends ibas.ModuleConsole {
     /** 初始化 */
     protected registers(): void {
         // 注册功能
+        this.register(new ApprovalRequestFunc());
+        this.register(new ApprovalTemplateFunc());
         // 注册服务应用
+        this.register(new ApprovalRequestChooseServiceMapping());
+        this.register(new ApprovalRequestLinkServiceMapping());
+        this.register(new ApprovalTemplateChooseServiceMapping());
+        this.register(new ApprovalTemplateLinkServiceMapping());
         // 注册常驻应用
-        this.register(new ApprovalProcessApp());
-        this.register(new ApprovalProcessViewApp());
+
     }
     /** 运行 */
     run(): void {
         // 加载语言-框架默认
         ibas.i18n.load(this.rootUrl + "resources/languages/approvalprocess.json");
+        ibas.i18n.load(this.rootUrl + "resources/languages/bo/approvalrequest.json");
+        ibas.i18n.load(this.rootUrl + "resources/languages/bo/approvaltemplate.json");
         // 设置资源属性
         this.description = ibas.i18n.prop(this.name.toLowerCase());
         this.icon = ibas.i18n.prop(this.name.toLowerCase() + "_icon");
