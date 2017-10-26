@@ -1,6 +1,7 @@
 package org.colorcoding.ibas.bobas.approval.initial;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -12,7 +13,6 @@ import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplat
 import org.colorcoding.ibas.approvalprocess.data.emApprovalConditionType;
 import org.colorcoding.ibas.bobas.approval.IApprovalProcessStepCondition;
 import org.colorcoding.ibas.bobas.approval.ValueMode;
-import org.colorcoding.ibas.bobas.data.ArrayList;
 import org.colorcoding.ibas.bobas.data.emConditionOperation;
 import org.colorcoding.ibas.bobas.data.emConditionRelationship;
 import org.colorcoding.ibas.bobas.serialization.ISerializer;
