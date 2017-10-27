@@ -205,7 +205,8 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 
 	public void loadClasses() throws ClassNotFoundException {
 		if (this.getApprovalRequest() != null && this.getApprovalRequest().getClassName() != null) {
-			BOFactory.create().getClass(this.getApprovalRequest().getClassName());
+			Class<?> type = BOFactory.create().loadClass(this.getApprovalRequest().getClassName());
+			BOFactory.create().register(this.getApprovalData().getObjectCode(), type);
 		}
 	}
 

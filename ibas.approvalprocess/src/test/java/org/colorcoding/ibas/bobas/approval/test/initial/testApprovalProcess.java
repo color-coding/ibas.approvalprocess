@@ -25,8 +25,7 @@ import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
 import org.colorcoding.ibas.bobas.repository.InvalidTokenException;
 import org.colorcoding.ibas.initialfantasy.bo.organization.IUser;
 import org.colorcoding.ibas.initialfantasy.bo.organization.User;
-import org.colorcoding.ibas.initialfantasy.repository.BORepositoryInitialFantasy;
-import org.colorcoding.ibas.initialfantasy.repository.IBORepositoryInitialFantasyApp;
+import org.colorcoding.ibas.initialfantasy.repository.BORepositoryInitialFantasyShell;
 
 import junit.framework.TestCase;
 
@@ -38,7 +37,8 @@ public class testApprovalProcess extends TestCase {
 		apBoss.setName(apBoss.getCode());
 		apBoss.setActivated(emYesNo.YES);
 		apBoss.setSuper(emYesNo.YES);
-		IBORepositoryInitialFantasyApp boRepository = new BORepositoryInitialFantasy();
+		apBoss.setPassword("1q2w3e");
+		BORepositoryInitialFantasyShell boRepository = new BORepositoryInitialFantasyShell();
 		boRepository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
 		IOperationResult<IUser> opRsltUser = boRepository.saveUser(apBoss);
 		assertEquals(opRsltUser.getMessage(), opRsltUser.getResultCode(), 0);
@@ -47,6 +47,7 @@ public class testApprovalProcess extends TestCase {
 		apManager.setName(apManager.getCode());
 		apManager.setActivated(emYesNo.YES);
 		apManager.setSuper(emYesNo.YES);
+		apManager.setPassword("1q2w3e");
 		opRsltUser = boRepository.saveUser(apManager);
 		assertEquals(opRsltUser.getMessage(), opRsltUser.getResultCode(), 0);
 		// 创建审批模板，激活的超级管理员需要进行审批
@@ -93,8 +94,7 @@ public class testApprovalProcess extends TestCase {
 		user01.setName(user01.getCode());
 		user01.setActivated(emYesNo.YES);
 		user01.setSuper(emYesNo.YES);
-		boRepository = new BORepositoryInitialFantasy();
-		boRepository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
+		user01.setPassword("1q2w3e");
 		opRsltUser = boRepository.saveUser(user01);
 		assertEquals(opRsltUser.getMessage(), opRsltUser.getResultCode(), 0);
 		// 检索审批请求
@@ -116,8 +116,7 @@ public class testApprovalProcess extends TestCase {
 		user02.setName(user02.getCode());
 		user02.setActivated(emYesNo.YES);
 		user02.setSuper(emYesNo.NO);
-		boRepository = new BORepositoryInitialFantasy();
-		boRepository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
+		user02.setPassword("1q2w3e");
 		opRsltUser = boRepository.saveUser(user02);
 		assertEquals(opRsltUser.getMessage(), opRsltUser.getResultCode(), 0);
 		// 检索审批请求
@@ -154,6 +153,9 @@ public class testApprovalProcess extends TestCase {
 		// 测试步骤审批
 		IOrganizationManager orgManager = OrganizationFactory.create().createManager();
 		orgManager.initialize();// 已缓存，重新加载组织
+		// 登陆，已刷新组织
+		boRepository.userConnect(apBoss.getCode(), apBoss.getPassword());
+		boRepository.userConnect(apManager.getCode(), apManager.getPassword());
 		// 获取组织用户，以获取口令
 		org.colorcoding.ibas.bobas.organization.IUser orgApBoss = orgManager.getUser(apBoss.getDocEntry());
 		org.colorcoding.ibas.bobas.organization.IUser orgApManager = orgManager.getUser(apManager.getDocEntry());
@@ -214,8 +216,7 @@ public class testApprovalProcess extends TestCase {
 		user03.setName(user03.getCode());
 		user03.setActivated(emYesNo.YES);
 		user03.setSuper(emYesNo.YES);
-		boRepository = new BORepositoryInitialFantasy();
-		boRepository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
+		user03.setPassword("1q2w3e");
 		opRsltUser = boRepository.saveUser(user03);
 		assertEquals(opRsltUser.getMessage(), opRsltUser.getResultCode(), 0);
 		// 检索审批请求
