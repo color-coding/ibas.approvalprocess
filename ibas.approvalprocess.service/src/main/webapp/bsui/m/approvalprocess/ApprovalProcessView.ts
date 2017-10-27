@@ -9,7 +9,7 @@
 import * as ibas from "ibas/index";
 import { utils } from "openui5/typings/ibas.utils";
 import { IApprovalProcessView } from "../../../bsapp/approvalprocess/index";
-import * as bo from "../../../3rdparty/initialfantasy/index";
+import * as bo from "../../../borep/bo/index";
 /**
  * 视图-审批流程
  */
@@ -42,7 +42,7 @@ export class ApprovalProcessView extends ibas.BOResidentView implements IApprova
     let form: sap.ui.layout.VerticalLayout = new sap.ui.layout.VerticalLayout("", {});
         return form;
     }
-    showData(datas: bo.IApprovalRequest[], cri: ibas.ICriteria): void {
+    showData(datas: bo.ApprovalRequest[], cri: ibas.ICriteria): void {
         //
     }
 

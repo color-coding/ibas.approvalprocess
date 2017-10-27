@@ -9,6 +9,7 @@
 import * as ibas from "ibas/index";
 import { utils } from "openui5/typings/ibas.utils";
 import * as bo from "../../../borep/bo/index";
+import * as ia from "../../../3rdparty/initialfantasy/index";
 import { IApprovalTemplateEditView } from "../../../bsapp/approvaltemplate/index";
 import { emApprovalStepOwnerType, emApprovalConditionType } from "../../../api/index";
 /**
@@ -387,7 +388,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
     private tableApprovalTemplateStepCondition: sap.ui.table.Table;
     private columnApprovalTemplateStepConditionPropertyName: sap.ui.table.Column;
 
-    protected getPropertyListItem(properies: BOPropertyInformation[]): sap.ui.core.ListItem[] {
+    protected getPropertyListItem(properies: ia.IBOPropertyInformation[]): sap.ui.core.ListItem[] {
         let items: Array<sap.ui.core.ListItem> = [];
         items.push(new sap.ui.core.ListItem("", {
             key: "",
@@ -404,7 +405,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
         return items;
     }
     /** 刷新字段列表 */
-    refreshBOPropertyInformationList(properies: BOPropertyInformation[]): void {
+    refreshBOPropertyInformationList(properies: ia.IBOPropertyInformation[]): void {
         this.columnApprovalTemplateStepConditionPropertyName.setTemplate(new sap.m.Select("", {
             width: "100%",
             selectedKey: "{propertyName}",

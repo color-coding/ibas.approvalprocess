@@ -1,7 +1,7 @@
 import * as ibas from "ibas/index";
 import { utils } from "openui5/typings/ibas.utils";
 import { IApprovalProcessViewView } from "../../../bsapp/approvalprocess/index";
-import * as bo from "../../../3rdparty/initialfantasy/index";
+import * as bo from "../../../borep/bo/index";
 /**
  * 视图-Customer
  */
@@ -11,7 +11,7 @@ export class ApprovalProcessViewView extends ibas.BOViewView implements IApprova
       private page: sap.m.Page;
       private form: sap.ui.layout.form.SimpleForm;
       private stepMizard: sap.m.Wizard;
-      returnSteps(steps: bo.IApprovalRequestSteps): sap.m.Wizard {
+      returnSteps(steps: bo.ApprovalRequestSteps): sap.m.Wizard {
             let myMizard: sap.m.Wizard = new sap.m.Wizard("", {
                   showNextButton: false,
                   height: "400px"
@@ -224,7 +224,7 @@ export class ApprovalProcessViewView extends ibas.BOViewView implements IApprova
       }
 
       /** 显示数据 */
-      showApprovalRequest(data: bo.IApprovalRequest): void {
+      showApprovalRequest(data: bo.ApprovalRequest): void {
             this.page.setModel(new sap.ui.model.json.JSONModel(data));
             this.mainlayout.removeContent(this.stepMizard);
             this.stepMizard = this.returnSteps(data.approvalRequestSteps);

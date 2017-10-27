@@ -8,6 +8,7 @@
 
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
+import * as ia from "../../3rdparty/initialfantasy/index";
 import { BORepositoryApprovalProcess } from "../../borep/BORepositories";
 
 /** 应用-审批模板 */
@@ -35,7 +36,6 @@ export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTem
         this.view.createDataEvent = this.createData;
         this.view.addApprovalTemplateStepEvent = this.addApprovalTemplateStep;
         this.view.removeApprovalTemplateStepEvent = this.removeApprovalTemplateStep;
-
         this.view.editApprovalTemplateStepConditionsStartEvent = this.editApprovalTemplateStepConditionsStartEvent;
         this.view.addApprovalTemplateStepConditionEvent = this.addApprovalTemplateStepCondition;
         this.view.removeApprovalTemplateStepConditionEvent = this.removeApprovalTemplateStepCondition;
@@ -264,24 +264,24 @@ export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTem
     /** 选择业务对象类型 */
     chooseApprovalTemplateBOInformationEvent() {
         let that: this = this;
-        ibas.servicesManager.runChooseService<bo.BOInformation>({
-            boCode: bo.BOInformation.BUSINESS_OBJECT_CODE,
+        ibas.servicesManager.runChooseService<ia.IBOInformation>({
+            boCode: ia.BO_CODE_BOINFORMATION,
             criteria: [
             ],
-            onCompleted(selecteds: ibas.List<bo.BOInformation>): void {
+            onCompleted(selecteds: ibas.List<ia.IBOInformation>): void {
                 let selected = selecteds.firstOrDefault();
                 if (!ibas.objects.isNull(selected)) {
                     that.editData.approvalObjectCode = selected.code;
                     let criteria: ibas.Criteria = new ibas.Criteria();
                     criteria.noChilds = false;
                     let cond = criteria.conditions.create();
-                    cond.alias = bo.BOInformation.PROPERTY_CODE_NAME
+                    cond.alias = "code";
                     cond.operation = ibas.emConditionOperation.EQUAL;
                     cond.value = that.editData.approvalObjectCode;
-                    let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
+                    let boRepository: ia.IBORepositoryInitialFantasy = ibas.boFactory.create(ia.BO_REPOSITORY_INITIALFANTASY);
                     boRepository.fetchBOInformation({
                         criteria: criteria,
-                        onCompleted(opRslt: ibas.IOperationResult<bo.BOInformation>): void {
+                        onCompleted(opRslt: ibas.IOperationResult<ia.IBOInformation>): void {
                             try {
                                 if (opRslt.resultCode !== 0) {
                                     throw new Error(opRslt.message);
@@ -306,13 +306,13 @@ export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTem
     /** 审批步骤选择步骤所有者 */
     chooseApprovalTemplateStepUserEvent(caller: bo.ApprovalTemplateStep) {
         let that: this = this;
-        ibas.servicesManager.runChooseService<bo.User>({
+        ibas.servicesManager.runChooseService<ia.IUser>({
             caller: caller,
-            boCode: bo.User.BUSINESS_OBJECT_CODE,
+            boCode: ia.BO_CODE_USER,
             criteria: [
-                new ibas.Condition(bo.User.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, "Y")
+                new ibas.Condition("activated", ibas.emConditionOperation.EQUAL, "Y")
             ],
-            onCompleted(selecteds: ibas.List<bo.User>): void {
+            onCompleted(selecteds: ibas.List<ia.IUser>): void {
                 // 获取触发的对象
                 let index: number = that.editData.approvalTemplateSteps.indexOf(caller);
                 let item: bo.ApprovalTemplateStep = that.editData.approvalTemplateSteps[index];
@@ -333,13 +333,13 @@ export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTem
         //     let criteria: ibas.Criteria = new ibas.Criteria();
         //     criteria.noChilds = false;
         //     let cond = criteria.conditions.create();
-        //     cond.alias = bo.BOInformation.PROPERTY_CODE_NAME
+        //     cond.alias = ia.IBOInformation.PROPERTY_CODE_NAME
         //     cond.operation = ibas.emConditionOperation.EQUAL;
         //     cond.value = this.editData.approvalObjectCode;
 
         //     ibas.servicesManager.runChooseService<bo.BOPropertyInformation>({
         //         caller: caller,
-        //         boCode: bo.BOInformation.BUSINESS_OBJECT_CODE + ".1",
+        //         boCode: ia.IBOInformation.BUSINESS_OBJECT_CODE + ".1",
         //         criteria: criteria,
         //         onCompleted(selecteds: ibas.List<bo.BOPropertyInformation>): void {
         //             // 获取触发的对象
@@ -374,7 +374,7 @@ export interface IApprovalTemplateEditView extends ibas.IBOEditView {
     /** 编辑审批模板步骤条件事件 */
     editApprovalTemplateStepConditionsStartEvent: Function;
     /** 编辑审批模板步骤条件结束事件 */
-    editApprovalTemplateStepConditionsEndEvent
+    editApprovalTemplateStepConditionsEndEvent: Function;
     /** 添加审批模板步骤条件事件 */
     addApprovalTemplateStepConditionEvent: Function;
     /** 删除审批模板步骤条件事件 */
@@ -382,7 +382,7 @@ export interface IApprovalTemplateEditView extends ibas.IBOEditView {
     /** 显示数据 */
     showApprovalTemplateStepConditions(datas: bo.ApprovalTemplateStepCondition[]): void;
     /** 刷新字段列表 */
-    refreshBOPropertyInformationList(properies: bo.BOPropertyInformation[]): void
+    refreshBOPropertyInformationList(properies: ia.IBOPropertyInformation[]): void;
     /** 选择业务对象类型 */
     chooseApprovalTemplateBOInformationEvent: Function;
     /** 审批步骤选择步骤所有者 */
