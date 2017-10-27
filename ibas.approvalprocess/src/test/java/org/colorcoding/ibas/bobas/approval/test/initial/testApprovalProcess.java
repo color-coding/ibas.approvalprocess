@@ -12,7 +12,7 @@ import org.colorcoding.ibas.approvalprocess.repository.BORepositoryApprovalProce
 import org.colorcoding.ibas.approvalprocess.repository.IBORepositoryApprovalProcessApp;
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
-import org.colorcoding.ibas.bobas.common.IOperationMessages;
+import org.colorcoding.ibas.bobas.common.IOperationMessage;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emApprovalResult;
@@ -158,7 +158,7 @@ public class testApprovalProcess extends TestCase {
 		org.colorcoding.ibas.bobas.organization.IUser orgApBoss = orgManager.getUser(apBoss.getDocEntry());
 		org.colorcoding.ibas.bobas.organization.IUser orgApManager = orgManager.getUser(apManager.getDocEntry());
 
-		IOperationMessages msgRslt = apRepository.approval(ap.getObjectKey(), atStep01.getStepOrder(),
+		IOperationMessage msgRslt = apRepository.approval(ap.getObjectKey(), atStep01.getStepOrder(),
 				emApprovalResult.APPROVED, "批复，经理", orgApManager.getToken());
 		assertEquals(msgRslt.getMessage(), msgRslt.getResultCode(), 0);
 		msgRslt = apRepository.approval(ap.getObjectKey(), atStep02.getStepOrder(), emApprovalResult.APPROVED,

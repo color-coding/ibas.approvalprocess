@@ -9,11 +9,11 @@ import org.colorcoding.ibas.bobas.approval.initial.ApprovalProcess;
 import org.colorcoding.ibas.bobas.approval.initial.ApprovalProcessManager;
 import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
-import org.colorcoding.ibas.bobas.common.OperationMessages;
+import org.colorcoding.ibas.bobas.common.OperationMessage;
 import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.bobas.data.emApprovalResult;
 import org.colorcoding.ibas.bobas.i18n.I18N;
-import org.colorcoding.ibas.bobas.messages.Logger;
+import org.colorcoding.ibas.bobas.message.Logger;
 import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
 import org.colorcoding.ibas.bobas.repository.BORepositoryServiceApplication;
 
@@ -139,9 +139,9 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 	}
 
 	@Override
-	public OperationMessages approval(int apRequestId, int apStepId, emApprovalResult apResult, String judgment,
+	public OperationMessage approval(int apRequestId, int apStepId, emApprovalResult apResult, String judgment,
 			String token) {
-		OperationMessages operationMessages = new OperationMessages();
+		OperationMessage OperationMessage = new OperationMessage();
 		try {
 			this.setUserToken(token);
 			ApprovalProcessManager apManager = new ApprovalProcessManager();
@@ -160,9 +160,9 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 			ap.save();
 		} catch (Exception e) {
 			Logger.log(e);
-			operationMessages.setError(e);
+			OperationMessage.setError(e);
 		}
-		return operationMessages;
+		return OperationMessage;
 	}
 
 }

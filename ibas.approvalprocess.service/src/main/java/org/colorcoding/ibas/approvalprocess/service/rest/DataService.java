@@ -11,7 +11,7 @@ import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.ApprovalTemplate;
 import org.colorcoding.ibas.approvalprocess.repository.BORepositoryApprovalProcess;
 import org.colorcoding.ibas.bobas.common.Criteria;
-import org.colorcoding.ibas.bobas.common.OperationMessages;
+import org.colorcoding.ibas.bobas.common.OperationMessage;
 import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.bobas.data.emApprovalResult;
 
@@ -112,7 +112,7 @@ public class DataService extends BORepositoryApprovalProcess {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("approval")
-	public OperationMessages approval(@QueryParam("apRequestId") int apRequestId, @QueryParam("apStepId") int apStepId,
+	public OperationMessage approval(@QueryParam("apRequestId") int apRequestId, @QueryParam("apStepId") int apStepId,
 			@QueryParam("apResult") String apResult, @QueryParam("judgment") String judgment,
 			@QueryParam("token") String token) {
 		emApprovalResult emApReslut = emApprovalResult.valueOf(apResult);

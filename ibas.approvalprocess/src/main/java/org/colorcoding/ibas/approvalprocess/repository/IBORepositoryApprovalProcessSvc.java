@@ -3,7 +3,7 @@ package org.colorcoding.ibas.approvalprocess.repository;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.ApprovalTemplate;
 import org.colorcoding.ibas.bobas.common.ICriteria;
-import org.colorcoding.ibas.bobas.common.OperationMessages;
+import org.colorcoding.ibas.bobas.common.OperationMessage;
 import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.bobas.data.emApprovalResult;
 import org.colorcoding.ibas.bobas.repository.IBORepositorySmartService;
@@ -86,7 +86,7 @@ public interface IBORepositoryApprovalProcessSvc extends IBORepositorySmartServi
 	 *            口令
 	 * @return
 	 */
-	OperationMessages approval(int apRequestId, int apStepId, emApprovalResult apResult, String judgment, String token);
+	OperationMessage approval(int apRequestId, int apStepId, emApprovalResult apResult, String judgment, String token);
 
 	// --------------------------------------------------------------------------------------------//
 

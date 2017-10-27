@@ -8,7 +8,7 @@ import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.ApprovalTemplate;
 import org.colorcoding.ibas.approvalprocess.repository.BORepositoryApprovalProcess;
 import org.colorcoding.ibas.bobas.common.Criteria;
-import org.colorcoding.ibas.bobas.common.OperationMessages;
+import org.colorcoding.ibas.bobas.common.OperationMessage;
 import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.bobas.cxf.WebServicePath;
 import org.colorcoding.ibas.bobas.data.emApprovalResult;
@@ -98,7 +98,7 @@ public class DataService extends BORepositoryApprovalProcess {
 	 * @return
 	 */
 	@WebMethod
-	public OperationMessages approval(@WebParam(name = "apRequestId") int apRequestId,
+	public OperationMessage approval(@WebParam(name = "apRequestId") int apRequestId,
 			@WebParam(name = "apStepId") int apStepId, @WebParam(name = "apResult") String apResult,
 			@WebParam(name = "judgment") String judgment, @WebParam(name = "token") String token) {
 		emApprovalResult emApReslut = emApprovalResult.valueOf(apResult);
