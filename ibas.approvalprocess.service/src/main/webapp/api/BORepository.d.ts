@@ -16,6 +16,11 @@ import * as bo from "./bo/index"
 export interface IBORepositoryApprovalProcess {
 
     /**
+     * 查询 用户审批请求
+     * @param fetcher 查询者
+     */
+    fetchUserApprovalRequest(fetcher: FetchCaller<bo.IApprovalRequest>);
+    /**
      * 查询 审批请求
      * @param fetcher 查询者
      */

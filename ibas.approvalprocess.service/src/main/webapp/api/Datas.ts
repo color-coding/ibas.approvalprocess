@@ -16,3 +16,26 @@ export const BO_REPOSITORY_APPROVALPROCESS: string = "BORepositoryApprovalProces
 export const BO_CODE_APPROVALREQUEST: string = "CC_AP_APPROVALREQU";
 /** 业务对象编码-审批模板 */
 export const BO_CODE_APPROVALTEMPLATE: string = "CC_AP_APPROVALTPLT";
+
+/**
+ * 审批步骤所有者类型
+ */
+export enum emApprovalStepOwnerType {
+    USER,
+    /*
+     DATA_OWNER,
+     DIRECT_SUPERIOR,
+     DATA_ORGANIZATION_MANAGER,
+     PROJECT_MANAGER,
+     PROJECT_ORGANIZATION_MANAGER
+    */
+}
+/**
+ * 审批条件类型
+ */
+export enum emApprovalConditionType {
+    /** 属性值 */
+    PROPERTY_VALUE,
+    /** SQL脚本 */
+    SQL_SCRIPT,
+}

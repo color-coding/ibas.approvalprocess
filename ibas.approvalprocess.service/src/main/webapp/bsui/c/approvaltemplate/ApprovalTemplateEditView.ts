@@ -10,7 +10,7 @@ import * as ibas from "ibas/index";
 import { utils } from "openui5/typings/ibas.utils";
 import * as bo from "../../../borep/bo/index";
 import { IApprovalTemplateEditView } from "../../../bsapp/approvaltemplate/index";
-import { emApprovalStepOwnerType, emApprovalConditionType } from '../../../api/index';
+import { emApprovalStepOwnerType, emApprovalConditionType } from "../../../api/index";
 /**
  * 视图-ApprovalTemplate
  */
@@ -26,7 +26,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
     /** 编辑审批模板步骤条件事件 */
     editApprovalTemplateStepConditionsStartEvent: Function;
     /** 编辑审批模板步骤条件结束事件 */
-    editApprovalTemplateStepConditionsEndEvent
+    editApprovalTemplateStepConditionsEndEvent: Function;
     /** 添加审批模板步骤条件事件 */
     addApprovalTemplateStepConditionEvent: Function;
     /** 删除审批模板步骤条件事件 */
@@ -41,7 +41,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
     darw(): any {
         let that: this = this;
         this.form = new sap.ui.layout.form.SimpleForm("", {
-            editable:true,
+            editable: true,
             content: [
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("initialfantasy_basis_information") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_name") }),
@@ -118,7 +118,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
                 items: [
                     new sap.ui.table.RowActionItem({
                         icon: "sap-icon://slim-arrow-right",
-                        press: function (oEvent) {
+                        press: function (oEvent: any): void {
                             that.fireViewEvents(that.editApprovalTemplateStepConditionsStartEvent
                                 , this.getBindingContext().getObject()
                             );
@@ -301,7 +301,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
                 this.tableApprovalTemplateStep,
                 this.tableApprovalTemplateStepCondition
             ]
-        })
+        });
         this.form.addContent(this.splitContainer);
         this.page = new sap.m.Page("", {
             showHeader: false,
@@ -387,7 +387,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
     private tableApprovalTemplateStepCondition: sap.ui.table.Table;
     private columnApprovalTemplateStepConditionPropertyName: sap.ui.table.Column;
 
-    protected getPropertyListItem(properies: bo.BOPropertyInformation[]): sap.ui.core.ListItem[] {
+    protected getPropertyListItem(properies: BOPropertyInformation[]): sap.ui.core.ListItem[] {
         let items: Array<sap.ui.core.ListItem> = [];
         items.push(new sap.ui.core.ListItem("", {
             key: "",
@@ -404,7 +404,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
         return items;
     }
     /** 刷新字段列表 */
-    refreshBOPropertyInformationList(properies: bo.BOPropertyInformation[]): void {
+    refreshBOPropertyInformationList(properies: BOPropertyInformation[]): void {
         this.columnApprovalTemplateStepConditionPropertyName.setTemplate(new sap.m.Select("", {
             width: "100%",
             selectedKey: "{propertyName}",

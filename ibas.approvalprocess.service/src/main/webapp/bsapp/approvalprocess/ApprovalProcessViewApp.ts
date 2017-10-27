@@ -1,6 +1,14 @@
+/**
+ * @license
+ * Copyright color-coding studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 import * as ibas from "ibas/index";
 import { BORepositoryApprovalProcess } from "../../borep/BORepositories";
-import * as bo from "../../3rdparty/initialfantasy/index";
+import * as bo from "../../borep/bo/index";
 /** 应用-审批流程 */
 export class ApprovalProcessViewApp extends ibas.BOViewService<IApprovalProcessViewView> {
     /** 应用标识 */
@@ -8,7 +16,7 @@ export class ApprovalProcessViewApp extends ibas.BOViewService<IApprovalProcessV
     /** 应用名称 */
     static APPLICATION_NAME: string = "approvalprocess_app_approvalprocessview";
     /** 业务对象编码 */
-    static BUSINESS_OBJECT_CODE: string = bo.BO_CODE_APPROVALREQUEST;
+    static BUSINESS_OBJECT_CODE: string = bo.ApprovalRequest.BUSINESS_OBJECT_CODE;
     /** 构造函数 */
     constructor() {
         super();
@@ -36,7 +44,7 @@ export class ApprovalProcessViewApp extends ibas.BOViewService<IApprovalProcessV
             super.run(args);
         }
     }
-    private viewData: bo.IApprovalRequest;
+    private viewData: bo.ApprovalRequest;
     /** 查询数据 */
     protected fetchData(criteria: ibas.ICriteria | string): void {
         this.busy(true);
@@ -50,7 +58,7 @@ export class ApprovalProcessViewApp extends ibas.BOViewService<IApprovalProcessV
         let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
         boRepository.fetchUserApprovalRequest({
             criteria: criteria,
-            onCompleted(opRslt: ibas.IOperationResult<bo.IApprovalRequest>): void {
+            onCompleted(opRslt: ibas.IOperationResult<bo.ApprovalRequest>): void {
                 try {
                     if (opRslt.resultCode !== 0) {
                         throw new Error(opRslt.message);
@@ -74,7 +82,7 @@ export class ApprovalProcessViewApp extends ibas.BOViewService<IApprovalProcessV
 /** 视图-客户主数据 */
 export interface IApprovalProcessViewView extends ibas.IBOViewView {
     /** 显示数据 */
-    showApprovalRequest(data: bo.IApprovalRequest): void;
+    showApprovalRequest(data: bo.ApprovalRequest): void;
 }
 /** 客户主数据连接服务映射 */
 export class ApprovalProcessServiceMapping extends ibas.BOLinkServiceMapping {

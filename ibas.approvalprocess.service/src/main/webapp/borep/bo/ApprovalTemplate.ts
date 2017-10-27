@@ -19,6 +19,8 @@ import {
     BODocumentLine,
     BOSimple,
     BOSimpleLine,
+    emConditionOperation,
+    emConditionRelationship,
 } from "ibas/index";
 import {
     IApprovalTemplate,
@@ -27,6 +29,8 @@ import {
     IApprovalTemplateStepConditions,
     IApprovalTemplateStepCondition,
     BO_CODE_APPROVALTEMPLATE,
+    emApprovalConditionType,
+    emApprovalStepOwnerType,
 } from "../../api/index";
 
 /** 审批模板 */

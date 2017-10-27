@@ -18,10 +18,13 @@ import {
     IBODocument,
     IBODocumentLine,
     IBOSimple,
-    IBOSimpleLine
+    IBOSimpleLine,
+    emConditionOperation,
+    emConditionRelationship
 } from "ibas/index";
 import {
-
+    emApprovalConditionType,
+    emApprovalStepOwnerType
 } from "../Datas";
 
 /** 审批模板 */

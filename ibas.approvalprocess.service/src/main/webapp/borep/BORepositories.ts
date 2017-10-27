@@ -18,6 +18,13 @@ export class BORepositoryApprovalProcess extends ibas.BORepositoryApplication im
     protected createConverter(): ibas.IDataConverter {
         return new DataConverter4ap;
     }
+    /**
+     * 查询 用户审批请求
+     * @param fetcher 查询者
+     */
+    fetchUserApprovalRequest(fetcher: ibas.FetchCaller<bo.ApprovalRequest>): void {
+        super.fetch(bo.ApprovalRequest.name, fetcher);
+    }
 
     /**
      * 查询 审批请求

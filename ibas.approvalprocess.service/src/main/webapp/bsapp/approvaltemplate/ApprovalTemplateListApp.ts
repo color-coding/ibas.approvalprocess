@@ -8,8 +8,8 @@
 
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
-import { BORepositoryInitialFantasy } from "../../borep/BORepositories";
-import { DataConverter4if } from "../../borep/DataConverters";
+import { BORepositoryApprovalProcess } from "../../borep/BORepositories";
+import { DataConverter4ap } from "../../borep/DataConverters";
 import { ApprovalTemplateViewApp } from "./ApprovalTemplateViewApp";
 import { ApprovalTemplateEditApp } from "./ApprovalTemplateEditApp";
 
@@ -45,7 +45,7 @@ export class ApprovalTemplateListApp extends ibas.BOListApplication<IApprovalTem
     protected fetchData(criteria: ibas.ICriteria): void {
         this.busy(true);
         let that: this = this;
-        let boRepository: BORepositoryInitialFantasy = new BORepositoryInitialFantasy();
+        let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
         boRepository.fetchApprovalTemplate({
             criteria: criteria,
             onCompleted(opRslt: ibas.IOperationResult<bo.ApprovalTemplate>): void {
@@ -129,7 +129,7 @@ export class ApprovalTemplateListApp extends ibas.BOListApplication<IApprovalTem
             onCompleted(action: ibas.emMessageAction): void {
                 if (action === ibas.emMessageAction.YES) {
                     try {
-                        let boRepository: BORepositoryInitialFantasy = new BORepositoryInitialFantasy();
+                        let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
                         let saveMethod: Function = function (beSaved: bo.ApprovalTemplate): void {
                             boRepository.saveApprovalTemplate({
                                 beSaved: beSaved,
@@ -172,7 +172,7 @@ export class ApprovalTemplateListApp extends ibas.BOListApplication<IApprovalTem
         return [
             new ibas.BOListServiceProxy({
                 data: this.view.getSelecteds(),
-                converter: new DataConverter4if(),
+                converter: new DataConverter4ap(),
             })
         ];
     }

@@ -8,7 +8,7 @@
 
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
-import { BORepositoryInitialFantasy } from "../../borep/BORepositories";
+import { BORepositoryApprovalProcess } from "../../borep/BORepositories";
 
 /** 应用-审批请求 */
 export class ApprovalRequestEditApp extends ibas.BOEditApplication<IApprovalRequestEditView, bo.ApprovalRequest> {
@@ -55,7 +55,7 @@ export class ApprovalRequestEditApp extends ibas.BOEditApplication<IApprovalRequ
             let criteria: ibas.ICriteria = arguments[0].criteria();
             if (!ibas.objects.isNull(criteria) && criteria.conditions.length > 0) {
                 // 有效的查询对象查询
-                let boRepository: BORepositoryInitialFantasy = new BORepositoryInitialFantasy();
+                let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
                 boRepository.fetchApprovalRequest({
                     criteria: criteria,
                     onCompleted(opRslt: ibas.IOperationResult<bo.ApprovalRequest>): void {
@@ -90,7 +90,7 @@ export class ApprovalRequestEditApp extends ibas.BOEditApplication<IApprovalRequ
     /** 保存数据 */
     protected saveData(): void {
         let that: this = this;
-        let boRepository: BORepositoryInitialFantasy = new BORepositoryInitialFantasy();
+        let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
         boRepository.saveApprovalRequest({
             beSaved: this.editData,
             onCompleted(opRslt: ibas.IOperationResult<bo.ApprovalRequest>): void {

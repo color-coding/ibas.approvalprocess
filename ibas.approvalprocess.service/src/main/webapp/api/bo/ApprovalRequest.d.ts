@@ -18,10 +18,10 @@ import {
     IBODocument,
     IBODocumentLine,
     IBOSimple,
-    IBOSimpleLine
+    IBOSimpleLine,
+    emApprovalStepStatus
 } from "ibas/index";
 import {
-
 } from "../Datas";
 
 /** 审批请求 */

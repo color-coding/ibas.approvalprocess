@@ -19,6 +19,7 @@ import {
     BODocumentLine,
     BOSimple,
     BOSimpleLine,
+    emApprovalStepStatus
 } from "ibas/index";
 import {
     IApprovalRequest,

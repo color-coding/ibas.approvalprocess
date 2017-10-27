@@ -7,20 +7,20 @@
  */
 
 import * as ibas from "ibas/index";
-import * as bo from "../../3rdparty/initialfantasy/index";
+import * as bo from "../../borep/bo/index";
 import { BORepositoryApprovalProcess } from "../../borep/BORepositories";
 import { ApprovalProcessViewApp } from "./ApprovalProcessViewApp";
 
 
 /** 列表应用-审批请求 */
-export class ApprovalRequestProcessListApp extends ibas.BOListApplication<IApprovalRequestProcessListView, bo.IApprovalRequest> {
+export class ApprovalRequestProcessListApp extends ibas.BOListApplication<IApprovalRequestProcessListView, bo.ApprovalRequest> {
 
     /** 应用标识 */
     static APPLICATION_ID: string = "cb86890b-717b-452d-85f5-79dcbf77492f";
     /** 应用名称 */
     static APPLICATION_NAME: string = "initialfantasy_app_approvalrequest_list";
     /** 业务对象编码 */
-    static BUSINESS_OBJECT_CODE: string = bo.BO_CODE_APPROVALREQUEST;
+    static BUSINESS_OBJECT_CODE: string = bo.ApprovalRequest.BUSINESS_OBJECT_CODE;
     /** 构造函数 */
     constructor() {
         super();
@@ -46,7 +46,7 @@ export class ApprovalRequestProcessListApp extends ibas.BOListApplication<IAppro
         let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
         boRepository.fetchUserApprovalRequest({
             criteria: criteria,
-            onCompleted(opRslt: ibas.IOperationResult<bo.IApprovalRequest>): void {
+            onCompleted(opRslt: ibas.IOperationResult<bo.ApprovalRequest>): void {
                 try {
                     if (opRslt.resultCode !== 0) {
                         throw new Error(opRslt.message);
@@ -64,7 +64,7 @@ export class ApprovalRequestProcessListApp extends ibas.BOListApplication<IAppro
         //
     }
     /** 查看数据，参数：目标数据 */
-    protected viewData(data: bo.IApprovalRequest): void {
+    protected viewData(data: bo.ApprovalRequest): void {
         // 检查目标数据
         if (ibas.objects.isNull(data)) {
             this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("sys_shell_please_chooose_data",
@@ -88,5 +88,5 @@ export interface IApprovalRequestProcessListView extends ibas.IBOListView {
     /** 编辑数据事件，参数：编辑对象 */
     viewDataEvent: Function;
     /** 显示数据 */
-    showData(datas: bo.IApprovalRequest[]): void;
+    showData(datas: bo.ApprovalRequest[]): void;
 }

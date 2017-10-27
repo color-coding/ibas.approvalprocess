@@ -8,7 +8,7 @@
 
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
-import { BORepositoryInitialFantasy } from "../../borep/BORepositories";
+import { BORepositoryApprovalProcess } from "../../borep/BORepositories";
 
 /** 应用-审批模板 */
 export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTemplateEditView, bo.ApprovalTemplate> {
@@ -63,7 +63,7 @@ export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTem
             let criteria: ibas.ICriteria = arguments[0].criteria();
             if (!ibas.objects.isNull(criteria) && criteria.conditions.length > 0) {
                 // 有效的查询对象查询
-                let boRepository: BORepositoryInitialFantasy = new BORepositoryInitialFantasy();
+                let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
                 boRepository.fetchApprovalTemplate({
                     criteria: criteria,
                     onCompleted(opRslt: ibas.IOperationResult<bo.ApprovalTemplate>): void {
@@ -101,7 +101,7 @@ export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTem
     /** 保存数据 */
     protected saveData(): void {
         let that: this = this;
-        let boRepository: BORepositoryInitialFantasy = new BORepositoryInitialFantasy();
+        let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
         boRepository.saveApprovalTemplate({
             beSaved: this.editData,
             onCompleted(opRslt: ibas.IOperationResult<bo.ApprovalTemplate>): void {
@@ -209,13 +209,13 @@ export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTem
         // 仅显示没有标记删除的
         this.view.showApprovalTemplateSteps(this.editData.approvalTemplateSteps.filterDeleted());
     }
-    ///** 编辑审批模板步骤条件开始事件 */
+    /** 编辑审批模板步骤条件开始事件 */
     editApprovalTemplateStepConditionsStartEvent(item: bo.ApprovalTemplateStep): void {
         this.editApprovalTemplateStepData = item;
         // 仅显示没有标记删除的
         this.view.showApprovalTemplateStepConditions(this.editApprovalTemplateStepData.approvalTemplateStepConditions.filterDeleted());
     }
-    ///** 编辑审批模板步骤条件结束事件 */
+    /** 编辑审批模板步骤条件结束事件 */
     editApprovalTemplateStepConditionsEndEvent(item: bo.ApprovalTemplateStep): void {
         this.editApprovalTemplateStepData = null;
         // 仅显示没有标记删除的
@@ -278,7 +278,7 @@ export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTem
                     cond.alias = bo.BOInformation.PROPERTY_CODE_NAME
                     cond.operation = ibas.emConditionOperation.EQUAL;
                     cond.value = that.editData.approvalObjectCode;
-                    let boRepository: BORepositoryInitialFantasy = new BORepositoryInitialFantasy();
+                    let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
                     boRepository.fetchBOInformation({
                         criteria: criteria,
                         onCompleted(opRslt: ibas.IOperationResult<bo.BOInformation>): void {
@@ -298,7 +298,7 @@ export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTem
                         }
                     });
                     that.busy(true);
-                    //that.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("sys_shell_saving_data"));
+                    // that.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("sys_shell_saving_data"));
                 }
             }
         });
@@ -371,9 +371,9 @@ export interface IApprovalTemplateEditView extends ibas.IBOEditView {
     removeApprovalTemplateStepEvent: Function;
     /** 显示数据 */
     showApprovalTemplateSteps(datas: bo.ApprovalTemplateStep[]): void;
-    ///** 编辑审批模板步骤条件事件 */
+    /** 编辑审批模板步骤条件事件 */
     editApprovalTemplateStepConditionsStartEvent: Function;
-    ///** 编辑审批模板步骤条件结束事件 */
+    /** 编辑审批模板步骤条件结束事件 */
     editApprovalTemplateStepConditionsEndEvent
     /** 添加审批模板步骤条件事件 */
     addApprovalTemplateStepConditionEvent: Function;

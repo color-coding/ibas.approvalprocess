@@ -8,7 +8,7 @@
 
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
-import { BORepositoryInitialFantasy } from "../../borep/BORepositories";
+import { BORepositoryApprovalProcess } from "../../borep/BORepositories";
 import { ApprovalRequestViewApp } from "./ApprovalRequestViewApp";
 import { ApprovalRequestEditApp } from "./ApprovalRequestEditApp";
 
@@ -44,7 +44,7 @@ export class ApprovalRequestListApp extends ibas.BOListApplication<IApprovalRequ
     protected fetchData(criteria: ibas.ICriteria): void {
         this.busy(true);
         let that: this = this;
-        let boRepository: BORepositoryInitialFantasy = new BORepositoryInitialFantasy();
+        let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
         boRepository.fetchApprovalRequest({
             criteria: criteria,
             onCompleted(opRslt: ibas.IOperationResult<bo.ApprovalRequest>): void {
@@ -128,7 +128,7 @@ export class ApprovalRequestListApp extends ibas.BOListApplication<IApprovalRequ
             onCompleted(action: ibas.emMessageAction): void {
                 if (action === ibas.emMessageAction.YES) {
                     try {
-                        let boRepository: BORepositoryInitialFantasy = new BORepositoryInitialFantasy();
+                        let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
                         let saveMethod: Function = function (beSaved: bo.ApprovalRequest): void {
                             boRepository.saveApprovalRequest({
                                 beSaved: beSaved,

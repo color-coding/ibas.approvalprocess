@@ -8,7 +8,7 @@
 
 import * as ibas from "ibas/index";
 import { BORepositoryApprovalProcess } from "../../borep/BORepositories";
-import * as bo from "../../3rdparty/initialfantasy/index";
+import * as bo from "../../borep/bo/index";
 import { ApprovalProcessViewApp } from "./ApprovalProcessViewApp";
 import { ApprovalRequestProcessListApp } from "./ApprovalRequestProcessListApp";
 /** 应用-审批流程 */
@@ -33,7 +33,7 @@ export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProces
         this.view.showApprovalRequestDetailEvent = this.showApprovalRequestDetail;
         this.view.showApprovalRequestListEvent = this.showApprovalRequestList;
     }
-    protected showApprovalRequestDetail(data: bo.IApprovalRequest): void {
+    protected showApprovalRequestDetail(data: bo.ApprovalRequest): void {
         let appviewapp: ApprovalProcessViewApp = new ApprovalProcessViewApp();
         appviewapp.viewShower = this.viewShower;
         appviewapp.navigation = this.navigation;
@@ -70,7 +70,7 @@ export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProces
         let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
         boRepository.fetchUserApprovalRequest({
             criteria: cri,
-            onCompleted(opRslt: ibas.IOperationResult<bo.IApprovalRequest>): void {
+            onCompleted(opRslt: ibas.IOperationResult<bo.ApprovalRequest>): void {
                 try {
                     if (opRslt.resultCode !== 0) {
                         throw new Error(opRslt.message);
@@ -100,5 +100,5 @@ export interface IApprovalProcessView extends ibas.IResidentView {
     showApprovalRequestDetailEvent: Function;
     fetchApprovalRequestEvent: Function;
     showApprovalRequestListEvent: Function;
-    showData(datas: bo.IApprovalRequest[], cri: ibas.ICriteria): void;
+    showData(datas: bo.ApprovalRequest[], cri: ibas.ICriteria): void;
 }

@@ -8,7 +8,7 @@
 
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
-import { BORepositoryInitialFantasy } from "../../borep/BORepositories";
+import { BORepositoryApprovalProcess } from "../../borep/BORepositories";
 import { ApprovalTemplateEditApp } from "./ApprovalTemplateEditApp";
 
 /** 查看应用-审批模板 */
@@ -64,7 +64,7 @@ export class ApprovalTemplateViewApp extends ibas.BOViewService<IApprovalTemplat
             // 添加查询条件
 
         }
-        let boRepository: BORepositoryInitialFantasy = new BORepositoryInitialFantasy();
+        let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
         boRepository.fetchApprovalTemplate({
             criteria: criteria,
             onCompleted(opRslt: ibas.IOperationResult<bo.ApprovalTemplate>): void {

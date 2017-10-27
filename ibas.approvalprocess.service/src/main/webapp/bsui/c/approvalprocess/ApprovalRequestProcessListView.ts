@@ -8,7 +8,7 @@
 
 import * as ibas from "ibas/index";
 import { utils } from "openui5/typings/ibas.utils";
-import * as bo from "../../../3rdparty/initialfantasy/index";
+import * as bo from "../../../borep/bo/index";
 import { IApprovalRequestProcessListView } from "../../../bsapp/approvalprocess/index";
 
 /**
@@ -93,7 +93,7 @@ export class ApprovalRequestProcessListView extends ibas.BOListView implements I
                         press: function (): void {
                             that.fireViewEvents(that.viewDataEvent,
                                 // 获取表格选中的对象
-                                utils.getTableSelecteds<bo.IApprovalRequest>(that.table).firstOrDefault()
+                                utils.getTableSelecteds<bo.ApprovalRequest>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -160,7 +160,7 @@ export class ApprovalRequestProcessListView extends ibas.BOListView implements I
     private form: sap.ui.layout.form.SimpleForm;
     private table: sap.ui.table.Table;
     /** 显示数据 */
-    showData(datas: bo.IApprovalRequest[]): void {
+    showData(datas: bo.ApprovalRequest[]): void {
         let done: boolean = false;
         let model: sap.ui.model.Model = this.table.getModel(undefined);
         if (!ibas.objects.isNull(model)) {
