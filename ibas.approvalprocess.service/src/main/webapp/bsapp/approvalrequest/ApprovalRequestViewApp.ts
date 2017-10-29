@@ -17,7 +17,7 @@ export class ApprovalRequestViewApp extends ibas.BOViewService<IApprovalRequestV
     /** 应用标识 */
     static APPLICATION_ID: string = "f7a124a5-ba62-4623-aa5e-95681f783406";
     /** 应用名称 */
-    static APPLICATION_NAME: string = "initialfantasy_app_approvalrequest_view";
+    static APPLICATION_NAME: string = "approvalprocess_app_approvalrequest_view";
     /** 业务对象编码 */
     static BUSINESS_OBJECT_CODE: string = bo.ApprovalRequest.BUSINESS_OBJECT_CODE;
     /** 构造函数 */

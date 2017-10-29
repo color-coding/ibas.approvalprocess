@@ -17,7 +17,7 @@ export class ApprovalTemplateViewApp extends ibas.BOViewService<IApprovalTemplat
     /** 应用标识 */
     static APPLICATION_ID: string = "9a4c387f-d5e9-49ed-a450-7481067e7e29";
     /** 应用名称 */
-    static APPLICATION_NAME: string = "initialfantasy_app_approvaltemplate_view";
+    static APPLICATION_NAME: string = "approvalprocess_app_approvaltemplate_view";
     /** 业务对象编码 */
     static BUSINESS_OBJECT_CODE: string = bo.ApprovalTemplate.BUSINESS_OBJECT_CODE;
     /** 构造函数 */

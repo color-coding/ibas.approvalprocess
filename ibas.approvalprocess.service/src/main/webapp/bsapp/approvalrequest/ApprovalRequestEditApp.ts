@@ -16,7 +16,7 @@ export class ApprovalRequestEditApp extends ibas.BOEditApplication<IApprovalRequ
     /** 应用标识 */
     static APPLICATION_ID: string = "25ea4de2-3898-4704-ba0d-692b98a862c8";
     /** 应用名称 */
-    static APPLICATION_NAME: string = "initialfantasy_app_approvalrequest_edit";
+    static APPLICATION_NAME: string = "approvalprocess_app_approvalrequest_edit";
     /** 业务对象编码 */
     static BUSINESS_OBJECT_CODE: string = bo.ApprovalRequest.BUSINESS_OBJECT_CODE;
     /** 构造函数 */

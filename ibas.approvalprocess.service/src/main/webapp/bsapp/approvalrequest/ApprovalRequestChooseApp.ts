@@ -17,7 +17,7 @@ export class ApprovalRequestChooseApp extends ibas.BOChooseService<IApprovalRequ
     /** 应用标识 */
     static APPLICATION_ID: string = "ed7b83b1-1cab-48be-8b6f-dedffb94f9ca";
     /** 应用名称 */
-    static APPLICATION_NAME: string = "initialfantasy_app_approvalrequest_choose";
+    static APPLICATION_NAME: string = "approvalprocess_app_approvalrequest_choose";
     /** 业务对象编码 */
     static BUSINESS_OBJECT_CODE: string = bo.ApprovalRequest.BUSINESS_OBJECT_CODE;
     /** 构造函数 */

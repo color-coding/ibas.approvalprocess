@@ -17,7 +17,7 @@ export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTem
     /** 应用标识 */
     static APPLICATION_ID: string = "dd924e76-424b-47f2-8ee0-8334b7414685";
     /** 应用名称 */
-    static APPLICATION_NAME: string = "initialfantasy_app_approvaltemplate_edit";
+    static APPLICATION_NAME: string = "approvalprocess_app_approvaltemplate_edit";
     /** 业务对象编码 */
     static BUSINESS_OBJECT_CODE: string = bo.ApprovalTemplate.BUSINESS_OBJECT_CODE;
     /** 构造函数 */

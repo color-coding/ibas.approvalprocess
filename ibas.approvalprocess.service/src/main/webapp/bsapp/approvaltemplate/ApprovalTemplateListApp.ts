@@ -19,7 +19,7 @@ export class ApprovalTemplateListApp extends ibas.BOListApplication<IApprovalTem
     /** 应用标识 */
     static APPLICATION_ID: string = "bf0a2ff9-adf4-4675-8a0c-3418bdd9a5d2";
     /** 应用名称 */
-    static APPLICATION_NAME: string = "initialfantasy_app_approvaltemplate_list";
+    static APPLICATION_NAME: string = "approvalprocess_app_approvaltemplate_list";
     /** 业务对象编码 */
     static BUSINESS_OBJECT_CODE: string = bo.ApprovalTemplate.BUSINESS_OBJECT_CODE;
     /** 构造函数 */

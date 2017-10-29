@@ -1,6 +1,6 @@
 {
-  "approvalprocess": "${Domain.getDescription()}",
-  "approvalprocess_icon": "",
+  "approvalprocess": "审批流程",
+  "approvalprocess_icon": "sap-icon://activities",
   "approvalprocess_func_approvalrequest": "审批请求",
   "approvalprocess_app_approvalrequest_list": "审批请求列表",
   "approvalprocess_app_approvalrequest_choose": "审批请求选择",

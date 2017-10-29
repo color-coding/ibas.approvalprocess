@@ -17,7 +17,7 @@ export class ApprovalTemplateChooseApp extends ibas.BOChooseService<IApprovalTem
     /** 应用标识 */
     static APPLICATION_ID: string = "a0fbdd44-61c6-4b5b-8933-70dc2df993e5";
     /** 应用名称 */
-    static APPLICATION_NAME: string = "initialfantasy_app_approvaltemplate_choose";
+    static APPLICATION_NAME: string = "approvalprocess_app_approvaltemplate_choose";
     /** 业务对象编码 */
     static BUSINESS_OBJECT_CODE: string = bo.ApprovalTemplate.BUSINESS_OBJECT_CODE;
     /** 构造函数 */

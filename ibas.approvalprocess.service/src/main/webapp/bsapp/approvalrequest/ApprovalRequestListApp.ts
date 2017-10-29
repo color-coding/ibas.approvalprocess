@@ -18,7 +18,7 @@ export class ApprovalRequestListApp extends ibas.BOListApplication<IApprovalRequ
     /** 应用标识 */
     static APPLICATION_ID: string = "dc9357e5-f3a9-44b2-994f-c0dfbe626bd5";
     /** 应用名称 */
-    static APPLICATION_NAME: string = "initialfantasy_app_approvalrequest_list";
+    static APPLICATION_NAME: string = "approvalprocess_app_approvalrequest_list";
     /** 业务对象编码 */
     static BUSINESS_OBJECT_CODE: string = bo.ApprovalRequest.BUSINESS_OBJECT_CODE;
     /** 构造函数 */
