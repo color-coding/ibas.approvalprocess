@@ -9,6 +9,7 @@
 import * as ibas from "ibas/index";
 import { ApprovalRequestFunc, ApprovalRequestChooseServiceMapping, ApprovalRequestLinkServiceMapping } from "./approvalrequest/index";
 import { ApprovalTemplateFunc, ApprovalTemplateChooseServiceMapping, ApprovalTemplateLinkServiceMapping } from "./approvaltemplate/index";
+import { ApprovalProcessApp } from "./approvalprocess/index";
 
 /** 模块控制台 */
 export class Console extends ibas.ModuleConsole {
@@ -38,7 +39,7 @@ export class Console extends ibas.ModuleConsole {
         this.register(new ApprovalTemplateChooseServiceMapping());
         this.register(new ApprovalTemplateLinkServiceMapping());
         // 注册常驻应用
-
+        this.register(new  ApprovalProcessApp());
     }
     /** 运行 */
     run(): void {

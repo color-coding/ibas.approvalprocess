@@ -115,10 +115,34 @@ public class DataService extends BORepositoryApprovalProcess {
 	public OperationMessage approval(@QueryParam("apRequestId") int apRequestId, @QueryParam("apStepId") int apStepId,
 			@QueryParam("apResult") String apResult, @QueryParam("judgment") String judgment,
 			@QueryParam("token") String token) {
-		emApprovalResult emApReslut = emApprovalResult.valueOf(apResult);
-		return super.approval(apRequestId, apStepId, emApReslut, judgment, token);
+		if (apResult != null && !apResult.isEmpty()) {
+			boolean numeric = true;
+			for (Character item : apResult.toCharArray()) {
+				if (!Character.isDigit(item)) {
+					numeric = false;
+					break;
+				}
+			}
+			emApprovalResult approvalResult = null;
+			if (numeric) {
+				approvalResult = emApprovalResult.forValue(Integer.valueOf(apResult));
+			} else {
+				approvalResult = emApprovalResult.valueOf(apResult);
+			}
+			return super.approval(apRequestId, apStepId, approvalResult, judgment, token);
+		}
+		return new OperationMessage(new ClassCastException("apResult"));
 	}
 
 	// --------------------------------------------------------------------------------------------//
 
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("fetchUserApprovalRequest")
+	public OperationResult<ApprovalRequest> fetchUserApprovalRequest(@QueryParam("user") String user,
+			@QueryParam("token") String token) {
+		return super.fetchUserApprovalRequest(user, token);
+	}
+	// --------------------------------------------------------------------------------------------//
 }

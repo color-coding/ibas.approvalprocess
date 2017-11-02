@@ -8,7 +8,10 @@
 
 import {
     FetchCaller,
-    SaveCaller
+    SaveCaller,
+    MethodCaller,
+    IOperationResult,
+    IOperationMessage,
 } from "ibas/index";
 import * as bo from "./bo/index"
 
@@ -16,10 +19,15 @@ import * as bo from "./bo/index"
 export interface IBORepositoryApprovalProcess {
 
     /**
+     * 审批
+     * @param caller 调用者
+     */
+    approval(caller: ApprovalMethodCaller);
+    /**
      * 查询 用户审批请求
      * @param fetcher 查询者
      */
-    fetchUserApprovalRequest(fetcher: FetchCaller<bo.IApprovalRequest>);
+    fetchUserApprovalRequest(fetcher: UserMethodCaller<bo.IApprovalRequest>);
     /**
      * 查询 审批请求
      * @param fetcher 查询者
@@ -43,4 +51,36 @@ export interface IBORepositoryApprovalProcess {
     saveApprovalTemplate(saver: SaveCaller<bo.IApprovalTemplate>);
 
 
+}
+/**
+ * 用户相关调用者
+ */
+export interface UserMethodCaller<P> extends MethodCaller {
+    /** 用户 */
+    user: string;
+    /** 平台 */
+    platform?: string;
+    /**
+     * 调用完成
+     * @param opRslt 结果
+     */
+    onCompleted(opRslt: IOperationResult<P>);
+}
+/**
+ * 审批调用者
+ */
+export interface ApprovalMethodCaller extends MethodCaller {
+    /** 审批请求编号 */
+    apRequestId: number;
+    /** 审批请求步骤编号 */
+    apStepId: number;
+    /** 审批的结果 */
+    apResult: number;
+    /** 审批意见 */
+    judgment: string;
+    /**
+     * 调用完成
+     * @param opRslt 结果
+     */
+    onCompleted(opRslt: IOperationMessage);
 }

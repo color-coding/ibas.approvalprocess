@@ -36,6 +36,12 @@ export class ApprovalRequestListApp extends ibas.BOListApplication<IApprovalRequ
         this.view.editDataEvent = this.editData;
         this.view.deleteDataEvent = this.deleteData;
     }
+    run(...args: any[]): void {
+        let criteria: ibas.ICriteria = arguments[0];
+        if (ibas.objects.instanceOf(criteria, ibas.Criteria)) {
+            this.fetchData(criteria);
+        }
+    }
     /** 视图显示后 */
     protected viewShowed(): void {
         // 视图加载完成
@@ -51,6 +57,9 @@ export class ApprovalRequestListApp extends ibas.BOListApplication<IApprovalRequ
                 try {
                     if (opRslt.resultCode !== 0) {
                         throw new Error(opRslt.message);
+                    }
+                    if (!that.view.isDisplayed){ 
+                        that.show();
                     }
                     that.view.showData(opRslt.resultObjects);
                     that.busy(false);

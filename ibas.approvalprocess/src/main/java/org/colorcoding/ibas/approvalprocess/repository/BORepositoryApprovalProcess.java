@@ -1,17 +1,26 @@
 package org.colorcoding.ibas.approvalprocess.repository;
 
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequest;
+import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequestStep;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.ApprovalTemplate;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplate;
 import org.colorcoding.ibas.bobas.approval.IApprovalProcess;
 import org.colorcoding.ibas.bobas.approval.initial.ApprovalProcess;
 import org.colorcoding.ibas.bobas.approval.initial.ApprovalProcessManager;
+import org.colorcoding.ibas.bobas.common.Criteria;
+import org.colorcoding.ibas.bobas.common.IChildCriteria;
+import org.colorcoding.ibas.bobas.common.ICondition;
 import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
+import org.colorcoding.ibas.bobas.common.ISort;
 import org.colorcoding.ibas.bobas.common.OperationMessage;
 import org.colorcoding.ibas.bobas.common.OperationResult;
+import org.colorcoding.ibas.bobas.common.SortType;
 import org.colorcoding.ibas.bobas.data.emApprovalResult;
+import org.colorcoding.ibas.bobas.data.emApprovalStatus;
+import org.colorcoding.ibas.bobas.data.emApprovalStepStatus;
+import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.i18n.I18N;
 import org.colorcoding.ibas.bobas.message.Logger;
 import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
@@ -124,13 +133,38 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 
 	@Override
 	public OperationResult<ApprovalRequest> fetchUserApprovalRequest(String user, String token) {
-		OperationResult<ApprovalRequest> opRslt = new OperationResult<>();
 		try {
 			this.setUserToken(token);
+			ICriteria criteria = new Criteria();
+			// 激活的
+			ICondition condition = criteria.getConditions().create();
+			condition.setAlias(ApprovalRequest.PROPERTY_ACTIVATED.getName());
+			condition.setValue(emYesNo.YES);
+			// 审批中的
+			condition = criteria.getConditions().create();
+			condition.setAlias(ApprovalRequest.PROPERTY_APPROVALSTATUS.getName());
+			condition.setValue(emApprovalStatus.PROCESSING);
+			// 排序
+			ISort sort = criteria.getSorts().create();
+			sort.setAlias(ApprovalRequest.PROPERTY_STARTEDTIME.getName());
+			sort.setSortType(SortType.ASCENDING);
+			// 子项查询
+			IChildCriteria childCriteria = criteria.getChildCriterias().create();
+			childCriteria.setOnlyHasChilds(true);
+			childCriteria.setNoChilds(false);
+			childCriteria.setPropertyPath(ApprovalRequest.PROPERTY_APPROVALREQUESTSTEPS.getName());
+			// 此人的
+			condition = childCriteria.getConditions().create();
+			condition.setAlias(ApprovalRequestStep.PROPERTY_STEPOWNER.getName());
+			condition.setValue(user);
+			// 审批中的
+			condition = childCriteria.getConditions().create();
+			condition.setAlias(ApprovalRequestStep.PROPERTY_STEPSTATUS.getName());
+			condition.setValue(emApprovalStepStatus.PROCESSING);
+			return new OperationResult<ApprovalRequest>(this.fetchApprovalRequest(criteria));
 		} catch (Exception e) {
-			opRslt.setError(e);
+			return new OperationResult<ApprovalRequest>(e);
 		}
-		return opRslt;
 	}
 
 	@Override

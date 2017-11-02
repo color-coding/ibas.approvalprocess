@@ -9,8 +9,8 @@
 import * as ibas from "ibas/index";
 import { BORepositoryApprovalProcess } from "../../borep/BORepositories";
 import * as bo from "../../borep/bo/index";
-import { ApprovalProcessViewApp } from "./ApprovalProcessViewApp";
-import { ApprovalRequestProcessListApp } from "./ApprovalRequestProcessListApp";
+import { ApprovalRequestListApp } from "../approvalrequest/ApprovalRequestListApp";
+
 /** 应用-审批流程 */
 export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProcessView> {
 
@@ -29,53 +29,59 @@ export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProces
     protected registerView(): void {
         super.registerView();
         // 其他事件
-        this.view.fetchApprovalRequestEvent = this.fetchApprovalRequest;
-        this.view.showApprovalRequestDetailEvent = this.showApprovalRequestDetail;
-        this.view.showApprovalRequestListEvent = this.showApprovalRequestList;
+        this.view.showListEvent = this.showList;
+        this.view.approvalEvent = this.approval;
     }
-    protected showApprovalRequestDetail(data: bo.ApprovalRequest): void {
-        let appviewapp: ApprovalProcessViewApp = new ApprovalProcessViewApp();
-        appviewapp.viewShower = this.viewShower;
-        appviewapp.navigation = this.navigation;
-        appviewapp.run(data);
+    /** 运行,覆盖原方法 */
+    run(...args: any[]): void {
+        super.run();
     }
-    protected showApprovalRequestList(): void {
-        let listApp: ApprovalRequestProcessListApp = new ApprovalRequestProcessListApp();
+    /** 视图显示后 */
+    protected viewShowed(): void {
+        // 视图加载完成
+        this.fetchApprovalRequest();
+    }
+    protected showList(): void {
+        let listApp: ApprovalRequestListApp = new ApprovalRequestListApp();
         listApp.viewShower = this.viewShower;
         listApp.navigation = this.navigation;
-        listApp.run();
+        let criteria: ibas.ICriteria = new ibas.Criteria();
+        let condition: ibas.ICondition = criteria.conditions.create();
+        // 激活的
+        condition.alias = bo.ApprovalRequest.PROPERTY_ACTIVATED_NAME;
+        condition.value = "Y";
+        // 审批中的
+        condition = criteria.conditions.create();
+        condition.alias = bo.ApprovalRequest.PROPERTY_APPROVALSTATUS_NAME;
+        condition.value = "P";
+        let sort: ibas.ISort = criteria.sorts.create();
+        sort.alias = bo.ApprovalRequest.PROPERTY_OBJECTKEY_NAME;
+        sort.sortType = ibas.emSortType.DESCENDING;
+        // 行项目查询
+        let childCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
+        childCriteria.propertyPath = bo.ApprovalRequest.PROPERTY_APPROVALREQUESTSTEPS_NAME;
+        childCriteria.onlyHasChilds = true;
+        // 当前用户
+        condition = childCriteria.conditions.create();
+        condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPOWNER_NAME;
+        condition.value = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID);
+        // 审批中
+        condition = childCriteria.conditions.create();
+        condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPSTATUS_NAME;
+        condition.value = "P";
+        listApp.run(criteria);
     }
-    protected fetchApprovalRequest(pcri: ibas.ICriteria): void {
+    protected fetchApprovalRequest(): void {
         let that: this = this;
-
-        let cri: ibas.ICriteria;
-        if (!ibas.objects.isNull(pcri)) {
-            cri = pcri;
-        } else {
-            cri = new ibas.Criteria();
-            cri.result = 4;
-            let con: ibas.ICondition = cri.conditions.create();
-            con.alias = "ApprovalStatus";
-            con.value = "P";
-            let childCriteris: ibas.IChildCriteria = cri.childCriterias.create();
-            childCriteris.propertyPath = "ApprovalRequestSteps";
-            con = childCriteris.conditions.create();
-            con.alias = "StepOwner";
-            con.value = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_CODE);
-            con = childCriteris.conditions.create();
-            con.alias = "StepStatus";
-            con.value = "P";
-        }
-        // this.busy(true);
         let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
         boRepository.fetchUserApprovalRequest({
-            criteria: cri,
+            user: ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID),
             onCompleted(opRslt: ibas.IOperationResult<bo.ApprovalRequest>): void {
                 try {
                     if (opRslt.resultCode !== 0) {
                         throw new Error(opRslt.message);
                     }
-                    that.view.showData(opRslt.resultObjects, cri);
+                    that.view.showData(opRslt.resultObjects);
                     that.busy(false);
                 } catch (error) {
                     that.messages(error);
@@ -83,22 +89,34 @@ export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProces
             }
         });
     }
-    /** 视图显示后 */
-    protected viewShowed(): void {
-        // 视图加载完成
-        this.fetchApprovalRequest(null);
-
-    }
-    /** 运行,覆盖原方法 */
-    run(...args: any[]): void {
-        super.run();
+    protected approval(ap: bo.ApprovalRequest, result: number): void {
+        let that: this = this;
+        let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
+        boRepository.approval({
+            apRequestId: ap.objectKey,
+            apStepId: ap.approvalRequestSteps.firstOrDefault().lineId,
+            apResult: result,
+            judgment: "",
+            onCompleted(opRslt: ibas.IOperationMessage): void {
+                try {
+                    if (opRslt.resultCode !== 0) {
+                        throw new Error(opRslt.message);
+                    }
+                    that.messages(ibas.emMessageType.SUCCESS, opRslt.message);
+                    that.busy(false);
+                } catch (error) {
+                    that.messages(error);
+                }
+            }
+        });
     }
 }
 /** 视图-审批流程 */
 export interface IApprovalProcessView extends ibas.IResidentView {
-    /** 查找用户审批项目 */
-    showApprovalRequestDetailEvent: Function;
-    fetchApprovalRequestEvent: Function;
-    showApprovalRequestListEvent: Function;
-    showData(datas: bo.ApprovalRequest[], cri: ibas.ICriteria): void;
+    // 显示列表
+    showListEvent: Function;
+    // 显示数据
+    showData(datas: bo.ApprovalRequest[]): void;
+    // 审批操作，参数1，审批请求；参数2，操作
+    approvalEvent: Function;
 }

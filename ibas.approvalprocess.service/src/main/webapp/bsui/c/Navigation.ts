@@ -9,8 +9,10 @@
 import * as ibas from "ibas/index";
 import * as approvalrequestApps from "../../bsapp/approvalrequest/index";
 import * as approvaltemplateApps from "../../bsapp/approvaltemplate/index";
+import * as approvalprocessApps from "../../bsapp/approvalprocess/index";
 import * as approvalrequestViews from "./approvalrequest/index";
 import * as approvaltemplateViews from "./approvaltemplate/index";
+import * as approvalprocessViews from "./approvalprocess/index";
 
 /**
  * 视图导航
@@ -47,6 +49,9 @@ export default class Navigation extends ibas.ViewNavigation {
                 break;
             case approvaltemplateApps.ApprovalTemplateEditApp.APPLICATION_ID:
                 view = new approvaltemplateViews.ApprovalTemplateEditView();
+                break;
+            case approvalprocessApps.ApprovalProcessApp.APPLICATION_ID:
+                view = new approvalprocessViews.ApprovalProcessView();
                 break;
             default:
                 break;
