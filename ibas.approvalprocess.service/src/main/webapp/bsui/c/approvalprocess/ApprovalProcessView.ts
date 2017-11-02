@@ -40,7 +40,7 @@ export class ApprovalProcessView extends ibas.BOResidentView implements IApprova
         let that: this = this;
         this.form = new sap.m.ResponsivePopover("", {
             title: ibas.i18n.prop("approvalprocess_app_approvalprocess_title"),
-            // contentWidth: "300px",
+            contentWidth: "300px",
             endButton: new sap.m.Button({
                 text: ibas.i18n.prop("approvalprocess_app_approvalprocess_seemore"),
                 press: function (): void {
@@ -71,10 +71,15 @@ export class ApprovalProcessView extends ibas.BOResidentView implements IApprova
         for (let apItem of datas) {
             this.form.addContent(new sap.m.NotificationListItem("", {
                 title: apItem.name,
+                width: "auto",
                 description: apItem.remarks,
                 priority: this.getPriority(apItem),
                 showCloseButton: false,
-                datetime: ibas.dates.toString(apItem.startedTime),
+                datetime: ibas.strings.format("{0}{1}",
+                    ibas.dates.difference(ibas.dates.emDifferenceType.DAY, ibas.dates.today(), apItem.startedTime),
+                    ibas.i18n.prop("approvalprocess_day")),
+                authorName: apItem.approvalOwner,
+                authorPicture: "sap-icon://customer-history",
                 press: function (): void {
                     // 详情
 
@@ -94,13 +99,15 @@ export class ApprovalProcessView extends ibas.BOResidentView implements IApprova
                             that.fireViewEvents(that.approvalEvent, apItem, ibas.emApprovalResult.REJECTED);
                         }
                     }),
+                    /*
                     new sap.m.Button("", {
                         text: ibas.i18n.prop("approvalprocess_reset"),
                         type: sap.m.ButtonType.Default,
                         press(): void {
                             that.fireViewEvents(that.approvalEvent, apItem, ibas.emApprovalResult.PROCESSING);
                         }
-                    })
+                    }),
+                    */
                 ]
             }));
         }
