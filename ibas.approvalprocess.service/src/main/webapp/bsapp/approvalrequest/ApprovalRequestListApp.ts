@@ -36,10 +36,12 @@ export class ApprovalRequestListApp extends ibas.BOListApplication<IApprovalRequ
         this.view.editDataEvent = this.editData;
         this.view.deleteDataEvent = this.deleteData;
     }
+    /** 启动应用 */
     run(...args: any[]): void {
         let criteria: ibas.ICriteria = arguments[0];
         if (ibas.objects.instanceOf(criteria, ibas.Criteria)) {
-            this.fetchData(criteria);
+            // 传入了查询，则使用
+            this.view.query(criteria);
         } else {
             super.run();
         }
