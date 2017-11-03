@@ -40,6 +40,8 @@ export class ApprovalRequestListApp extends ibas.BOListApplication<IApprovalRequ
         let criteria: ibas.ICriteria = arguments[0];
         if (ibas.objects.instanceOf(criteria, ibas.Criteria)) {
             this.fetchData(criteria);
+        } else {
+            super.run();
         }
     }
     /** 视图显示后 */
@@ -58,7 +60,7 @@ export class ApprovalRequestListApp extends ibas.BOListApplication<IApprovalRequ
                     if (opRslt.resultCode !== 0) {
                         throw new Error(opRslt.message);
                     }
-                    if (!that.view.isDisplayed){ 
+                    if (!that.view.isDisplayed) {
                         that.show();
                     }
                     that.view.showData(opRslt.resultObjects);

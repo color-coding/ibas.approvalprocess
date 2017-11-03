@@ -23,12 +23,14 @@ export class ApprovalRequestEditView extends ibas.BOEditView implements IApprova
     addApprovalRequestStepEvent: Function;
     /** 删除审批请求步骤事件 */
     removeApprovalRequestStepEvent: Function;
+    /** 选择审批步骤所有者 */
+    chooseApprovalRequestStepOwnerEvent: Function;
 
     /** 绘制视图 */
     darw(): any {
         let that: this = this;
         this.form = new sap.ui.layout.form.SimpleForm("", {
-            editable:true,
+            editable: true,
             content: [
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("initialfantasy_basis_information") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_name") }),
@@ -104,46 +106,52 @@ export class ApprovalRequestEditView extends ibas.BOEditView implements IApprova
             rows: "{/rows}",
             columns: [
                 new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_approvalrequeststep_objectkey"),
-                    template: new sap.m.Input("", {
-                        width: "100%",
-                        value: "objectKey",
-                        type: sap.m.InputType.Text
-                    })
-                }),
-                new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_approvalrequeststep_objectcode"),
-                    template: new sap.m.Select("", {
-                        width: "100%",
-                        items: utils.createComboBoxItems(ibas.emDocumentStatus)
-                    }).bindProperty("selectedKey", {
-                        path: "objectCode",
-                        type: "sap.ui.model.type.Integer"
-                    })
-                }),
-                new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_approvalrequeststep_lineid"),
-                    template: new sap.m.Input("", {
+                    template: new sap.m.Text("", {
                         width: "100%",
-                        value: "lineId",
-                        type: sap.m.InputType.Text
+                    }).bindProperty("text", {
+                        path: "lineId"
                     })
                 }),
                 new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_approvalrequeststep_stepname"),
                     template: new sap.m.Input("", {
                         width: "100%",
-                        value: "stepName",
-                        type: sap.m.InputType.Text
-
+                    }).bindProperty("value", {
+                        path: "stepName"
                     })
                 }),
                 new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_approvalrequeststep_stepowner"),
                     template: new sap.m.Input("", {
                         width: "100%",
-                        value: "stepOwner",
-                        type: sap.m.InputType.Text
+                        showValueHelp: true,
+                        valueHelpRequest: function (): void {
+                            that.fireViewEvents(that.chooseApprovalRequestStepOwnerEvent,
+                                // 获取当前对象
+                                this.getBindingContext().getObject()
+                            );
+                        }
+                    }).bindProperty("value", {
+                        path: "stepOwner"
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_approvalrequeststep_stepstatus"),
+                    template: new sap.m.Select("", {
+                        width: "100%",
+                        items: utils.createComboBoxItems(ibas.emApprovalStepStatus)
+                    }).bindProperty("selectedKey", {
+                        path: "/stepStatus",
+                        type: "sap.ui.model.type.Integer"
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_approvalrequeststep_judgment"),
+                    template: new sap.m.Input("", {
+                        width: "100%",
+                    }).bindProperty("value", {
+                        path: "judgment"
                     })
                 }),
             ]

@@ -9,6 +9,7 @@
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositoryApprovalProcess } from "../../borep/BORepositories";
+import { BO_CODE_USER, IUser } from "../../3rdparty/initialfantasy/index";
 
 /** 应用-审批请求 */
 export class ApprovalRequestEditApp extends ibas.BOEditApplication<IApprovalRequestEditView, bo.ApprovalRequest> {
@@ -35,6 +36,7 @@ export class ApprovalRequestEditApp extends ibas.BOEditApplication<IApprovalRequ
         this.view.createDataEvent = this.createData;
         this.view.addApprovalRequestStepEvent = this.addApprovalRequestStep;
         this.view.removeApprovalRequestStepEvent = this.removeApprovalRequestStep;
+        this.view.chooseApprovalRequestStepOwnerEvent = this.chooseSalesOrderItemMaterial;
     }
     /** 视图显示后 */
     protected viewShowed(): void {
@@ -198,6 +200,21 @@ export class ApprovalRequestEditApp extends ibas.BOEditApplication<IApprovalRequ
         // 仅显示没有标记删除的
         this.view.showApprovalRequestSteps(this.editData.approvalRequestSteps.filterDeleted());
     }
+    /** 选择销售订单行物料事件 */
+    chooseSalesOrderItemMaterial(caller: bo.ApprovalRequestStep): void {
+        let that: this = this;
+        ibas.servicesManager.runChooseService<IUser>({
+            caller: caller,
+            boCode: BO_CODE_USER,
+            criteria: [
+                new ibas.Condition("activated", ibas.emConditionOperation.EQUAL, "Y")
+            ],
+            onCompleted(selecteds: ibas.List<IUser>): void {
+                caller.stepOwner = selecteds.firstOrDefault().docEntry;
+            }
+        });
+
+    }
 
 }
 /** 视图-审批请求 */
@@ -214,4 +231,6 @@ export interface IApprovalRequestEditView extends ibas.IBOEditView {
     removeApprovalRequestStepEvent: Function;
     /** 显示数据 */
     showApprovalRequestSteps(datas: bo.ApprovalRequestStep[]): void;
+    /** 选择审批步骤所有者 */
+    chooseApprovalRequestStepOwnerEvent: Function;
 }

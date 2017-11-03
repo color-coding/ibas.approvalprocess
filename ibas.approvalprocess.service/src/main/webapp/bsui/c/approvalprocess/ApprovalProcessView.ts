@@ -10,6 +10,7 @@ import * as ibas from "ibas/index";
 import { utils } from "openui5/typings/ibas.utils";
 import { IApprovalProcessView } from "../../../bsapp/approvalprocess/index";
 import * as bo from "../../../borep/bo/index";
+import { IBORepositoryInitialFantasy, BO_REPOSITORY_INITIALFANTASY, IUser } from "../../../3rdparty/initialfantasy/index";
 /**
  * 视图-审批流程
  */
@@ -66,11 +67,16 @@ export class ApprovalProcessView extends ibas.BOResidentView implements IApprova
     }
 
     showData(datas: bo.ApprovalRequest[]): void {
+        this.bar.setText(datas.length.toString());
+        if (!this.isDisplayed) {
+            // 没有显示，退出。
+            return;
+        }
         this.form.destroyContent();
         let that: this = this;
         for (let apItem of datas) {
-            this.form.addContent(new sap.m.NotificationListItem("", {
-                title: apItem.name,
+            let nlItem: sap.m.NotificationListItem = new sap.m.NotificationListItem("", {
+                title: ibas.strings.format("#{1} · {0}", apItem.name, apItem.objectKey),
                 width: "auto",
                 description: apItem.remarks,
                 priority: this.getPriority(apItem),
@@ -109,7 +115,35 @@ export class ApprovalProcessView extends ibas.BOResidentView implements IApprova
                     }),
                     */
                 ]
-            }));
+            });
+            this.form.addContent(nlItem);
+            // 增强描述内容
+            this.descript(nlItem);
+        }
+    }
+
+    private descript(nlItem: sap.m.NotificationListItem): void {
+        try {
+            if (nlItem.getAuthorName() === ibas.SYSTEM_USER_ID.toString()) {
+                nlItem.setAuthorName(ibas.i18n.prop("sys_shell_user_system"));
+            } else if (nlItem.getAuthorName() === ibas.UNKNOWN_USER_ID.toString()) {
+                nlItem.setAuthorName(ibas.i18n.prop("sys_shell_user_unknown"));
+            } else {
+                let boRepository: IBORepositoryInitialFantasy = ibas.boFactory.create(BO_REPOSITORY_INITIALFANTASY);
+                boRepository.fetchUser({
+                    criteria: [
+                        new ibas.Condition("DocEntry", ibas.emConditionOperation.EQUAL, nlItem.getAuthorName()),
+                    ],
+                    onCompleted(opRslt: ibas.IOperationResult<IUser>): void {
+                        let user: IUser = opRslt.resultObjects.firstOrDefault();
+                        if (!ibas.objects.isNull(user)) {
+                            nlItem.setAuthorName(user.name);
+                        }
+                    }
+                });
+            }
+        } catch (error) {
+            ibas.logger.log(error);
         }
     }
 }

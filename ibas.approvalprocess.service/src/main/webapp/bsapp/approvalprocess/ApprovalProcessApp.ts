@@ -11,9 +11,10 @@ import { BORepositoryApprovalProcess } from "../../borep/BORepositories";
 import * as bo from "../../borep/bo/index";
 import { ApprovalRequestListApp } from "../approvalrequest/ApprovalRequestListApp";
 
+/** 配置项目-审批流程刷新间隔（秒） */
+export const CONFIG_ITEM_APPROVALPROCESS_REFRESH_INTERVAL: string = "apInterval";
 /** 应用-审批流程 */
 export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProcessView> {
-
     /** 应用标识 */
     static APPLICATION_ID: string = "dceca747-e6d4-45e3-8df8-a873f1d8c5cc";
     /** 应用名称 */
@@ -31,6 +32,16 @@ export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProces
         // 其他事件
         this.view.showListEvent = this.showList;
         this.view.approvalEvent = this.approval;
+        // 自动刷新审批消息
+        let that: this = this;
+        let time: number = ibas.config.get(CONFIG_ITEM_APPROVALPROCESS_REFRESH_INTERVAL, 180);
+        setInterval(function (): void {
+            if (that.isViewShowed()) {
+                // 界面显示时，不刷新
+                return;
+            }
+            that.fetchApprovalRequest();
+        }, time * 1000);
     }
     /** 运行,覆盖原方法 */
     run(...args: any[]): void {
@@ -72,6 +83,7 @@ export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProces
         listApp.run(criteria);
     }
     protected fetchApprovalRequest(): void {
+        this.busy(true);
         let that: this = this;
         let boRepository: BORepositoryApprovalProcess = new BORepositoryApprovalProcess();
         boRepository.fetchUserApprovalRequest({
