@@ -26,6 +26,7 @@ export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProces
         this.name = ApprovalProcessApp.APPLICATION_NAME;
         this.description = ibas.i18n.prop(this.name);
     }
+    private refresh: boolean = true;
     /** 注册视图 */
     protected registerView(): void {
         super.registerView();
@@ -36,7 +37,7 @@ export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProces
         let that: this = this;
         let time: number = ibas.config.get(CONFIG_ITEM_APPROVALPROCESS_REFRESH_INTERVAL, 180);
         setInterval(function (): void {
-            if (that.isViewShowed()) {
+            if (that.isViewShowed() && that.refresh) {
                 // 界面显示时，不刷新
                 return;
             }
@@ -95,7 +96,11 @@ export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProces
                     }
                     that.view.showData(opRslt.resultObjects);
                     that.busy(false);
+                    if (!that.refresh) {
+                        that.refresh = true;
+                    }
                 } catch (error) {
+                    that.refresh = false;
                     that.messages(error);
                 }
             }
