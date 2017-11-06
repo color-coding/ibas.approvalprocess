@@ -37,7 +37,7 @@ export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProces
         let that: this = this;
         let time: number = ibas.config.get(CONFIG_ITEM_APPROVALPROCESS_REFRESH_INTERVAL, 180);
         setInterval(function (): void {
-            if (that.isViewShowed() && that.refresh) {
+            if (that.isViewShowed() && !that.refresh) {
                 // 界面显示时，不刷新
                 return;
             }
