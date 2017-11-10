@@ -7,7 +7,7 @@
  */
 
 import * as ibas from "ibas/index";
-import { utils } from "openui5/typings/ibas.utils";
+import * as openui5 from "openui5/index";
 import * as bo from "../../../borep/bo/index";
 import * as ia from "../../../3rdparty/initialfantasy/index";
 import { IApprovalTemplateEditView } from "../../../bsapp/approvaltemplate/index";
@@ -62,7 +62,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_activated") }),
                 new sap.m.Select("", {
-                    items: utils.createComboBoxItems(ibas.emYesNo)
+                    items: openui5.utils.createComboBoxItems(ibas.emYesNo)
                 }).bindProperty("selectedKey", {
                     path: "/activated",
                     type: "sap.ui.model.type.Integer"
@@ -105,14 +105,14 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
                         press: function (): void {
                             that.fireViewEvents(that.removeApprovalTemplateStepEvent,
                                 // 获取表格选中的对象
-                                utils.getTableSelecteds<bo.ApprovalTemplateStep>(that.tableApprovalTemplateStep)
+                                openui5.utils.getTableSelecteds<bo.ApprovalTemplateStep>(that.tableApprovalTemplateStep)
                             );
                         }
                     })
                 ]
             }),
             enableSelectAll: false,
-            visibleRowCount: ibas.config.get(utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 10),
+            visibleRowCount: ibas.config.get(openui5.utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 10),
             rows: "{/rows}",
             rowActionCount: 1,
             rowActionTemplate: new sap.ui.table.RowAction({
@@ -140,7 +140,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
                     label: ibas.i18n.prop("bo_approvaltemplatestep_stepownertype"),
                     template: new sap.m.Select("", {
                         width: "100%",
-                        items: utils.createComboBoxItems(emApprovalStepOwnerType)
+                        items: openui5.utils.createComboBoxItems(emApprovalStepOwnerType)
                     }).bindProperty("selectedKey", {
                         path: "stepOwnerType",
                         type: "sap.ui.model.type.Integer"
@@ -173,7 +173,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
                     label: ibas.i18n.prop("bo_approvaltemplatestep_stepcanmodify"),
                     template: new sap.m.Select("", {
                         width: "100%",
-                        items: utils.createComboBoxItems(ibas.emYesNo)
+                        items: openui5.utils.createComboBoxItems(ibas.emYesNo)
                     }).bindProperty("selectedKey", {
                         path: "stepCanModify",
                         type: "sap.ui.model.type.Integer"
@@ -214,21 +214,21 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
                         press: function (): void {
                             that.fireViewEvents(that.removeApprovalTemplateStepConditionEvent,
                                 // 获取表格选中的对象
-                                utils.getTableSelecteds<bo.ApprovalTemplateStepCondition>(that.tableApprovalTemplateStepCondition)
+                                openui5.utils.getTableSelecteds<bo.ApprovalTemplateStepCondition>(that.tableApprovalTemplateStepCondition)
                             );
                         }
                     })
                 ]
             }),
             enableSelectAll: false,
-            visibleRowCount: ibas.config.get(utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 10),
+            visibleRowCount: ibas.config.get(openui5.utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 10),
             rows: "{/rows}",
             columns: [
                 new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_approvaltemplatestepcondition_relationship"),
                     template: new sap.m.Select("", {
                         width: "100%",
-                        items: utils.createComboBoxItems(ibas.emConditionRelationship)
+                        items: openui5.utils.createComboBoxItems(ibas.emConditionRelationship)
                     }).bindProperty("selectedKey", {
                         path: "relationship",
                         type: "sap.ui.model.type.Integer"
@@ -246,7 +246,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
                     label: ibas.i18n.prop("bo_approvaltemplatestepcondition_conditiontype"),
                     template: new sap.m.Select("", {
                         width: "100%",
-                        items: utils.createComboBoxItems(emApprovalConditionType)
+                        items: openui5.utils.createComboBoxItems(emApprovalConditionType)
                     }).bindProperty("selectedKey", {
                         path: "conditionType",
                         type: "sap.ui.model.type.Integer"
@@ -271,7 +271,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
                     label: ibas.i18n.prop("bo_approvaltemplatestepcondition_operation"),
                     template: new sap.m.Select("", {
                         width: "100%",
-                        items: utils.createComboBoxItems(ibas.emConditionOperation)
+                        items: openui5.utils.createComboBoxItems(ibas.emConditionOperation)
                     }).bindProperty("selectedKey", {
                         path: "operation",
                         type: "sap.ui.model.type.Integer"
@@ -378,7 +378,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
         // 新建时：禁用删除，
         if (data.isNew) {
             if (this.page.getSubHeader() instanceof sap.m.Toolbar) {
-                utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
+                openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
             }
         }
     }
@@ -435,7 +435,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
     showApprovalTemplate(data: bo.ApprovalTemplate): void {
         this.form.setModel(new sap.ui.model.json.JSONModel(data));
         // 监听属性改变，并更新控件
-        utils.refreshModelChanged(this.form, data);
+        openui5.utils.refreshModelChanged(this.form, data);
         // 改变视图状态
         this.changeViewStatus(data);
     }
@@ -445,7 +445,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
         this.splitContainer.backToTopDetail(null, null);
         this.tableApprovalTemplateStep.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
         // 监听属性改变，并更新控件
-        utils.refreshModelChanged(this.tableApprovalTemplateStep, datas);
+        openui5.utils.refreshModelChanged(this.tableApprovalTemplateStep, datas);
     }
     /** 显示数据 */
     showApprovalTemplateStepConditions(datas: bo.ApprovalTemplateStepCondition[]): void {
@@ -453,6 +453,6 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
         this.splitContainer.toDetail(this.tableApprovalTemplateStepCondition.getId(), null, null, null);
         this.tableApprovalTemplateStepCondition.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
         // 监听属性改变，并更新控件
-        utils.refreshModelChanged(this.tableApprovalTemplateStepCondition, datas);
+        openui5.utils.refreshModelChanged(this.tableApprovalTemplateStepCondition, datas);
     }
 }

@@ -7,7 +7,7 @@
  */
 
 import * as ibas from "ibas/index";
-import { utils } from "openui5/typings/ibas.utils";
+import * as openui5 from "openui5/index";
 import * as bo from "../../../borep/bo/index";
 import { IApprovalRequestEditView } from "../../../bsapp/approvalrequest/index";
 
@@ -47,14 +47,14 @@ export class ApprovalRequestEditView extends ibas.BOEditView implements IApprova
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_approvalstatus") }),
                 new sap.m.Select("", {
-                    items: utils.createComboBoxItems(ibas.emApprovalStatus)
+                    items: openui5.utils.createComboBoxItems(ibas.emApprovalStatus)
                 }).bindProperty("selectedKey", {
                     path: "/approvalStatus",
                     type: "sap.ui.model.type.Integer"
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_activated") }),
                 new sap.m.Select("", {
-                    items: utils.createComboBoxItems(ibas.emYesNo)
+                    items: openui5.utils.createComboBoxItems(ibas.emYesNo)
                 }).bindProperty("selectedKey", {
                     path: "/activated",
                     type: "sap.ui.model.type.Integer"
@@ -95,14 +95,14 @@ export class ApprovalRequestEditView extends ibas.BOEditView implements IApprova
                         press: function (): void {
                             that.fireViewEvents(that.removeApprovalRequestStepEvent,
                                 // 获取表格选中的对象
-                                utils.getTableSelecteds<bo.ApprovalRequestStep>(that.tableApprovalRequestStep)
+                                openui5.utils.getTableSelecteds<bo.ApprovalRequestStep>(that.tableApprovalRequestStep)
                             );
                         }
                     })
                 ]
             }),
             enableSelectAll: false,
-            visibleRowCount: ibas.config.get(utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 10),
+            visibleRowCount: ibas.config.get(openui5.utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 10),
             rows: "{/rows}",
             columns: [
                 new sap.ui.table.Column("", {
@@ -140,7 +140,7 @@ export class ApprovalRequestEditView extends ibas.BOEditView implements IApprova
                     label: ibas.i18n.prop("bo_approvalrequeststep_stepstatus"),
                     template: new sap.m.Select("", {
                         width: "100%",
-                        items: utils.createComboBoxItems(ibas.emApprovalStepStatus)
+                        items: openui5.utils.createComboBoxItems(ibas.emApprovalStepStatus)
                     }).bindProperty("selectedKey", {
                         path: "/stepStatus",
                         type: "sap.ui.model.type.Integer"
@@ -229,16 +229,16 @@ export class ApprovalRequestEditView extends ibas.BOEditView implements IApprova
         // 新建时：禁用删除，
         if (data.isNew) {
             if (this.page.getSubHeader() instanceof sap.m.Toolbar) {
-                utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
+                openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
             }
         }
         // 不可编辑：已批准，
         if (data.approvalStatus === ibas.emApprovalStatus.APPROVED) {
             if (this.page.getSubHeader() instanceof sap.m.Toolbar) {
-                utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), false);
-                utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
+                openui5.utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), false);
+                openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
             }
-            utils.changeFormEditable(this.form, false);
+            openui5.utils.changeFormEditable(this.form, false);
         }
     }
     private tableApprovalRequestStep: sap.ui.table.Table;
@@ -247,7 +247,7 @@ export class ApprovalRequestEditView extends ibas.BOEditView implements IApprova
     showApprovalRequest(data: bo.ApprovalRequest): void {
         this.form.setModel(new sap.ui.model.json.JSONModel(data));
         // 监听属性改变，并更新控件
-        utils.refreshModelChanged(this.form, data);
+        openui5.utils.refreshModelChanged(this.form, data);
         // 改变视图状态
         this.changeViewStatus(data);
     }
@@ -255,6 +255,6 @@ export class ApprovalRequestEditView extends ibas.BOEditView implements IApprova
     showApprovalRequestSteps(datas: bo.ApprovalRequestStep[]): void {
         this.tableApprovalRequestStep.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
         // 监听属性改变，并更新控件
-        utils.refreshModelChanged(this.tableApprovalRequestStep, datas);
+        openui5.utils.refreshModelChanged(this.tableApprovalRequestStep, datas);
     }
 }
