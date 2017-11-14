@@ -58,9 +58,9 @@ export class ApprovalProcessView extends ibas.BOResidentView implements IApprova
 
     private getPriority(ap: bo.ApprovalRequest): sap.ui.core.Priority {
         let diffDay: number = ibas.dates.difference(ibas.dates.emDifferenceType.DAY, ibas.dates.today(), ap.startedTime);
-        if (diffDay < 3) {
+        if (diffDay <= 3) {
             return sap.ui.core.Priority.Low;
-        } else if (diffDay < 7) {
+        } else if (diffDay <= 7) {
             return sap.ui.core.Priority.Medium;
         }
         return sap.ui.core.Priority.High;
