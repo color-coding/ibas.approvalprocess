@@ -12,12 +12,25 @@ import {
     MethodCaller,
     IOperationResult,
     IOperationMessage,
+    UploadFileCaller,
+    DownloadFileCaller,
+    FileData
 } from "ibas/index";
 import * as bo from "./bo/index"
 
 /** 业务仓库 */
 export interface IBORepositoryApprovalProcess {
 
+    /**
+     * 上传文件
+     * @param caller 调用者
+     */
+    upload(caller: UploadFileCaller<FileData>);
+    /**
+     * 下载文件
+     * @param caller 调用者
+     */
+    download(caller: DownloadFileCaller<Blob>);
     /**
      * 审批
      * @param caller 调用者
