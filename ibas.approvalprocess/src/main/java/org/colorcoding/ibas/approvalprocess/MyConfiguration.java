@@ -33,5 +33,9 @@ public class MyConfiguration extends org.colorcoding.ibas.bobas.MyConfiguration 
 	 * 命名空间
 	 */
 	public static final String NAMESPACE_INITIAL = NAMESPACE_ROOT + "initial";
+	/**
+	 * 配置项目-文件文件夹
+	 */
+	public final static String CONFIG_ITEM_APPROVALPROCESS_FILE_FOLDER = "APFileFolder";
 
 }
