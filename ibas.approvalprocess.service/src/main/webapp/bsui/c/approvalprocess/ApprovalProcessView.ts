@@ -42,6 +42,7 @@ export class ApprovalProcessView extends ibas.BOResidentView implements IApprova
         this.form = new sap.m.ResponsivePopover("", {
             title: ibas.i18n.prop("approvalprocess_app_approvalprocess_title"),
             contentWidth: "300px",
+            showCloseButton: true,
             endButton: new sap.m.Button({
                 text: ibas.i18n.prop("approvalprocess_app_approvalprocess_seemore"),
                 press: function (): void {

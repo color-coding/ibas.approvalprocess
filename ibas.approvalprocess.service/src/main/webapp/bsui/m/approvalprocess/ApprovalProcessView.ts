@@ -8,5 +8,11 @@
 
 import * as ibas from "ibas/index";
 import * as openui5 from "openui5/index";
-import { IApprovalProcessView } from "../../../bsapp/approvalprocess/index";
-import * as bo from "../../../borep/bo/index";
+import { ApprovalProcessView as cApprovalProcessView } from "../../c/approvalprocess/ApprovalProcessView";
+
+/**
+ * 视图-审批流程
+ */
+export class ApprovalProcessView extends cApprovalProcessView {
+
+}

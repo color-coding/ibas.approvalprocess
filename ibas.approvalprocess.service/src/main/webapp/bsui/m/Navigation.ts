@@ -7,6 +7,8 @@
  */
 
 import * as ibas from "ibas/index";
+import * as approvalprocessApps from "../../bsapp/approvalprocess/index";
+import * as approvalprocessViews from "./approvalprocess/index";
 
 /**
  * 视图导航
@@ -20,7 +22,8 @@ export default class Navigation extends ibas.ViewNavigation {
     protected newView(id: string): ibas.IView {
         let view: ibas.IView = null;
         switch (id) {
-            default:
+            case approvalprocessApps.ApprovalProcessApp.APPLICATION_ID:
+                view = new approvalprocessViews.ApprovalProcessView();
                 break;
         }
         return view;
