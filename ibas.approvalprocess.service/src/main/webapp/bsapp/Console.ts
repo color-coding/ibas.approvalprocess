@@ -17,11 +17,14 @@ export class Console extends ibas.ModuleConsole {
     static CONSOLE_ID: string = "b3382a56-bdda-412c-bc2f-af17cd19142e";
     /** 模块-名称 */
     static CONSOLE_NAME: string = "ApprovalProcess";
+    /** 模块-版本 */
+    static CONSOLE_VERSION: string = "0.1.0";
     /** 构造函数 */
     constructor() {
         super();
         this.id = Console.CONSOLE_ID;
         this.name = Console.CONSOLE_NAME;
+        this.version = Console.CONSOLE_VERSION;
     }
     private _navigation: ibas.IViewNavigation;
     /** 创建视图导航 */
@@ -39,7 +42,7 @@ export class Console extends ibas.ModuleConsole {
         this.register(new ApprovalTemplateChooseServiceMapping());
         this.register(new ApprovalTemplateLinkServiceMapping());
         // 注册常驻应用
-        this.register(new  ApprovalProcessApp());
+        this.register(new ApprovalProcessApp());
     }
     /** 运行 */
     run(): void {
