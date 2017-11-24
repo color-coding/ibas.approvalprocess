@@ -126,9 +126,9 @@ export class ApprovalProcessView extends ibas.BOResidentView implements IApprova
     private descript(nlItem: sap.m.NotificationListItem): void {
         try {
             if (nlItem.getAuthorName() === ibas.SYSTEM_USER_ID.toString()) {
-                nlItem.setAuthorName(ibas.i18n.prop("sys_shell_user_system"));
+                nlItem.setAuthorName(ibas.i18n.prop("shell_user_system"));
             } else if (nlItem.getAuthorName() === ibas.UNKNOWN_USER_ID.toString()) {
-                nlItem.setAuthorName(ibas.i18n.prop("sys_shell_user_unknown"));
+                nlItem.setAuthorName(ibas.i18n.prop("shell_user_unknown"));
             } else {
                 let boRepository: IBORepositoryInitialFantasy = ibas.boFactory.create(BO_REPOSITORY_INITIALFANTASY);
                 boRepository.fetchUser({
