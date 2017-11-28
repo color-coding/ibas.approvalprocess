@@ -8,14 +8,22 @@
 
 // 共享的数据
 import {
+    MODULE_REPOSITORY_NAME_TEMPLATE,
+    strings,
 } from "ibas/index";
 
+/** 模块-标识 */
+export const CONSOLE_ID: string = "b3382a56-bdda-412c-bc2f-af17cd19142e";
+/** 模块-名称 */
+export const CONSOLE_NAME: string = "ApprovalProcess";
+/** 模块-版本 */
+export const CONSOLE_VERSION: string = "0.1.0";
 /** 业务仓库名称 */
-export const BO_REPOSITORY_APPROVALPROCESS: string = "BORepositoryApprovalProcess";
+export const BO_REPOSITORY_APPROVALPROCESS: string = strings.format(MODULE_REPOSITORY_NAME_TEMPLATE, CONSOLE_NAME);
 /** 业务对象编码-审批请求 */
-export const BO_CODE_APPROVALREQUEST: string = "CC_AP_APPROVALREQU";
+export const BO_CODE_APPROVALREQUEST: string = "${Company}_AP_APPROVALREQU";
 /** 业务对象编码-审批模板 */
-export const BO_CODE_APPROVALTEMPLATE: string = "CC_AP_APPROVALTPLT";
+export const BO_CODE_APPROVALTEMPLATE: string = "${Company}_AP_APPROVALTPLT";
 
 /**
  * 审批步骤所有者类型

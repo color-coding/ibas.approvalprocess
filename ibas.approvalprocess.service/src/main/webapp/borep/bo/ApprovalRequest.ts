@@ -19,7 +19,8 @@ import {
     BODocumentLine,
     BOSimple,
     BOSimpleLine,
-    emApprovalStepStatus
+    emApprovalStepStatus,
+    config,
 } from "ibas/index";
 import {
     IApprovalRequest,
@@ -350,7 +351,7 @@ export class ApprovalRequest extends BOSimple<ApprovalRequest> implements IAppro
     /** 初始化数据 */
     protected init(): void {
         this.approvalRequestSteps = new ApprovalRequestSteps(this);
-        this.objectCode = ApprovalRequest.BUSINESS_OBJECT_CODE;
+        this.objectCode = config.applyVariables(ApprovalRequest.BUSINESS_OBJECT_CODE);
     }
 }
 

@@ -7,24 +7,19 @@
  */
 
 import * as ibas from "ibas/index";
+import { CONSOLE_ID, CONSOLE_NAME, CONSOLE_VERSION } from "../api/index";
 import { ApprovalRequestFunc, ApprovalRequestChooseServiceMapping, ApprovalRequestLinkServiceMapping } from "./approvalrequest/index";
 import { ApprovalTemplateFunc, ApprovalTemplateChooseServiceMapping, ApprovalTemplateLinkServiceMapping } from "./approvaltemplate/index";
 import { ApprovalProcessApp } from "./approvalprocess/index";
 
 /** 模块控制台 */
 export class Console extends ibas.ModuleConsole {
-    /** 模块-标识 */
-    static CONSOLE_ID: string = "b3382a56-bdda-412c-bc2f-af17cd19142e";
-    /** 模块-名称 */
-    static CONSOLE_NAME: string = "ApprovalProcess";
-    /** 模块-版本 */
-    static CONSOLE_VERSION: string = "0.1.0";
     /** 构造函数 */
     constructor() {
         super();
-        this.id = Console.CONSOLE_ID;
-        this.name = Console.CONSOLE_NAME;
-        this.version = Console.CONSOLE_VERSION;
+        this.id = CONSOLE_ID;
+        this.name = CONSOLE_NAME;
+        this.version = CONSOLE_VERSION;
         this.copyright = ibas.i18n.prop("shell_license");
     }
     private _navigation: ibas.IViewNavigation;

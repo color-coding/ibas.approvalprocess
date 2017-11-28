@@ -21,6 +21,7 @@ import {
     BOSimpleLine,
     emConditionOperation,
     emConditionRelationship,
+    config,
 } from "ibas/index";
 import {
     IApprovalTemplate,
@@ -311,7 +312,7 @@ export class ApprovalTemplate extends BOSimple<ApprovalTemplate> implements IApp
     /** 初始化数据 */
     protected init(): void {
         this.approvalTemplateSteps = new ApprovalTemplateSteps(this);
-        this.objectCode = ApprovalTemplate.BUSINESS_OBJECT_CODE;
+        this.objectCode = config.applyVariables(ApprovalTemplate.BUSINESS_OBJECT_CODE);
         this.activated = emYesNo.YES;
     }
 }
