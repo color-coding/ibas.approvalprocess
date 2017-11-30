@@ -92,7 +92,7 @@ export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTem
                 return;
             }
         }
-        super.run();
+        super.run.apply(this, args);
     }
 
     /** 待编辑的数据 */

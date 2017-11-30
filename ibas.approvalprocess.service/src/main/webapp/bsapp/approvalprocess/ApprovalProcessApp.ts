@@ -46,7 +46,7 @@ export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProces
     }
     /** 运行,覆盖原方法 */
     run(...args: any[]): void {
-        super.run();
+        super.run.apply(this, args);
     }
     /** 视图显示后 */
     protected viewShowed(): void {
