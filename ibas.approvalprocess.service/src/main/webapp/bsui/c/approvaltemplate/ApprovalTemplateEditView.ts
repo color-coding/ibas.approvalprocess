@@ -25,9 +25,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
     /** 删除审批模板步骤事件 */
     removeApprovalTemplateStepEvent: Function;
     /** 编辑审批模板步骤条件事件 */
-    editApprovalTemplateStepConditionsStartEvent: Function;
-    /** 编辑审批模板步骤条件结束事件 */
-    editApprovalTemplateStepConditionsEndEvent: Function;
+    editApprovalTemplateStepEvent: Function;
     /** 添加审批模板步骤条件事件 */
     addApprovalTemplateStepConditionEvent: Function;
     /** 删除审批模板步骤条件事件 */
@@ -120,7 +118,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
                     new sap.ui.table.RowActionItem({
                         icon: "sap-icon://slim-arrow-right",
                         press: function (oEvent: any): void {
-                            that.fireViewEvents(that.editApprovalTemplateStepConditionsStartEvent
+                            that.fireViewEvents(that.editApprovalTemplateStepEvent
                                 , this.getBindingContext().getObject()
                             );
                         },
@@ -196,7 +194,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
                         type: sap.m.ButtonType.Transparent,
                         icon: "sap-icon://nav-back",
                         press: function (): void {
-                            that.fireViewEvents(that.editApprovalTemplateStepConditionsEndEvent);
+                            that.fireViewEvents(that.editApprovalTemplateStepEvent);
                         }
                     }),
                     new sap.m.Button("", {

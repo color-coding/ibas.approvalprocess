@@ -36,10 +36,9 @@ export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTem
         this.view.createDataEvent = this.createData;
         this.view.addApprovalTemplateStepEvent = this.addApprovalTemplateStep;
         this.view.removeApprovalTemplateStepEvent = this.removeApprovalTemplateStep;
-        this.view.editApprovalTemplateStepConditionsStartEvent = this.editApprovalTemplateStepConditionsStartEvent;
+        this.view.editApprovalTemplateStepEvent = this.editApprovalTemplateStep;
         this.view.addApprovalTemplateStepConditionEvent = this.addApprovalTemplateStepCondition;
         this.view.removeApprovalTemplateStepConditionEvent = this.removeApprovalTemplateStepCondition;
-        this.view.editApprovalTemplateStepConditionsEndEvent = this.editApprovalTemplateStepConditionsEndEvent;
         this.view.chooseApprovalTemplateStepUserEvent = this.chooseApprovalTemplateStepUserEvent;
         this.view.chooseApprovalTemplateBOInformationEvent = this.chooseApprovalTemplateBOInformationEvent;
         this.view.chooseApprovalTemplateStepConditionBOPropertyInformationEvent =
@@ -210,17 +209,16 @@ export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTem
         // 仅显示没有标记删除的
         this.view.showApprovalTemplateSteps(this.editData.approvalTemplateSteps.filterDeleted());
     }
-    /** 编辑审批模板步骤条件开始事件 */
-    editApprovalTemplateStepConditionsStartEvent(item: bo.ApprovalTemplateStep): void {
+    /** 编辑审批模板步骤条件事件 */
+    editApprovalTemplateStep(item: bo.ApprovalTemplateStep): void {
         this.editApprovalTemplateStepData = item;
-        // 仅显示没有标记删除的
-        this.view.showApprovalTemplateStepConditions(this.editApprovalTemplateStepData.approvalTemplateStepConditions.filterDeleted());
-    }
-    /** 编辑审批模板步骤条件结束事件 */
-    editApprovalTemplateStepConditionsEndEvent(item: bo.ApprovalTemplateStep): void {
-        this.editApprovalTemplateStepData = null;
-        // 仅显示没有标记删除的
-        this.view.showApprovalTemplateSteps(this.editData.approvalTemplateSteps.filterDeleted());
+        if (ibas.objects.isNull(this.editApprovalTemplateStepData)) {
+            // 无编辑对象
+            this.view.showApprovalTemplateSteps(this.editData.approvalTemplateSteps.filterDeleted());
+        } else {
+            // 存在编辑对象
+            this.view.showApprovalTemplateStepConditions(this.editApprovalTemplateStepData.approvalTemplateStepConditions.filterDeleted());
+        }
     }
     /** 添加审批模板步骤条件事件 */
     addApprovalTemplateStepCondition(): void {
@@ -375,9 +373,7 @@ export interface IApprovalTemplateEditView extends ibas.IBOEditView {
     /** 显示数据 */
     showApprovalTemplateSteps(datas: bo.ApprovalTemplateStep[]): void;
     /** 编辑审批模板步骤条件事件 */
-    editApprovalTemplateStepConditionsStartEvent: Function;
-    /** 编辑审批模板步骤条件结束事件 */
-    editApprovalTemplateStepConditionsEndEvent: Function;
+    editApprovalTemplateStepEvent: Function;
     /** 添加审批模板步骤条件事件 */
     addApprovalTemplateStepConditionEvent: Function;
     /** 删除审批模板步骤条件事件 */
