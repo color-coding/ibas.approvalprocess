@@ -17,6 +17,7 @@ import org.colorcoding.ibas.bobas.data.emConditionOperation;
 import org.colorcoding.ibas.bobas.data.emConditionRelationship;
 import org.colorcoding.ibas.bobas.serialization.ISerializer;
 import org.colorcoding.ibas.bobas.serialization.ISerializerManager;
+import org.colorcoding.ibas.bobas.serialization.Serializable;
 import org.colorcoding.ibas.bobas.serialization.SerializerFactory;
 
 /**
@@ -28,7 +29,10 @@ import org.colorcoding.ibas.bobas.serialization.SerializerFactory;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType()
 @XmlRootElement()
-public class ApprovalProcessStepCondition implements org.colorcoding.ibas.bobas.approval.IApprovalProcessStepCondition {
+public class ApprovalProcessStepCondition extends Serializable
+		implements org.colorcoding.ibas.bobas.approval.IApprovalProcessStepCondition {
+
+	private static final long serialVersionUID = -1846059685439243305L;
 
 	public static final String NAMESPACE = "http://colorcoding.org/ibas/approval/initial";
 
