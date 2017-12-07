@@ -99,7 +99,7 @@ export class ApprovalTemplateListApp extends ibas.BOListApplication<IApprovalTem
         app.run(data);
     }
     /** 删除数据，参数：目标数据集合 */
-    protected deleteData(data: bo.ApprovalTemplate): void {
+    protected deleteData(data: bo.ApprovalTemplate | bo.ApprovalTemplate[]): void {
         // 检查目标数据
         if (ibas.objects.isNull(data)) {
             this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
@@ -110,11 +110,12 @@ export class ApprovalTemplateListApp extends ibas.BOListApplication<IApprovalTem
         let beDeleteds: ibas.ArrayList<bo.ApprovalTemplate> = new ibas.ArrayList<bo.ApprovalTemplate>();
         if (data instanceof Array) {
             for (let item of data) {
-                if (ibas.objects.instanceOf(item, bo.ApprovalTemplate)) {
-                    item.delete();
-                    beDeleteds.add(item);
-                }
+                item.delete();
+                beDeleteds.add(item);
             }
+        } else {
+            data.delete();
+            beDeleteds.add(data);
         }
         // 没有选择删除的对象
         if (beDeleteds.length === 0) {
