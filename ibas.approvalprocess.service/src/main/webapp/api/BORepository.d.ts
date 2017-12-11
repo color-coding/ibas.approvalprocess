@@ -69,7 +69,7 @@ export interface IBORepositoryApprovalProcess extends IBORepositoryApplication {
 /**
  * 用户相关调用者
  */
-export interface UserMethodCaller<P> extends MethodCaller {
+export interface UserMethodCaller<P> extends MethodCaller<P> {
     /** 用户 */
     user: string;
     /** 平台 */
@@ -83,7 +83,7 @@ export interface UserMethodCaller<P> extends MethodCaller {
 /**
  * 审批调用者
  */
-export interface ApprovalMethodCaller extends MethodCaller {
+export interface ApprovalMethodCaller extends MethodCaller<any> {
     /** 审批请求编号 */
     apRequestId: number;
     /** 审批请求步骤编号 */
