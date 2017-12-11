@@ -190,14 +190,6 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
             extension: new sap.m.Toolbar("", {
                 content: [
                     new sap.m.Button("", {
-                        text: ibas.i18n.prop("shell_back"),
-                        type: sap.m.ButtonType.Transparent,
-                        icon: "sap-icon://nav-back",
-                        press: function (): void {
-                            that.fireViewEvents(that.editApprovalTemplateStepEvent);
-                        }
-                    }),
-                    new sap.m.Button("", {
                         text: ibas.i18n.prop("shell_data_add"),
                         type: sap.m.ButtonType.Transparent,
                         icon: "sap-icon://add",
@@ -215,7 +207,16 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
                                 openui5.utils.getTableSelecteds<bo.ApprovalTemplateStepCondition>(that.tableApprovalTemplateStepCondition)
                             );
                         }
-                    })
+                    }),
+                    new sap.m.ToolbarSpacer(""),
+                    new sap.m.Button("", {
+                        text: ibas.i18n.prop("shell_back"),
+                        type: sap.m.ButtonType.Transparent,
+                        icon: "sap-icon://nav-back",
+                        press: function (): void {
+                            that.fireViewEvents(that.editApprovalTemplateStepEvent);
+                        }
+                    }),
                 ]
             }),
             enableSelectAll: false,
