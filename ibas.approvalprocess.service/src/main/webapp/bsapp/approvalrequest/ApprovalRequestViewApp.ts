@@ -49,7 +49,7 @@ export class ApprovalRequestViewApp extends ibas.BOViewService<IApprovalRequestV
     run(): void;
     run(data: bo.ApprovalRequest): void;
     run(): void {
-        if (!(arguments[0] instanceof bo.ApprovalRequest)) {
+        if (ibas.objects.instanceOf(arguments[0], bo.ApprovalRequest)) {
             this.viewData = arguments[0];
             this.show();
         } else {
@@ -102,7 +102,7 @@ export class ApprovalRequestLinkServiceMapping extends ibas.BOLinkServiceMapping
         this.boCode = ApprovalRequestViewApp.BUSINESS_OBJECT_CODE;
         this.description = ibas.i18n.prop(this.name);
     }
-    /** 创建服务并运行 */
+    /** 创建服务实例 */
     create(): ibas.IService<ibas.IBOLinkServiceCaller> {
         return new ApprovalRequestViewApp();
     }
