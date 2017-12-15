@@ -56,7 +56,9 @@ export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTem
         this.view.showApprovalTemplateSteps(this.editData.approvalTemplateSteps.filterDeleted());
     }
     /** 运行,覆盖原方法 */
-    run(...args: any[]): void {
+    run(): void;
+    run(data: bo.ApprovalTemplate): void;
+    run(): void {
         let that: this = this;
         if (ibas.objects.instanceOf(arguments[0], bo.ApprovalTemplate)) {
             // 尝试重新查询编辑对象
@@ -91,7 +93,7 @@ export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTem
                 return;
             }
         }
-        super.run.apply(this, args);
+        super.run.apply(this, arguments);
     }
 
     /** 待编辑的数据 */
@@ -306,7 +308,6 @@ export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTem
     chooseApprovalTemplateStepUserEvent(caller: bo.ApprovalTemplateStep): void {
         let that: this = this;
         ibas.servicesManager.runChooseService<ia.IUser>({
-            caller: caller,
             boCode: ia.BO_CODE_USER,
             criteria: [
                 new ibas.Condition("activated", ibas.emConditionOperation.EQUAL, "Y")
