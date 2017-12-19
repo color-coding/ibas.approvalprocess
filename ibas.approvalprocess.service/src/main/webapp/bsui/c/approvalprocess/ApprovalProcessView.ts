@@ -10,7 +10,7 @@ import * as ibas from "ibas/index";
 import * as openui5 from "openui5/index";
 import { IApprovalProcessView } from "../../../bsapp/approvalprocess/index";
 import * as bo from "../../../borep/bo/index";
-import { IBORepositoryInitialFantasy, BO_REPOSITORY_INITIALFANTASY, IUser } from "../../../3rdparty/initialfantasy/index";
+import { IBORepositoryInitialFantasy, BO_REPOSITORY_INITIALFANTASY, IUser } from "3rdparty/initialfantasy/index";
 /**
  * 视图-审批流程
  */

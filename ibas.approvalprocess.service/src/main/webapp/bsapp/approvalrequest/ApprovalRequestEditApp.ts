@@ -9,7 +9,7 @@
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositoryApprovalProcess } from "../../borep/BORepositories";
-import { BO_CODE_USER, IUser } from "../../3rdparty/initialfantasy/index";
+import { BO_CODE_USER, IUser } from "3rdparty/initialfantasy/index";
 
 /** 应用-审批请求 */
 export class ApprovalRequestEditApp extends ibas.BOEditApplication<IApprovalRequestEditView, bo.ApprovalRequest> {

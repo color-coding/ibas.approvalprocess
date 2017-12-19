@@ -9,7 +9,7 @@
 import * as ibas from "ibas/index";
 import * as openui5 from "openui5/index";
 import * as bo from "../../../borep/bo/index";
-import * as ia from "../../../3rdparty/initialfantasy/index";
+import * as ia from "3rdparty/initialfantasy/index";
 import { IApprovalTemplateEditView } from "../../../bsapp/approvaltemplate/index";
 import { emApprovalStepOwnerType, emApprovalConditionType } from "../../../api/index";
 /**
