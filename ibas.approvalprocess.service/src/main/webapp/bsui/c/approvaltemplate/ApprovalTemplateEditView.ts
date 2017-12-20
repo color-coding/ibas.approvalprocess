@@ -11,7 +11,6 @@ import * as openui5 from "openui5/index";
 import * as bo from "../../../borep/bo/index";
 import * as ia from "3rdparty/initialfantasy/index";
 import { IApprovalTemplateEditView } from "../../../bsapp/approvaltemplate/index";
-import { emApprovalStepOwnerType, emApprovalConditionType } from "../../../api/index";
 /**
  * 视图-ApprovalTemplate
  */
@@ -139,7 +138,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
                     label: ibas.i18n.prop("bo_approvaltemplatestep_stepownertype"),
                     template: new sap.m.Select("", {
                         width: "100%",
-                        items: openui5.utils.createComboBoxItems(emApprovalStepOwnerType)
+                        items: openui5.utils.createComboBoxItems(bo.emApprovalStepOwnerType)
                     }).bindProperty("selectedKey", {
                         path: "stepOwnerType",
                         type: "sap.ui.model.type.Integer"
@@ -247,7 +246,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
                     label: ibas.i18n.prop("bo_approvaltemplatestepcondition_conditiontype"),
                     template: new sap.m.Select("", {
                         width: "100%",
-                        items: openui5.utils.createComboBoxItems(emApprovalConditionType)
+                        items: openui5.utils.createComboBoxItems(bo.emApprovalConditionType)
                     }).bindProperty("selectedKey", {
                         path: "conditionType",
                         type: "sap.ui.model.type.Integer"
