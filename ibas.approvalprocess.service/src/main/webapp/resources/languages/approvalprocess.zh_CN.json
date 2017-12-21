@@ -11,7 +11,7 @@
   "approvalprocess_app_approvaltemplate_choose": "审批模板选择",
   "approvalprocess_app_approvaltemplate_view": "审批模板查看",
   "approvalprocess_app_approvaltemplate_edit": "审批模板编辑",
-  "approvalprocess_basis_information": "基本信息",
+  "approvalprocess_general_information": "常规信息",
   "approvalprocess_other_information": "其他信息",
   "approvalprocess_app_approvalprocess": "审批流程",
   "approvalprocess_app_approvalprocess_title": "待审批列表",
