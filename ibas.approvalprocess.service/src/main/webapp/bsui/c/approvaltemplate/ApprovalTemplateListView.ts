@@ -92,7 +92,7 @@ export class ApprovalTemplateListView extends ibas.BOListView implements IApprov
                         press: function (): void {
                             that.fireViewEvents(that.viewDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ApprovalTemplate>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.ApprovalTemplate>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -104,7 +104,7 @@ export class ApprovalTemplateListView extends ibas.BOListView implements IApprov
                         press: function (): void {
                             that.fireViewEvents(that.editDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ApprovalTemplate>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.ApprovalTemplate>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -116,7 +116,7 @@ export class ApprovalTemplateListView extends ibas.BOListView implements IApprov
                         press: function (): void {
                             that.fireViewEvents(that.deleteDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ApprovalTemplate>(that.table)
+                                openui5.utils.getSelecteds<bo.ApprovalTemplate>(that.table)
                             );
                         }
                     }),
@@ -215,6 +215,6 @@ export class ApprovalTemplateListView extends ibas.BOListView implements IApprov
     }
     /** 获取选择的数据 */
     getSelecteds(): bo.ApprovalTemplate[] {
-        return openui5.utils.getTableSelecteds<bo.ApprovalTemplate>(this.table);
+        return openui5.utils.getSelecteds<bo.ApprovalTemplate>(this.table);
     }
 }

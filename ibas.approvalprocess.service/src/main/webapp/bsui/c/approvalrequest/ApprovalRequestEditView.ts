@@ -95,7 +95,7 @@ export class ApprovalRequestEditView extends ibas.BOEditView implements IApprova
                         press: function (): void {
                             that.fireViewEvents(that.removeApprovalRequestStepEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ApprovalRequestStep>(that.tableApprovalRequestStep)
+                                openui5.utils.getSelecteds<bo.ApprovalRequestStep>(that.tableApprovalRequestStep)
                             );
                         }
                     })

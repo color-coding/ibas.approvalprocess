@@ -102,7 +102,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
                         press: function (): void {
                             that.fireViewEvents(that.removeApprovalTemplateStepEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ApprovalTemplateStep>(that.tableApprovalTemplateStep)
+                                openui5.utils.getSelecteds<bo.ApprovalTemplateStep>(that.tableApprovalTemplateStep)
                             );
                         }
                     })
@@ -204,7 +204,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
                         press: function (): void {
                             that.fireViewEvents(that.removeApprovalTemplateStepConditionEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ApprovalTemplateStepCondition>(that.tableApprovalTemplateStepCondition)
+                                openui5.utils.getSelecteds<bo.ApprovalTemplateStepCondition>(that.tableApprovalTemplateStepCondition)
                             );
                         }
                     }),
