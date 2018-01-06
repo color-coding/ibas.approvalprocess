@@ -61,11 +61,11 @@ export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProces
         let condition: ibas.ICondition = criteria.conditions.create();
         // 激活的
         condition.alias = bo.ApprovalRequest.PROPERTY_ACTIVATED_NAME;
-        condition.value = "Y";
+        condition.value = ibas.emYesNo.YES.toString();
         // 审批中的
         condition = criteria.conditions.create();
         condition.alias = bo.ApprovalRequest.PROPERTY_APPROVALSTATUS_NAME;
-        condition.value = "P";
+        condition.value = ibas.emApprovalStatus.PROCESSING.toString();
         let sort: ibas.ISort = criteria.sorts.create();
         sort.alias = bo.ApprovalRequest.PROPERTY_OBJECTKEY_NAME;
         sort.sortType = ibas.emSortType.DESCENDING;
@@ -80,7 +80,7 @@ export class ApprovalProcessApp extends ibas.ResidentApplication<IApprovalProces
         // 审批中
         condition = childCriteria.conditions.create();
         condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPSTATUS_NAME;
-        condition.value = "P";
+        condition.value = ibas.emApprovalStatus.PROCESSING.toString();
         listApp.run(criteria);
     }
     protected fetchApprovalRequest(): void {
