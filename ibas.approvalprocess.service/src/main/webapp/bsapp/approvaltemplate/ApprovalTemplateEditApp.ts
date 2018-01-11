@@ -317,7 +317,7 @@ export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTem
         ibas.servicesManager.runChooseService<ia.IUser>({
             boCode: ia.BO_CODE_USER,
             criteria: [
-                new ibas.Condition("activated", ibas.emConditionOperation.EQUAL, "Y")
+                new ibas.Condition("activated", ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
             ],
             onCompleted(selecteds: ibas.List<ia.IUser>): void {
                 // 获取触发的对象

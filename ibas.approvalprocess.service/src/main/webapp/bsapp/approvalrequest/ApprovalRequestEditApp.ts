@@ -215,7 +215,7 @@ export class ApprovalRequestEditApp extends ibas.BOEditApplication<IApprovalRequ
         ibas.servicesManager.runChooseService<IUser>({
             boCode: BO_CODE_USER,
             criteria: [
-                new ibas.Condition("activated", ibas.emConditionOperation.EQUAL, "Y")
+                new ibas.Condition("activated", ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
             ],
             onCompleted(selecteds: ibas.List<IUser>): void {
                 caller.stepOwner = selecteds.firstOrDefault().docEntry;
