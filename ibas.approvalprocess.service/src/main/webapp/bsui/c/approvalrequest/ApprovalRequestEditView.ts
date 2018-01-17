@@ -32,7 +32,7 @@ export class ApprovalRequestEditView extends ibas.BOEditView implements IApprova
         this.form = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
             content: [
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("initialfantasy_general_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("initialfantasy_title_general") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_name") }),
                 new sap.m.Input("", {
                     type: sap.m.InputType.Text
@@ -59,7 +59,7 @@ export class ApprovalRequestEditView extends ibas.BOEditView implements IApprova
                     path: "/activated",
                     type: "sap.ui.model.type.Integer"
                 }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("initialfantasy_other_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("initialfantasy_title_others") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_objectkey") }),
                 new sap.m.Input("", {
                     enabled: false,
