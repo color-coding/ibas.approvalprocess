@@ -36,7 +36,7 @@ export class ApprovalRequestEditApp extends ibas.BOEditApplication<IApprovalRequ
         this.view.createDataEvent = this.createData;
         this.view.addApprovalRequestStepEvent = this.addApprovalRequestStep;
         this.view.removeApprovalRequestStepEvent = this.removeApprovalRequestStep;
-        this.view.chooseApprovalRequestStepOwnerEvent = this.chooseSalesOrderItemMaterial;
+        this.view.chooseApprovalRequestStepOwnerEvent = this.chooseApprovalRequestStepOwner;
     }
     /** 视图显示后 */
     protected viewShowed(): void {
@@ -209,8 +209,8 @@ export class ApprovalRequestEditApp extends ibas.BOEditApplication<IApprovalRequ
         // 仅显示没有标记删除的
         this.view.showApprovalRequestSteps(this.editData.approvalRequestSteps.filterDeleted());
     }
-    /** 选择销售订单行物料事件 */
-    chooseSalesOrderItemMaterial(caller: bo.ApprovalRequestStep): void {
+    /** 选择审批步骤所有者事件 */
+    chooseApprovalRequestStepOwner(caller: bo.ApprovalRequestStep): void {
         let that: this = this;
         ibas.servicesManager.runChooseService<IUser>({
             boCode: BO_CODE_USER,
@@ -218,7 +218,8 @@ export class ApprovalRequestEditApp extends ibas.BOEditApplication<IApprovalRequ
                 new ibas.Condition("activated", ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
             ],
             onCompleted(selecteds: ibas.List<IUser>): void {
-                caller.stepOwner = selecteds.firstOrDefault().docEntry;
+                let selected: IUser = selecteds.firstOrDefault();
+                caller.stepOwner = selected.docEntry;
             }
         });
 
