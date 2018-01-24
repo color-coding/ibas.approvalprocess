@@ -44,9 +44,6 @@ export default class Navigation extends ibas.ViewNavigation {
             case approvaltemplateApps.ApprovalTemplateChooseApp.APPLICATION_ID:
                 view = new approvaltemplateViews.ApprovalTemplateChooseView();
                 break;
-            case approvaltemplateApps.ApprovalTemplateViewApp.APPLICATION_ID:
-                view = new approvaltemplateViews.ApprovalTemplateViewView();
-                break;
             case approvaltemplateApps.ApprovalTemplateEditApp.APPLICATION_ID:
                 view = new approvaltemplateViews.ApprovalTemplateEditView();
                 break;

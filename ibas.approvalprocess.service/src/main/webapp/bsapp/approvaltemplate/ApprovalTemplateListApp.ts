@@ -10,7 +10,6 @@ import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositoryApprovalProcess } from "../../borep/BORepositories";
 import { DataConverter4ap } from "../../borep/DataConverters";
-import { ApprovalTemplateViewApp } from "./ApprovalTemplateViewApp";
 import { ApprovalTemplateEditApp } from "./ApprovalTemplateEditApp";
 
 /** 列表应用-审批模板 */
@@ -81,11 +80,6 @@ export class ApprovalTemplateListApp extends ibas.BOListApplication<IApprovalTem
             ));
             return;
         }
-        let app: ApprovalTemplateViewApp = new ApprovalTemplateViewApp();
-        app.navigation = this.navigation;
-        app.viewShower = this.viewShower;
-        app.run(data);
-
     }
     /** 编辑数据，参数：目标数据 */
     protected editData(data: bo.ApprovalTemplate): void {

@@ -9,7 +9,7 @@
 import * as ibas from "ibas/index";
 import { CONSOLE_ID, CONSOLE_NAME, CONSOLE_VERSION } from "../api/index";
 import { ApprovalRequestFunc, ApprovalRequestChooseServiceMapping, ApprovalRequestLinkServiceMapping } from "./approvalrequest/index";
-import { ApprovalTemplateFunc, ApprovalTemplateChooseServiceMapping, ApprovalTemplateLinkServiceMapping } from "./approvaltemplate/index";
+import { ApprovalTemplateFunc, ApprovalTemplateChooseServiceMapping } from "./approvaltemplate/index";
 import { ApprovalProcessApp } from "./approvalprocess/index";
 
 /** 模块控制台 */
@@ -36,7 +36,6 @@ export class Console extends ibas.ModuleConsole {
         this.register(new ApprovalRequestChooseServiceMapping());
         this.register(new ApprovalRequestLinkServiceMapping());
         this.register(new ApprovalTemplateChooseServiceMapping());
-        this.register(new ApprovalTemplateLinkServiceMapping());
         // 注册常驻应用
         this.register(new ApprovalProcessApp());
     }

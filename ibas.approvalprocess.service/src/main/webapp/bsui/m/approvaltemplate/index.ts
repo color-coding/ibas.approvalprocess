@@ -9,5 +9,4 @@
 // 模块索引文件，此文件集中导出类
 export * from "./ApprovalTemplateListView";
 export * from "./ApprovalTemplateChooseView";
-export * from "./ApprovalTemplateViewView";
 export * from "./ApprovalTemplateEditView";

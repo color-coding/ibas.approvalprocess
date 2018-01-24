@@ -10,5 +10,4 @@
 export * from "./ApprovalTemplateFunc";
 export * from "./ApprovalTemplateListApp";
 export * from "./ApprovalTemplateChooseApp";
-export * from "./ApprovalTemplateViewApp";
 export * from "./ApprovalTemplateEditApp";
