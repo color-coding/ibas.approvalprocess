@@ -14,16 +14,16 @@ import {
 } from "../api/index";
 
 /** 数据转换者 */
-export class DataConverter4ap extends ibas.DataConverter4j {
+export class DataConverter4AP extends ibas.DataConverter4j {
 
     /** 创建业务对象转换者 */
     protected createConverter(): ibas.BOConverter {
-        return new BOConverter4ap;
+        return new BOConverter4AP;
     }
 }
 
 /** 业务对象转换者 */
-class BOConverter4ap extends ibas.BOConverter {
+class BOConverter4AP extends ibas.BOConverter {
 
     /**
      * 自定义解析

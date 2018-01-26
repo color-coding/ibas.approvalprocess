@@ -9,14 +9,14 @@
 import * as ibas from "ibas/index";
 import * as bo from "./bo/index";
 import { IBORepositoryApprovalProcess, BO_REPOSITORY_APPROVALPROCESS, UserMethodCaller, ApprovalMethodCaller } from "../api/index";
-import { DataConverter4ap } from "./DataConverters";
+import { DataConverter4AP } from "./DataConverters";
 
 /** 业务对象仓库 */
 export class BORepositoryApprovalProcess extends ibas.BORepositoryApplication implements IBORepositoryApprovalProcess {
 
     /** 创建此模块的后端与前端数据的转换者 */
     protected createConverter(): ibas.IDataConverter {
-        return new DataConverter4ap;
+        return new DataConverter4AP;
     }
     /**
      * 查询 用户审批请求

@@ -20,7 +20,7 @@ export class ApprovalProcessView extends ibas.BOResidentView implements IApprova
     // 审批操作，参数1，审批请求；参数2，操作
     approvalEvent: Function;
     /** 绘制工具条视图 */
-    darwBar(): any {
+    drawBar(): any {
         let that: this = this;
         // 不重复创建工具条钮
         if (ibas.objects.isNull(this.bar)) {
@@ -38,7 +38,7 @@ export class ApprovalProcessView extends ibas.BOResidentView implements IApprova
     private bar: sap.m.Button;
     private form: sap.m.ResponsivePopover;
     /** 绘制视图 */
-    darw(): any {
+    draw(): any {
         let that: this = this;
         this.form = new sap.m.ResponsivePopover("", {
             title: ibas.i18n.prop("approvalprocess_app_approvalprocess_title"),

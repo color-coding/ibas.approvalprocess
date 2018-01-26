@@ -9,7 +9,7 @@
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositoryApprovalProcess } from "../../borep/BORepositories";
-import { DataConverter4ap } from "../../borep/DataConverters";
+import { DataConverter4AP } from "../../borep/DataConverters";
 import { ApprovalTemplateEditApp } from "./ApprovalTemplateEditApp";
 
 /** 列表应用-审批模板 */
@@ -173,7 +173,7 @@ export class ApprovalTemplateListApp extends ibas.BOListApplication<IApprovalTem
         return [
             new ibas.BOListServiceProxy({
                 data: this.view.getSelecteds(),
-                converter: new DataConverter4ap(),
+                converter: new DataConverter4AP(),
             })
         ];
     }

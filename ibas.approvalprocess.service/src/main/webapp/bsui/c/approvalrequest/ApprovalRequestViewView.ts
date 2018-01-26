@@ -17,7 +17,7 @@ import { IApprovalRequestViewView } from "../../../bsapp/approvalrequest/index";
 export class ApprovalRequestViewView extends ibas.BOViewView implements IApprovalRequestViewView {
 
     /** 绘制视图 */
-    darw(): any {
+    draw(): any {
         let that: this = this;
         this.form = new sap.ui.layout.form.SimpleForm("", {
             content: [
