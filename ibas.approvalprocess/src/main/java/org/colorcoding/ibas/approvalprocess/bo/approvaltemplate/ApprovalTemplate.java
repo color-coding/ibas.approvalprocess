@@ -15,6 +15,9 @@ import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.mapping.BOCode;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.bobas.rule.IBusinessRule;
+import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
+import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 
 /**
  * 获取-审批模板
@@ -832,4 +835,11 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 
 	}
 
+	@Override
+	protected IBusinessRule[] registerRules() {
+		return new IBusinessRule[] { // 注册的业务规则
+				new BusinessRuleRequiredElements(PROPERTY_APPROVALTEMPLATESTEPS), // 要求有元素
+				new BusinessRuleRequired(PROPERTY_APPROVALOBJECTCODE), // 要求有值
+		};
+	}
 }
