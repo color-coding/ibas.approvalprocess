@@ -25,12 +25,12 @@ namespace approvalprocess {
              * 审批
              * @param caller 调用者
              */
-            approval(caller: ApprovalMethodCaller): void;
+            approval(caller: IApprovalMethodCaller): void;
             /**
              * 查询 用户审批请求
              * @param fetcher 查询者
              */
-            fetchUserApprovalRequest(fetcher: UserMethodCaller<bo.IApprovalRequest>): void;
+            fetchUserApprovalRequest(fetcher: IUserMethodCaller<bo.IApprovalRequest>): void;
             /**
              * 查询 审批请求
              * @param fetcher 查询者
@@ -58,7 +58,7 @@ namespace approvalprocess {
         /**
          * 用户相关调用者
          */
-        export interface UserMethodCaller<P> extends ibas.IMethodCaller<P> {
+        export interface IUserMethodCaller<P> extends ibas.IMethodCaller<P> {
             /** 用户 */
             user: string;
             /** 平台 */
@@ -72,7 +72,7 @@ namespace approvalprocess {
         /**
          * 审批调用者
          */
-        export interface ApprovalMethodCaller extends ibas.IMethodCaller<any> {
+        export interface IApprovalMethodCaller extends ibas.IMethodCaller<any> {
             /** 审批请求编号 */
             apRequestId: number;
             /** 审批请求步骤编号 */

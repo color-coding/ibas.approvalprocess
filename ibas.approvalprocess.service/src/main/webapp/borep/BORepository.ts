@@ -19,7 +19,7 @@ namespace approvalprocess {
              * 查询 用户审批请求
              * @param fetcher 查询者
              */
-            fetchUserApprovalRequest(fetcher: UserMethodCaller<bo.ApprovalRequest>): void {
+            fetchUserApprovalRequest(fetcher: IUserMethodCaller<bo.ApprovalRequest>): void {
                 let boRepository: ibas.BORepositoryAjax = new ibas.BORepositoryAjax();
                 boRepository.address = this.address;
                 boRepository.token = this.token;
@@ -33,7 +33,7 @@ namespace approvalprocess {
              * 审批
              * @param caller 调用者
              */
-            approval(caller: ApprovalMethodCaller): void {
+            approval(caller: IApprovalMethodCaller): void {
                 let boRepository: ibas.BORepositoryAjax = new ibas.BORepositoryAjax();
                 boRepository.address = this.address;
                 boRepository.token = this.token;
