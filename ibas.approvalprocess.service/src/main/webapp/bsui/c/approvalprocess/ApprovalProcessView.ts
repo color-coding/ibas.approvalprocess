@@ -1,6 +1,6 @@
 ﻿/**
  * @license
- * Copyright color-coding studio. All Rights Reserved.
+ * Copyright Color-Coding Studio. All Rights Reserved.
  *
  * Use of this source code is governed by an Apache License, Version 2.0
  * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
@@ -10,7 +10,7 @@ import * as ibas from "ibas/index";
 import * as openui5 from "openui5/index";
 import { IApprovalProcessView } from "../../../bsapp/approvalprocess/index";
 import * as bo from "../../../borep/bo/index";
-import { IBORepositoryInitialFantasy, BO_REPOSITORY_INITIALFANTASY, IUser } from "3rdparty/initialfantasy/index";
+import { ibas.IBORepositoryInitialFantasy, BO_REPOSITORY_INITIALFANTASY, IUser } from "3rdparty/initialfantasy/index";
 /**
  * 视图-审批流程
  */
@@ -131,7 +131,7 @@ export class ApprovalProcessView extends ibas.BOResidentView implements IApprova
             } else if (nlItem.getAuthorName() === ibas.UNKNOWN_USER_ID.toString()) {
                 nlItem.setAuthorName(ibas.i18n.prop("shell_user_unknown"));
             } else {
-                let boRepository: IBORepositoryInitialFantasy = ibas.boFactory.create(BO_REPOSITORY_INITIALFANTASY);
+                let boRepository: ibas.IBORepositoryInitialFantasy = ibas.boFactory.create(BO_REPOSITORY_INITIALFANTASY);
                 boRepository.fetchUser({
                     criteria: [
                         new ibas.Condition("DocEntry", ibas.emConditionOperation.EQUAL, nlItem.getAuthorName()),

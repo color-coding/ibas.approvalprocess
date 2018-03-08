@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright color-coding studio. All Rights Reserved.
+ * Copyright Color-Coding Studio. All Rights Reserved.
  *
  * Use of this source code is governed by an Apache License, Version 2.0
  * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
@@ -380,7 +380,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
     private tableApprovalTemplateStepCondition: sap.ui.table.Table;
     private columnApprovalTemplateStepConditionPropertyName: sap.ui.table.Column;
 
-    protected getPropertyListItem(properies: ia.IBOPropertyInformation[]): sap.ui.core.ListItem[] {
+    protected getPropertyListItem(properies: initialfantasy.bo.IBOPropertyInformation[]): sap.ui.core.ListItem[] {
         let items: Array<sap.ui.core.ListItem> = [];
         items.push(new sap.ui.core.ListItem("", {
             key: "",
@@ -397,7 +397,7 @@ export class ApprovalTemplateEditView extends ibas.BOEditView implements IApprov
         return items;
     }
     /** 刷新字段列表 */
-    refreshBOPropertyInformationList(properies: ia.IBOPropertyInformation[]): void {
+    refreshBOPropertyInformationList(properies: initialfantasy.bo.IBOPropertyInformation[]): void {
         this.columnApprovalTemplateStepConditionPropertyName.setTemplate(new sap.m.Select("", {
             width: "100%",
             selectedKey: "{propertyName}",
