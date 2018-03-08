@@ -5,54 +5,54 @@
  * Use of this source code is governed by an Apache License, Version 2.0
  * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
  */
-
-import * as ibas from "ibas/index";
-import * as approvalrequestApps from "../../bsapp/approvalrequest/index";
-import * as approvaltemplateApps from "../../bsapp/approvaltemplate/index";
-import * as approvalprocessApps from "../../bsapp/approvalprocess/index";
-import * as approvalrequestViews from "./approvalrequest/index";
-import * as approvaltemplateViews from "./approvaltemplate/index";
-import * as approvalprocessViews from "./approvalprocess/index";
-
-/**
- * 视图导航
- */
-export default class Navigation extends ibas.ViewNavigation {
-
-    /**
-     * 创建实例
-     * @param id 应用id
-     */
-    protected newView(id: string): ibas.IView {
-        let view: ibas.IView = null;
-        switch (id) {
-            case approvalrequestApps.ApprovalRequestListApp.APPLICATION_ID:
-                view = new approvalrequestViews.ApprovalRequestListView();
-                break;
-            case approvalrequestApps.ApprovalRequestChooseApp.APPLICATION_ID:
-                view = new approvalrequestViews.ApprovalRequestChooseView();
-                break;
-            case approvalrequestApps.ApprovalRequestViewApp.APPLICATION_ID:
-                view = new approvalrequestViews.ApprovalRequestViewView();
-                break;
-            case approvalrequestApps.ApprovalRequestEditApp.APPLICATION_ID:
-                view = new approvalrequestViews.ApprovalRequestEditView();
-                break;
-            case approvaltemplateApps.ApprovalTemplateListApp.APPLICATION_ID:
-                view = new approvaltemplateViews.ApprovalTemplateListView();
-                break;
-            case approvaltemplateApps.ApprovalTemplateChooseApp.APPLICATION_ID:
-                view = new approvaltemplateViews.ApprovalTemplateChooseView();
-                break;
-            case approvaltemplateApps.ApprovalTemplateEditApp.APPLICATION_ID:
-                view = new approvaltemplateViews.ApprovalTemplateEditView();
-                break;
-            case approvalprocessApps.ApprovalProcessApp.APPLICATION_ID:
-                view = new approvalprocessViews.ApprovalProcessView();
-                break;
-            default:
-                break;
+/// <reference path="../../3rdparty/ibas/index.d.ts" />
+/// <reference path="../../3rdparty/openui5/index.d.ts" />
+/// <reference path="../../index.d.ts" />
+/// <reference path="./approvalrequest/index.ts" />
+/// <reference path="./approvaltemplate/index.ts" />
+/// <reference path="./approvalprocess/index.ts" />
+namespace approvalprocess {
+    export namespace ui {
+        /**
+         * 视图导航
+         */
+        export class Navigation extends ibas.ViewNavigation {
+            /**
+             * 创建实例
+             * @param id 应用id
+             */
+            protected newView(id: string): ibas.IView {
+                let view: ibas.IView = null;
+                switch (id) {
+                    case app.ApprovalRequestListApp.APPLICATION_ID:
+                        view = new c.ApprovalRequestListView();
+                        break;
+                    case app.ApprovalRequestChooseApp.APPLICATION_ID:
+                        view = new c.ApprovalRequestChooseView();
+                        break;
+                    case app.ApprovalRequestViewApp.APPLICATION_ID:
+                        view = new c.ApprovalRequestViewView();
+                        break;
+                    case app.ApprovalRequestEditApp.APPLICATION_ID:
+                        view = new c.ApprovalRequestEditView();
+                        break;
+                    case app.ApprovalTemplateListApp.APPLICATION_ID:
+                        view = new c.ApprovalTemplateListView();
+                        break;
+                    case app.ApprovalTemplateChooseApp.APPLICATION_ID:
+                        view = new c.ApprovalTemplateChooseView();
+                        break;
+                    case app.ApprovalTemplateEditApp.APPLICATION_ID:
+                        view = new c.ApprovalTemplateEditView();
+                        break;
+                    case app.ApprovalProcessApp.APPLICATION_ID:
+                        view = new c.ApprovalProcessView();
+                        break;
+                    default:
+                        break;
+                }
+                return view;
+            }
         }
-        return view;
     }
 }
