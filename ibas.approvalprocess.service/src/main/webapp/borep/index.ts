@@ -15,9 +15,9 @@
 namespace approvalprocess {
     export namespace bo {
         // 注册业务对象仓库到工厂
-        ibas.boFactory.register(BO_REPOSITORY_APPROVALPROCESS, BORepositoryApprovalProcess);
+        boFactory.register(BO_REPOSITORY_APPROVALPROCESS, BORepositoryApprovalProcess);
         // 注册业务对象到工厂
-        ibas.boFactory.register(ApprovalRequest.BUSINESS_OBJECT_CODE, ApprovalRequest);
-        ibas.boFactory.register(ApprovalTemplate.BUSINESS_OBJECT_CODE, ApprovalTemplate);
+        boFactory.register(ApprovalRequest.BUSINESS_OBJECT_CODE, ApprovalRequest);
+        boFactory.register(ApprovalTemplate.BUSINESS_OBJECT_CODE, ApprovalTemplate);
     }
 }
