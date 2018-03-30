@@ -529,7 +529,6 @@ namespace approvalprocess {
                 this.setProperty(ApprovalTemplateStep.PROPERTY_STEPCANMODIFY_NAME, value);
             }
 
-
             /** 映射的属性名称-审批模板步骤条件集合 */
             static PROPERTY_APPROVALTEMPLATESTEPCONDITIONS_NAME: string = "ApprovalTemplateStepConditions";
             /** 获取-审批模板步骤条件集合 */
@@ -541,10 +540,10 @@ namespace approvalprocess {
                 this.setProperty(ApprovalTemplateStep.PROPERTY_APPROVALTEMPLATESTEPCONDITIONS_NAME, value);
             }
 
-
             /** 初始化数据 */
             protected init(): void {
                 this.approvalTemplateStepConditions = new ApprovalTemplateStepConditions(this);
+                this.stepOwnerType = emApprovalStepOwnerType.USER;
             }
         }
 
@@ -818,10 +817,11 @@ namespace approvalprocess {
                 this.setProperty(ApprovalTemplateStepCondition.PROPERTY_BRACKETCLOSE_NAME, value);
             }
 
-
-
             /** 初始化数据 */
             protected init(): void {
+                this.conditionType = emApprovalConditionType.PROPERTY_VALUE;
+                this.operation = ibas.emConditionOperation.EQUAL;
+                this.relationship = ibas.emConditionRelationship.AND;
             }
         }
 

@@ -38,8 +38,6 @@ namespace approvalprocess {
                 this.view.removeApprovalTemplateStepConditionEvent = this.removeApprovalTemplateStepCondition;
                 this.view.chooseApprovalTemplateStepUserEvent = this.chooseApprovalTemplateStepUserEvent;
                 this.view.chooseApprovalTemplateBOInformationEvent = this.chooseApprovalTemplateBOInformationEvent;
-                this.view.chooseApprovalTemplateStepConditionBOPropertyInformationEvent =
-                    this.chooseApprovalTemplateStepConditionBOPropertyInformationEvent;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -275,36 +273,8 @@ namespace approvalprocess {
                     ],
                     onCompleted(selecteds: ibas.IList<initialfantasy.bo.IBOInformation>): void {
                         let selected: initialfantasy.bo.IBOInformation = selecteds.firstOrDefault();
-                        if (!ibas.objects.isNull(selected)) {
-                            that.editData.approvalObjectCode = selected.code;
-                            let criteria: ibas.Criteria = new ibas.Criteria();
-                            criteria.noChilds = false;
-                            let condition: ibas.ICondition = criteria.conditions.create();
-                            condition.alias = "code";
-                            condition.operation = ibas.emConditionOperation.EQUAL;
-                            condition.value = that.editData.approvalObjectCode;
-                            let boRepository: initialfantasy.bo.IBORepositoryInitialFantasy = ibas.boFactory.create(initialfantasy.bo.BO_REPOSITORY_INITIALFANTASY);
-                            boRepository.fetchBOInformation({
-                                criteria: criteria,
-                                onCompleted(opRslt: ibas.IOperationResult<initialfantasy.bo.IBOInformation>): void {
-                                    try {
-                                        if (opRslt.resultCode !== 0) {
-                                            throw new Error(opRslt.message);
-                                        }
-                                        let boInformation: initialfantasy.bo.IBOInformation = opRslt.resultObjects.firstOrDefault();
-                                        if (!ibas.objects.isNull(boInformation)) {
-                                            that.view.refreshBOPropertyInformationList(boInformation.boPropertyInformations);
-                                        }
-
-                                        that.busy(false);
-                                    } catch (error) {
-                                        that.messages(error);
-                                    }
-                                }
-                            });
-                            that.busy(true);
-                            // that.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("shell_saving_data"));
-                        }
+                        that.editData.approvalObjectCode = selected.code;
+                        that.view.showApprovalTemplate(that.editData);
                     }
                 });
             }
@@ -327,40 +297,6 @@ namespace approvalprocess {
                         }
                     }
                 });
-            }
-            /** 审批步骤条件选择取值属性 */
-            chooseApprovalTemplateStepConditionBOPropertyInformationEvent(caller: bo.ApprovalTemplateStepCondition): void {
-                // let that: this = this;
-                // try {
-                //     if (!this.editData.approvalObjectCode)
-                //         throw new Error(
-                //             ibas.i18n.prop("initialfantasy_msg_property_can_not_empty", ibas.i18n.prop("bo_approvaltemplate_approvalobjectcode"))
-                //         );
-                //     let criteria: ibas.Criteria = new ibas.Criteria();
-                //     criteria.noChilds = false;
-                //     let condition = criteria.conditions.create();
-                //     condition.alias =  initialfantasy.bo.IBOInformation.PROPERTY_CODE_NAME
-                //     condition.operation = ibas.emConditionOperation.EQUAL;
-                //     condition.value = this.editData.approvalObjectCode;
-
-                //     ibas.servicesManager.runChooseService<bo.BOPropertyInformation>({
-                //         caller: caller,
-                //         boCode:  initialfantasy.bo.IBOInformation.BUSINESS_OBJECT_CODE + ".1",
-                //         criteria: criteria,
-                //         onCompleted(selecteds: ibas.IList<bo.BOPropertyInformation>): void {
-                //             // 获取触发的对象
-                //             let index: number = that.editApprovalTemplateStepData.approvalTemplateStepConditions.indexOf(caller);
-                //             let item: bo.ApprovalTemplateStepCondition = that.editApprovalTemplateStepData.approvalTemplateStepConditions[index];
-
-                //             let selected = selecteds.firstOrDefault();
-                //             if (!ibas.objects.isNull(item) && !ibas.objects.isNull(selected)) {
-                //                 item.propertyName = selected.property;
-                //             }
-                //         }
-                //     });
-                // } catch (error) {
-                //     this.proceeding(ibas.emMessageType.ERROR, error.message);
-                // }
             }
         }
         /** 视图-审批模板 */
@@ -385,14 +321,10 @@ namespace approvalprocess {
             removeApprovalTemplateStepConditionEvent: Function;
             /** 显示数据 */
             showApprovalTemplateStepConditions(datas: bo.ApprovalTemplateStepCondition[]): void;
-            /** 刷新字段列表 */
-            refreshBOPropertyInformationList(properies: initialfantasy.bo.IBOPropertyInformation[]): void;
             /** 选择业务对象类型 */
             chooseApprovalTemplateBOInformationEvent: Function;
             /** 审批步骤选择步骤所有者 */
             chooseApprovalTemplateStepUserEvent: Function;
-            /** 审批步骤条件选择取值属性 */
-            chooseApprovalTemplateStepConditionBOPropertyInformationEvent: Function;
         }
     }
 }

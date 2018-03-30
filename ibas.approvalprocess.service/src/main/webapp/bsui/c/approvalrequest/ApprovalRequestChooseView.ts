@@ -76,25 +76,6 @@ namespace approvalprocess {
                                 })
                             }),
                             new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_approvalrequest_activated"),
-                                template: new sap.m.Text("", {
-                                    wrapping: false
-                                }).bindProperty("text", {
-                                    path: "activated",
-                                    formatter(data: any): any {
-                                        return ibas.enums.describe(ibas.emYesNo, data);
-                                    }
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_approvalrequest_approvalobjectcode"),
-                                template: new sap.m.Text("", {
-                                    wrapping: false
-                                }).bindProperty("text", {
-                                    path: "approvalObjectCode"
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_approvalrequest_approvalstatus"),
                                 template: new sap.m.Text("", {
                                     wrapping: false
@@ -104,6 +85,46 @@ namespace approvalprocess {
                                         return ibas.enums.describe(ibas.emApprovalStatus, data);
                                     }
                                 })
+                            }),
+                            new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_approvalrequest_bokeys"),
+                                template: new sap.m.Text("", {
+                                    wrapping: false
+                                }).bindProperty("text", {
+                                    path: "boKeys"
+                                })
+                            }),
+                            new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_approvalrequest_approvalowner"),
+                                template: new sap.m.Text("", {
+                                    wrapping: false
+                                }).bindProperty("text", {
+                                    path: "approvalOwner"
+                                })
+                            }),
+                            new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_approvalrequest_startedtime"),
+                                template: new sap.m.Text("", {
+                                    wrapping: false,
+                                }).bindProperty("text", {
+                                    path: "startedTime",
+                                    type: new sap.ui.model.type.Date({
+                                        pattern: "yyyy-MM-dd",
+                                        strictParsing: true,
+                                    })
+                                }),
+                            }),
+                            new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_approvalrequest_finishedtime"),
+                                template: new sap.m.Text("", {
+                                    wrapping: false,
+                                }).bindProperty("text", {
+                                    path: "finishedTime",
+                                    type: new sap.ui.model.type.Date({
+                                        pattern: "yyyy-MM-dd",
+                                        strictParsing: true,
+                                    })
+                                }),
                             }),
                         ]
                     });

@@ -32,44 +32,49 @@ namespace approvalprocess {
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("initialfantasy_title_general") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_name") }),
                             new sap.m.Input("", {
+                                editable: false,
                                 type: sap.m.InputType.Text
                             }).bindProperty("value", {
                                 path: "/name",
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_approvalobjectcode") }),
-                            new sap.m.Input("", {
-                                type: sap.m.InputType.Text
-                            }).bindProperty("value", {
-                                path: "/approvalObjectCode",
-                            }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_approvalstatus") }),
                             new sap.m.Select("", {
+                                enabled: false,
                                 items: openui5.utils.createComboBoxItems(ibas.emApprovalStatus)
                             }).bindProperty("selectedKey", {
                                 path: "/approvalStatus",
                                 type: "sap.ui.model.type.Integer"
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_activated") }),
-                            new sap.m.Select("", {
-                                items: openui5.utils.createComboBoxItems(ibas.emYesNo)
-                            }).bindProperty("selectedKey", {
-                                path: "/activated",
-                                type: "sap.ui.model.type.Integer"
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_approvalowner") }),
+                            new sap.m.ex.DataOwnerInput("", {
+                                editable: false,
+                                bindingValue: {
+                                    path: "/approvalOwner"
+                                }
+                            }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_bokeys") }),
+                            new sap.m.Input("", {
+                                editable: false,
+                                type: sap.m.InputType.Text
+                            }).bindProperty("value", {
+                                path: "/boKeys",
                             }),
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("initialfantasy_title_others") }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_objectkey") }),
-                            new sap.m.Input("", {
-                                enabled: false,
-                                type: sap.m.InputType.Text
-                            }).bindProperty("value", {
-                                path: "/objectKey",
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_startedtime") }),
+                            new sap.m.DatePicker("", {
+                                editable: false,
+                                valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                                displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                            }).bindProperty("dateValue", {
+                                path: "/startedTime",
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_objectcode") }),
-                            new sap.m.Input("", {
-                                enabled: false,
-                                type: sap.m.InputType.Text
-                            }).bindProperty("value", {
-                                path: "/objectCode",
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_finishedtime") }),
+                            new sap.m.DatePicker("", {
+                                editable: false,
+                                valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                                displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                            }).bindProperty("dateValue", {
+                                path: "/finishedTime",
                             }),
                         ]
                     });
@@ -113,15 +118,15 @@ namespace approvalprocess {
                             }),
                             new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_approvalrequeststep_stepname"),
-                                template: new sap.m.Input("", {
+                                template: new sap.m.Text("", {
                                     width: "100%",
-                                }).bindProperty("value", {
+                                }).bindProperty("text", {
                                     path: "stepName"
                                 })
                             }),
                             new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_approvalrequeststep_stepowner"),
-                                template: new sap.m.Input("", {
+                                template: new sap.m.ex.DataOwnerInput("", {
                                     width: "100%",
                                     showValueHelp: true,
                                     valueHelpRequest: function (): void {
@@ -129,18 +134,20 @@ namespace approvalprocess {
                                             // 获取当前对象
                                             this.getBindingContext().getObject()
                                         );
+                                    },
+                                    bindingValue: {
+                                        path: "stepOwner"
                                     }
-                                }).bindProperty("value", {
-                                    path: "stepOwner"
-                                })
+                                }),
                             }),
                             new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_approvalrequeststep_stepstatus"),
                                 template: new sap.m.Select("", {
                                     width: "100%",
+                                    enabled: false,
                                     items: openui5.utils.createComboBoxItems(ibas.emApprovalStepStatus)
                                 }).bindProperty("selectedKey", {
-                                    path: "/stepStatus",
+                                    path: "stepStatus",
                                     type: "sap.ui.model.type.Integer"
                                 })
                             }),

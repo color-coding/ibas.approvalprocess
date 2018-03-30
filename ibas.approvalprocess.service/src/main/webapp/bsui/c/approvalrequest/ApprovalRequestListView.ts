@@ -48,25 +48,6 @@ namespace approvalprocess {
                                 })
                             }),
                             new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_approvalrequest_activated"),
-                                template: new sap.m.Text("", {
-                                    wrapping: false
-                                }).bindProperty("text", {
-                                    path: "activated",
-                                    formatter(data: any): any {
-                                        return ibas.enums.describe(ibas.emYesNo, data);
-                                    }
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_approvalrequest_approvalobjectcode"),
-                                template: new sap.m.Text("", {
-                                    wrapping: false
-                                }).bindProperty("text", {
-                                    path: "approvalObjectCode"
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_approvalrequest_approvalstatus"),
                                 template: new sap.m.Text("", {
                                     wrapping: false
@@ -77,6 +58,46 @@ namespace approvalprocess {
                                     }
                                 })
                             }),
+                            new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_approvalrequest_bokeys"),
+                                template: new sap.m.Text("", {
+                                    wrapping: false
+                                }).bindProperty("text", {
+                                    path: "boKeys"
+                                })
+                            }),
+                            new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_approvalrequest_approvalowner"),
+                                template: new sap.m.Text("", {
+                                    wrapping: false
+                                }).bindProperty("text", {
+                                    path: "approvalOwner"
+                                })
+                            }),
+                            new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_approvalrequest_startedtime"),
+                                template: new sap.m.Text("", {
+                                    wrapping: false,
+                                }).bindProperty("text", {
+                                    path: "startedTime",
+                                    type: new sap.ui.model.type.Date({
+                                        pattern: "yyyy-MM-dd",
+                                        strictParsing: true,
+                                    })
+                                }),
+                            }),
+                            new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_approvalrequest_finishedtime"),
+                                template: new sap.m.Text("", {
+                                    wrapping: false,
+                                }).bindProperty("text", {
+                                    path: "finishedTime",
+                                    type: new sap.ui.model.type.Date({
+                                        pattern: "yyyy-MM-dd",
+                                        strictParsing: true,
+                                    })
+                                }),
+                            }),
                         ]
                     });
                     this.form.addContent(this.table);
@@ -84,6 +105,7 @@ namespace approvalprocess {
                         showHeader: false,
                         subHeader: new sap.m.Toolbar("", {
                             content: [
+                                /*
                                 new sap.m.Button("", {
                                     text: ibas.i18n.prop("shell_data_new"),
                                     type: sap.m.ButtonType.Transparent,
@@ -92,19 +114,19 @@ namespace approvalprocess {
                                         that.fireViewEvents(that.newDataEvent);
                                     }
                                 }),
-                                /*
+                                */
                                 new sap.m.Button("", {
                                     text: ibas.i18n.prop("shell_data_view"),
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://display",
                                     press: function (): void {
-                                        that.fireViewEvents(that.viewDataEvent,
+                                        that.fireViewEvents(that.editDataEvent,
                                             // 获取表格选中的对象
                                             openui5.utils.getSelecteds<bo.ApprovalRequest>(that.table).firstOrDefault()
                                         );
                                     }
                                 }),
-                                */
+                                /*
                                 new sap.m.Button("", {
                                     text: ibas.i18n.prop("shell_data_edit"),
                                     type: sap.m.ButtonType.Transparent,
@@ -128,37 +150,7 @@ namespace approvalprocess {
                                         );
                                     }
                                 }),
-                                new sap.m.ToolbarSpacer(""),
-                                new sap.m.Button("", {
-                                    type: sap.m.ButtonType.Transparent,
-                                    icon: "sap-icon://action",
-                                    press: function (event: any): void {
-                                        that.fireViewEvents(that.callServicesEvent, {
-                                            displayServices(services: ibas.IServiceAgent[]): void {
-                                                if (ibas.objects.isNull(services) || services.length === 0) {
-                                                    return;
-                                                }
-                                                let popover: sap.m.Popover = new sap.m.Popover("", {
-                                                    showHeader: false,
-                                                    placement: sap.m.PlacementType.Bottom,
-                                                });
-                                                for (let service of services) {
-                                                    popover.addContent(new sap.m.Button({
-                                                        text: ibas.i18n.prop(service.name),
-                                                        type: sap.m.ButtonType.Transparent,
-                                                        icon: service.icon,
-                                                        press: function (): void {
-                                                            service.run();
-                                                            popover.close();
-                                                        }
-                                                    }));
-                                                }
-                                                (<any>popover).addStyleClass("sapMOTAPopover sapTntToolHeaderPopover");
-                                                popover.openBy(event.getSource(), true);
-                                            }
-                                        });
-                                    }
-                                })
+                                */
                             ]
                         }),
                         content: [this.form]

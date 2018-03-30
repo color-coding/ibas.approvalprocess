@@ -30,8 +30,6 @@ namespace approvalprocess {
                 chooseApprovalTemplateBOInformationEvent: Function;
                 /** 审批步骤选择步骤所有者 */
                 chooseApprovalTemplateStepUserEvent: Function;
-                /** 审批步骤条件选择取值属性 */
-                chooseApprovalTemplateStepConditionBOPropertyInformationEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
@@ -61,17 +59,31 @@ namespace approvalprocess {
                                 path: "/activated",
                                 type: "sap.ui.model.type.Integer"
                             }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_validdate") }),
+                            new sap.m.DatePicker("", {
+                                valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                                displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                            }).bindProperty("dateValue", {
+                                path: "validDate"
+                            }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_invaliddate") }),
+                            new sap.m.DatePicker("", {
+                                valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                                displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                            }).bindProperty("dateValue", {
+                                path: "invalidDate"
+                            }),
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("approvalprocess_title_others") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_objectkey") }),
                             new sap.m.Input("", {
-                                enable: false,
+                                editable: false,
                                 type: sap.m.InputType.Text
                             }).bindProperty("value", {
                                 path: "/objectKey",
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_objectcode") }),
                             new sap.m.Input("", {
-                                enabled: false,
+                                editable: false,
                                 type: sap.m.InputType.Text
                             }).bindProperty("value", {
                                 path: "/objectCode",
@@ -80,7 +92,6 @@ namespace approvalprocess {
                     });
                     this.tableTitle = new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_approvaltemplatestep") });
                     this.form.addContent(this.tableTitle);
-
                     this.tableApprovalTemplateStep = new sap.ui.table.Table("", {
                         toolbar: new sap.m.Toolbar("", {
                             content: [
@@ -124,11 +135,21 @@ namespace approvalprocess {
                         }),
                         columns: [
                             new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_approvaltemplatestep_steporder"),
+                                template: new sap.m.Input("", {
+                                    width: "100%",
+                                    type: sap.m.InputType.Number
+                                }).bindProperty("value", {
+                                    path: "stepOrder",
+                                })
+                            }),
+                            new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestep_stepname"),
                                 template: new sap.m.Input("", {
                                     width: "100%",
-                                    value: "{stepName}",
                                     type: sap.m.InputType.Text
+                                }).bindProperty("value", {
+                                    path: "stepName",
                                 })
                             }),
                             new sap.ui.table.Column("", {
@@ -143,7 +164,7 @@ namespace approvalprocess {
                             }),
                             new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestep_stepowner"),
-                                template: new sap.m.Input("", {
+                                template: new sap.m.ex.DataOwnerInput("", {
                                     width: "100%",
                                     showValueHelp: true,
                                     valueHelpRequest: function (): void {
@@ -151,18 +172,11 @@ namespace approvalprocess {
                                             // 获取当前对象
                                             this.getBindingContext().getObject()
                                         );
+                                    },
+                                    bindingValue: {
+                                        path: "stepOwner"
                                     }
-                                }).bindProperty("value", {
-                                    path: "stepOwner"
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_approvaltemplatestep_steporder"),
-                                template: new sap.m.Input("", {
-                                    width: "100%",
-                                    value: "{stepOrder}",
-                                    type: sap.m.InputType.Text
-                                })
+                                }),
                             }),
                             new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestep_stepcanmodify"),
@@ -176,11 +190,22 @@ namespace approvalprocess {
                             }),
                         ]
                     });
-                    this.columnApprovalTemplateStepConditionPropertyName = new sap.ui.table.Column("", {
+                    let columnProperty: sap.ui.table.Column = new sap.ui.table.Column("", {
                         label: ibas.i18n.prop("bo_approvaltemplatestepcondition_propertyname"),
-                        template: new sap.m.Select("", {
+                        template: that.propertySelect = new sap.m.ex.BOChildSelect("", {
+                            blank: true,
                             width: "100%",
-                            selectedKey: "{propertyName}"
+                            boKey: "property",
+                            boText: "description",
+                            boCode: ibas.config.applyVariables(initialfantasy.bo.BO_CODE_BOINFORMATION),
+                            repositoryName: initialfantasy.bo.BO_REPOSITORY_INITIALFANTASY,
+                            childPropertyName: "boPropertyInformations",
+                            bindingValue: {
+                                path: "propertyName"
+                            },
+                            onLoadItemsCompleted: function (oEvent: any): void {
+                                columnProperty.setTemplate(that.propertySelect);
+                            }
                         })
                     });
                     this.tableApprovalTemplateStepCondition = new sap.ui.table.Table("", {
@@ -235,8 +260,10 @@ namespace approvalprocess {
                                 label: ibas.i18n.prop("bo_approvaltemplatestepcondition_bracketopen"),
                                 template: new sap.m.Select("", {
                                     width: "100%",
-                                    selectedKey: "{bracketOpen}",
                                     items: this.getCharListItem("(")
+                                }).bindProperty("selectedKey", {
+                                    path: "bracketOpen",
+                                    type: "sap.ui.model.type.Integer"
                                 })
                             }),
                             new sap.ui.table.Column("", {
@@ -249,21 +276,7 @@ namespace approvalprocess {
                                     type: "sap.ui.model.type.Integer"
                                 })
                             }),
-                            // new sap.ui.table.Column("", {
-                            //     label: ibas.i18n.prop("bo_approvaltemplatestepcondition_propertyname"),
-                            //     template: new sap.m.Input("", {
-                            //         width: "100%",
-                            //         value: "{propertyName}",
-                            //         showValueHelp: true,
-                            //         valueHelpRequest: function (): void {
-                            //             that.fireViewEvents(that.chooseApprovalTemplateStepConditionBOPropertyInformationEvent,
-                            //                 // 获取当前对象
-                            //                 this.getBindingContext().getObject()
-                            //             );
-                            //         }
-                            //     })
-                            // }),
-                            this.columnApprovalTemplateStepConditionPropertyName,
+                            columnProperty,
                             new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestepcondition_operation"),
                                 template: new sap.m.Select("", {
@@ -278,16 +291,19 @@ namespace approvalprocess {
                                 label: ibas.i18n.prop("bo_approvaltemplatestepcondition_conditionvalue"),
                                 template: new sap.m.Input("", {
                                     width: "100%",
-                                    value: "{conditionValue}",
                                     type: sap.m.InputType.Text
+                                }).bindProperty("value", {
+                                    path: "conditionValue",
                                 })
                             }),
                             new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestepcondition_bracketclose"),
                                 template: new sap.m.Select("", {
                                     width: "100%",
-                                    selectedKey: "{bracketClose}",
                                     items: this.getCharListItem(")")
+                                }).bindProperty("selectedKey", {
+                                    path: "bracketClose",
+                                    type: "sap.ui.model.type.Integer"
                                 })
                             }),
                         ]
@@ -375,7 +391,7 @@ namespace approvalprocess {
                 private splitContainer: sap.m.SplitContainer;
                 private tableApprovalTemplateStep: sap.ui.table.Table;
                 private tableApprovalTemplateStepCondition: sap.ui.table.Table;
-                private columnApprovalTemplateStepConditionPropertyName: sap.ui.table.Column;
+                private propertySelect: sap.m.ex.BOChildSelect;
 
                 protected getPropertyListItem(properies: initialfantasy.bo.IBOPropertyInformation[]): sap.ui.core.ListItem[] {
                     let items: Array<sap.ui.core.ListItem> = [];
@@ -392,14 +408,6 @@ namespace approvalprocess {
                         }
                     }
                     return items;
-                }
-                /** 刷新字段列表 */
-                refreshBOPropertyInformationList(properies: initialfantasy.bo.IBOPropertyInformation[]): void {
-                    this.columnApprovalTemplateStepConditionPropertyName.setTemplate(new sap.m.Select("", {
-                        width: "100%",
-                        selectedKey: "{propertyName}",
-                        items: this.getPropertyListItem(properies)
-                    }));
                 }
                 /** 获取重复的字符 */
                 private getCharListItem(char: string): sap.ui.core.ListItem[] {
@@ -427,6 +435,9 @@ namespace approvalprocess {
                     openui5.utils.refreshModelChanged(this.form, data);
                     // 改变视图状态
                     this.changeViewStatus(data);
+                    this.propertySelect.setCriteria([
+                        new ibas.Condition("code", ibas.emConditionOperation.EQUAL, data.approvalObjectCode)
+                    ]);
                 }
                 /** 显示数据 */
                 showApprovalTemplateSteps(datas: bo.ApprovalTemplateStep[]): void {
