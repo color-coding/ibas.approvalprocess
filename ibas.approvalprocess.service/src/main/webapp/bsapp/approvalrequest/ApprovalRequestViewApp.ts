@@ -80,10 +80,6 @@ namespace approvalprocess {
                 });
                 this.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("shell_fetching_data"));
             }
-            /** 获取服务的契约 */
-            protected getServiceProxies(): ibas.IServiceProxy<ibas.IServiceContract>[] {
-                return [];
-            }
         }
         /** 视图-审批请求 */
         export interface IApprovalRequestViewView extends ibas.IBOViewView {

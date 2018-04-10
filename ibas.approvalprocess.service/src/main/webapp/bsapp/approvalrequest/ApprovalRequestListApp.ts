@@ -172,10 +172,6 @@ namespace approvalprocess {
                     }
                 });
             }
-            /** 获取服务的契约 */
-            protected getServiceProxies(): ibas.IServiceProxy<ibas.IServiceContract>[] {
-                return [];
-            }
         }
         /** 视图-审批请求 */
         export interface IApprovalRequestListView extends ibas.IBOListView {
