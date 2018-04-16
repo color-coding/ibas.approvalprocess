@@ -48,7 +48,7 @@ namespace approvalprocess {
                             if (opRslt.resultCode !== 0) {
                                 throw new Error(opRslt.message);
                             }
-                            if (!that.view.isDisplayed) {
+                            if (!that.isViewShowed()) {
                                 that.show();
                             }
                             if (opRslt.resultObjects.length === 0) {
