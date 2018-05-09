@@ -48,38 +48,43 @@ public class ApprovalProcessStepCondition extends Serializable
 	}
 
 	public static String serialize(List<IApprovalTemplateStepCondition> conditions) {
-		if (conditions != null) {
-			ArrayList<ApprovalProcessStepCondition> stepConditions = new ArrayList<ApprovalProcessStepCondition>();
-			for (IApprovalTemplateStepCondition item : conditions) {
-				ApprovalProcessStepCondition stepCondition = new ApprovalProcessStepCondition();
-				// 此处需要特别注意：UI编辑时，属性比较用数据库字段；SQL脚本第一个用属性，第二个用数据库字段。
-				if (item.getConditionType() == emApprovalConditionType.PROPERTY_VALUE) {
-					stepCondition.setPropertyValueMode(ValueMode.DB_FIELD);
-					stepCondition.setConditionValueMode(ValueMode.INPUT);
-					stepCondition.setRelation(item.getRelationship());
-					stepCondition.setPropertyName(item.getPropertyName());
-					stepCondition.setOperation(item.getOperation());
-					stepCondition.setConditionValue(item.getConditionValue());
-					stepCondition.setBracketOpen(item.getBracketOpen());
-					stepCondition.setBracketClose(item.getBracketClose());
-				} else if (item.getConditionType() == emApprovalConditionType.SQL_SCRIPT) {
-					stepCondition.setPropertyValueMode(ValueMode.PROPERTY);
-					stepCondition.setConditionValueMode(ValueMode.SQL_SCRIPT);
-					stepCondition.setRelation(item.getRelationship());
-					stepCondition.setPropertyName(item.getPropertyName());
-					stepCondition.setOperation(item.getOperation());
-					stepCondition.setConditionValue(item.getConditionValue());
-					stepCondition.setBracketOpen(item.getBracketOpen());
-					stepCondition.setBracketClose(item.getBracketClose());
+		try {
+			if (conditions != null) {
+				ArrayList<ApprovalProcessStepCondition> stepConditions = new ArrayList<ApprovalProcessStepCondition>();
+				for (IApprovalTemplateStepCondition item : conditions) {
+					ApprovalProcessStepCondition stepCondition = new ApprovalProcessStepCondition();
+					// 此处需要特别注意：UI编辑时，属性比较用数据库字段；SQL脚本第一个用属性，第二个用数据库字段。
+					if (item.getConditionType() == emApprovalConditionType.PROPERTY_VALUE) {
+						stepCondition.setPropertyValueMode(ValueMode.DB_FIELD);
+						stepCondition.setConditionValueMode(ValueMode.INPUT);
+						stepCondition.setRelation(item.getRelationship());
+						stepCondition.setPropertyName(item.getPropertyName());
+						stepCondition.setOperation(item.getOperation());
+						stepCondition.setConditionValue(item.getConditionValue());
+						stepCondition.setBracketOpen(item.getBracketOpen());
+						stepCondition.setBracketClose(item.getBracketClose());
+					} else if (item.getConditionType() == emApprovalConditionType.SQL_SCRIPT) {
+						stepCondition.setPropertyValueMode(ValueMode.PROPERTY);
+						stepCondition.setConditionValueMode(ValueMode.SQL_SCRIPT);
+						stepCondition.setRelation(item.getRelationship());
+						stepCondition.setPropertyName(item.getPropertyName());
+						stepCondition.setOperation(item.getOperation());
+						stepCondition.setConditionValue(item.getConditionValue());
+						stepCondition.setBracketOpen(item.getBracketOpen());
+						stepCondition.setBracketClose(item.getBracketClose());
+					}
+					stepConditions.add(stepCondition);
 				}
-				stepConditions.add(stepCondition);
+				ISerializer<?> serializer = SerializerFactory.create().createManager()
+						.create(ISerializerManager.TYPE_JSON);
+				ByteArrayOutputStream writer = new ByteArrayOutputStream();
+				serializer.serialize(stepConditions, writer, ApprovalProcessStepCondition.class);
+				return new String(writer.toByteArray(), "utf-8");
 			}
-			ISerializer<?> serializer = SerializerFactory.create().createManager().create(ISerializerManager.TYPE_JSON);
-			ByteArrayOutputStream writer = new ByteArrayOutputStream();
-			serializer.serialize(stepConditions, writer, ApprovalProcessStepCondition.class);
-			return writer.toString();
+			return null;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		return null;
 	}
 
 	private ValueMode propertyValueMode = ValueMode.DB_FIELD;
