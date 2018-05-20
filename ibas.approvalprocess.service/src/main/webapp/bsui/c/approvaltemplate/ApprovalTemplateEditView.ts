@@ -436,7 +436,7 @@ namespace approvalprocess {
                     // 改变视图状态
                     this.changeViewStatus(data);
                     this.propertySelect.setCriteria([
-                        new ibas.Condition("code", ibas.emConditionOperation.EQUAL, data.approvalObjectCode)
+                        new ibas.Condition("Code", ibas.emConditionOperation.EQUAL, data.approvalObjectCode)
                     ]);
                 }
                 /** 显示数据 */
