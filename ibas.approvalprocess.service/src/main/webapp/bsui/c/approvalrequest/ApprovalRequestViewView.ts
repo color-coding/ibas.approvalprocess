@@ -48,7 +48,7 @@ namespace approvalprocess {
                                     icon: "sap-icon://action",
                                     press: function (event: any): void {
                                         ibas.servicesManager.showServices({
-                                            proxy: new ibas.BOListServiceProxy({
+                                            proxy: new ibas.BOServiceProxy({
                                                 data: (<any>that.form.getModel()).getObject(),
                                                 converter: new bo.DataConverter(),
                                             }),
