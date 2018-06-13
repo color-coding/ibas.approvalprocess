@@ -88,11 +88,11 @@ namespace approvalprocess {
                     user: ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID),
                     onCompleted(opRslt: ibas.IOperationResult<bo.ApprovalRequest>): void {
                         try {
+                            that.busy(false);
                             if (opRslt.resultCode !== 0) {
                                 throw new Error(opRslt.message);
                             }
                             that.view.showData(opRslt.resultObjects);
-                            that.busy(false);
                             if (!that.refresh) {
                                 that.refresh = true;
                             }
@@ -104,6 +104,7 @@ namespace approvalprocess {
                 });
             }
             protected approval(ap: bo.ApprovalRequest, result: number): void {
+                this.busy(true);
                 let that: this = this;
                 let boRepository: bo.BORepositoryApprovalProcess = new bo.BORepositoryApprovalProcess();
                 boRepository.approval({
@@ -113,11 +114,11 @@ namespace approvalprocess {
                     judgment: "",
                     onCompleted(opRslt: ibas.IOperationMessage): void {
                         try {
+                            that.busy(false);
                             if (opRslt.resultCode !== 0) {
                                 throw new Error(opRslt.message);
                             }
                             that.messages(ibas.emMessageType.SUCCESS, opRslt.message);
-                            that.busy(false);
                         } catch (error) {
                             that.messages(error);
                         }
