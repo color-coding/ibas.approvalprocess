@@ -184,13 +184,13 @@ namespace approvalprocess {
                 }
             }
             /** 添加审批模板步骤事件 */
-            addApprovalTemplateStep(): void {
+            private addApprovalTemplateStep(): void {
                 this.editData.approvalTemplateSteps.create();
                 // 仅显示没有标记删除的
                 this.view.showApprovalTemplateSteps(this.editData.approvalTemplateSteps.filterDeleted());
             }
             /** 删除审批模板步骤事件 */
-            removeApprovalTemplateStep(items: bo.ApprovalTemplateStep[]): void {
+            private removeApprovalTemplateStep(items: bo.ApprovalTemplateStep[]): void {
                 // 非数组，转为数组
                 if (!(items instanceof Array)) {
                     items = [items];
@@ -214,7 +214,7 @@ namespace approvalprocess {
                 this.view.showApprovalTemplateSteps(this.editData.approvalTemplateSteps.filterDeleted());
             }
             /** 编辑审批模板步骤条件事件 */
-            editApprovalTemplateStep(item: bo.ApprovalTemplateStep): void {
+            private editApprovalTemplateStep(item: bo.ApprovalTemplateStep): void {
                 this.editApprovalTemplateStepData = item;
                 if (ibas.objects.isNull(this.editApprovalTemplateStepData)) {
                     // 无编辑对象
@@ -225,7 +225,7 @@ namespace approvalprocess {
                 }
             }
             /** 添加审批模板步骤条件事件 */
-            addApprovalTemplateStepCondition(): void {
+            private addApprovalTemplateStepCondition(): void {
                 if (!this.editApprovalTemplateStepData) {
                     this.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
                         ibas.i18n.prop("shell_data_edit")));
@@ -236,7 +236,7 @@ namespace approvalprocess {
                 this.view.showApprovalTemplateStepConditions(this.editApprovalTemplateStepData.approvalTemplateStepConditions.filterDeleted());
             }
             /** 删除审批模板步骤条件事件 */
-            removeApprovalTemplateStepCondition(items: bo.ApprovalTemplateStepCondition[]): void {
+            private removeApprovalTemplateStepCondition(items: bo.ApprovalTemplateStepCondition[]): void {
                 if (!this.editApprovalTemplateStepData) {
                     this.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
                         ibas.i18n.prop("shell_data_edit")));
@@ -265,12 +265,17 @@ namespace approvalprocess {
                 this.view.showApprovalTemplateStepConditions(this.editApprovalTemplateStepData.approvalTemplateStepConditions.filterDeleted());
             }
             /** 选择业务对象类型 */
-            chooseApprovalTemplateBOInformationEvent(): void {
+            private chooseApprovalTemplateBOInformationEvent(): void {
                 let that: this = this;
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                criteria.noChilds = true;
+                let condition: ibas.ICondition = criteria.conditions.create();
+                condition.alias = "Code";
+                condition.value = ".";
+                condition.operation = ibas.emConditionOperation.NOT_CONTAIN;
                 ibas.servicesManager.runChooseService<initialfantasy.bo.IBOInformation>({
                     boCode: initialfantasy.bo.BO_CODE_BOINFORMATION,
-                    criteria: [
-                    ],
+                    criteria: criteria,
                     onCompleted(selecteds: ibas.IList<initialfantasy.bo.IBOInformation>): void {
                         let selected: initialfantasy.bo.IBOInformation = selecteds.firstOrDefault();
                         that.editData.approvalObjectCode = selected.code;
@@ -279,7 +284,7 @@ namespace approvalprocess {
                 });
             }
             /** 审批步骤选择步骤所有者 */
-            chooseApprovalTemplateStepUserEvent(caller: bo.ApprovalTemplateStep): void {
+            private chooseApprovalTemplateStepUserEvent(caller: bo.ApprovalTemplateStep): void {
                 let that: this = this;
                 ibas.servicesManager.runChooseService<initialfantasy.bo.IUser>({
                     boCode: initialfantasy.bo.BO_CODE_USER,

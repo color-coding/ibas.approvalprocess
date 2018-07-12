@@ -177,13 +177,13 @@ namespace approvalprocess {
                 }
             }
             /** 添加审批请求步骤事件 */
-            addApprovalRequestStep(): void {
+            private addApprovalRequestStep(): void {
                 this.editData.approvalRequestSteps.create();
                 // 仅显示没有标记删除的
                 this.view.showApprovalRequestSteps(this.editData.approvalRequestSteps.filterDeleted());
             }
             /** 删除审批请求步骤事件 */
-            removeApprovalRequestStep(items: bo.ApprovalRequestStep[]): void {
+            private removeApprovalRequestStep(items: bo.ApprovalRequestStep[]): void {
                 // 非数组，转为数组
                 if (!(items instanceof Array)) {
                     items = [items];
@@ -207,7 +207,7 @@ namespace approvalprocess {
                 this.view.showApprovalRequestSteps(this.editData.approvalRequestSteps.filterDeleted());
             }
             /** 选择审批步骤所有者事件 */
-            chooseApprovalRequestStepOwner(caller: bo.ApprovalRequestStep): void {
+            private chooseApprovalRequestStepOwner(caller: bo.ApprovalRequestStep): void {
                 let that: this = this;
                 ibas.servicesManager.runChooseService<initialfantasy.bo.IUser>({
                     boCode: initialfantasy.bo.BO_CODE_USER,
