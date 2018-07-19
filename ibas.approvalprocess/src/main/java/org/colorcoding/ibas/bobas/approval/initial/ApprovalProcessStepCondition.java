@@ -53,9 +53,9 @@ public class ApprovalProcessStepCondition extends Serializable
 				ArrayList<ApprovalProcessStepCondition> stepConditions = new ArrayList<ApprovalProcessStepCondition>();
 				for (IApprovalTemplateStepCondition item : conditions) {
 					ApprovalProcessStepCondition stepCondition = new ApprovalProcessStepCondition();
-					// 此处需要特别注意：UI编辑时，属性比较用数据库字段；SQL脚本第一个用属性，第二个用数据库字段。
+					// 此处需要特别注意：UI编辑时，属性比较第一个用属性，第二个用输入值；SQL脚本第一个用属性，第二个用数据库字段。
 					if (item.getConditionType() == emApprovalConditionType.PROPERTY_VALUE) {
-						stepCondition.setPropertyValueMode(ValueMode.DB_FIELD);
+						stepCondition.setPropertyValueMode(ValueMode.PROPERTY);
 						stepCondition.setConditionValueMode(ValueMode.INPUT);
 						stepCondition.setRelation(item.getRelationship());
 						stepCondition.setPropertyName(item.getPropertyName());
