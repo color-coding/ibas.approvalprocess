@@ -53,26 +53,19 @@ public class ApprovalProcessStepCondition extends Serializable
 				ArrayList<ApprovalProcessStepCondition> stepConditions = new ArrayList<ApprovalProcessStepCondition>();
 				for (IApprovalTemplateStepCondition item : conditions) {
 					ApprovalProcessStepCondition stepCondition = new ApprovalProcessStepCondition();
-					// 此处需要特别注意：UI编辑时，属性比较用数据库字段；SQL脚本第一个用属性，第二个用数据库字段。
+					// 此处需要特别注意：UI编辑时，属性比较用数据库字段(考虑自定义字段没有属性)
+					stepCondition.setPropertyValueMode(ValueMode.DB_FIELD);
 					if (item.getConditionType() == emApprovalConditionType.PROPERTY_VALUE) {
-						stepCondition.setPropertyValueMode(ValueMode.DB_FIELD);
-						stepCondition.setConditionValueMode(ValueMode.INPUT);
-						stepCondition.setRelation(item.getRelationship());
-						stepCondition.setPropertyName(item.getPropertyName());
-						stepCondition.setOperation(item.getOperation());
-						stepCondition.setConditionValue(item.getConditionValue());
-						stepCondition.setBracketOpen(item.getBracketOpen());
-						stepCondition.setBracketClose(item.getBracketClose());
+						stepCondition.setConditionValueMode(ValueMode.INPUT);;
 					} else if (item.getConditionType() == emApprovalConditionType.SQL_SCRIPT) {
-						stepCondition.setPropertyValueMode(ValueMode.PROPERTY);
 						stepCondition.setConditionValueMode(ValueMode.SQL_SCRIPT);
-						stepCondition.setRelation(item.getRelationship());
-						stepCondition.setPropertyName(item.getPropertyName());
-						stepCondition.setOperation(item.getOperation());
-						stepCondition.setConditionValue(item.getConditionValue());
-						stepCondition.setBracketOpen(item.getBracketOpen());
-						stepCondition.setBracketClose(item.getBracketClose());
 					}
+					stepCondition.setRelation(item.getRelationship());
+					stepCondition.setPropertyName(item.getPropertyName());
+					stepCondition.setOperation(item.getOperation());
+					stepCondition.setConditionValue(item.getConditionValue());
+					stepCondition.setBracketOpen(item.getBracketOpen());
+					stepCondition.setBracketClose(item.getBracketClose());
 					stepConditions.add(stepCondition);
 				}
 				ISerializer<?> serializer = SerializerFactory.create().createManager()
