@@ -53,8 +53,8 @@ namespace approvalprocess {
                     if (property === bo.ApprovalTemplateStep.PROPERTY_STEPOWNERTYPE_NAME) {
                         return ibas.enums.toString(emApprovalStepOwnerType, value);
                     }
-                    return super.convertData(boName, property, value);
                 }
+                return super.convertData(boName, property, value);
             }
             /**
              * 解析数据

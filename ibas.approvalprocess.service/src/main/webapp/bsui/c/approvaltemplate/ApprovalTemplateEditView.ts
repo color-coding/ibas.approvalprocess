@@ -64,14 +64,14 @@ namespace approvalprocess {
                                 valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                                 displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                             }).bindProperty("dateValue", {
-                                path: "validDate"
+                                path: "/validDate"
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_invaliddate") }),
                             new sap.m.DatePicker("", {
                                 valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                                 displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                             }).bindProperty("dateValue", {
-                                path: "invalidDate"
+                                path: "/invalidDate"
                             }),
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("approvalprocess_title_others") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_objectkey") }),
