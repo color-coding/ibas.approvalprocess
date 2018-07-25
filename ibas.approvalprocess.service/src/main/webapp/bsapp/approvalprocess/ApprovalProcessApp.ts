@@ -7,7 +7,6 @@
  */
 namespace approvalprocess {
     export namespace app {
-
         /** 配置项目-审批流程刷新间隔（秒） */
         export const CONFIG_ITEM_APPROVALPROCESS_REFRESH_INTERVAL: string = "apInterval";
         /** 应用-审批流程 */
@@ -30,6 +29,13 @@ namespace approvalprocess {
                 // 其他事件
                 this.view.showListEvent = this.showList;
                 this.view.approvalEvent = this.approval;
+            }
+            /** 运行,覆盖原方法 */
+            run(): void {
+                super.run.apply(this, arguments);
+            }
+            /** 工具条显示后 */
+            protected barShowed(): void {
                 // 自动刷新审批消息
                 let that: this = this;
                 let time: number = ibas.config.get(CONFIG_ITEM_APPROVALPROCESS_REFRESH_INTERVAL, 180);
@@ -40,10 +46,6 @@ namespace approvalprocess {
                     }
                     that.fetchApprovalRequest();
                 }, time * 1000);
-            }
-            /** 运行,覆盖原方法 */
-            run(): void {
-                super.run.apply(this, arguments);
             }
             /** 视图显示后 */
             protected viewShowed(): void {

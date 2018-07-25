@@ -35,21 +35,21 @@ namespace approvalprocess {
                                 editable: false,
                                 type: sap.m.InputType.Text
                             }).bindProperty("value", {
-                                path: "/name",
+                                path: "name",
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_approvalstatus") }),
                             new sap.m.Select("", {
                                 enabled: false,
                                 items: openui5.utils.createComboBoxItems(ibas.emApprovalStatus)
                             }).bindProperty("selectedKey", {
-                                path: "/approvalStatus",
+                                path: "approvalStatus",
                                 type: "sap.ui.model.type.Integer"
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_approvalowner") }),
                             new sap.m.ex.DataOwnerInput("", {
                                 editable: false,
                                 bindingValue: {
-                                    path: "/approvalOwner"
+                                    path: "approvalOwner"
                                 }
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_bokeys") }),
@@ -57,7 +57,7 @@ namespace approvalprocess {
                                 editable: false,
                                 type: sap.m.InputType.Text
                             }).bindProperty("value", {
-                                path: "/boKeys",
+                                path: "boKeys",
                             }),
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("initialfantasy_title_others") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_startedtime") }),
@@ -66,7 +66,7 @@ namespace approvalprocess {
                                 valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                                 displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                             }).bindProperty("dateValue", {
-                                path: "/startedTime",
+                                path: "startedTime",
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_finishedtime") }),
                             new sap.m.DatePicker("", {
@@ -74,7 +74,7 @@ namespace approvalprocess {
                                 valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                                 displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                             }).bindProperty("dateValue", {
-                                path: "/finishedTime",
+                                path: "finishedTime",
                             }),
                         ]
                     });
@@ -243,6 +243,7 @@ namespace approvalprocess {
                 /** 显示数据 */
                 showApprovalRequest(data: bo.ApprovalRequest): void {
                     this.form.setModel(new sap.ui.model.json.JSONModel(data));
+                    this.form.bindObject("/");
                     // 监听属性改变，并更新控件
                     openui5.utils.refreshModelChanged(this.form, data);
                     // 改变视图状态
