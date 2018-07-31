@@ -64,6 +64,9 @@ namespace approvalprocess {
                                     wrapping: false
                                 }).bindProperty("text", {
                                     path: "approvalObjectCode",
+                                    formatter(data: any): any {
+                                        return openui5.utils.describeBOCode(data);
+                                    }
                                 })
                             }),
                         ]
