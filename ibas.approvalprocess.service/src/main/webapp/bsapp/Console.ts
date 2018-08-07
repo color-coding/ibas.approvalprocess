@@ -39,7 +39,7 @@ namespace approvalprocess {
                 this.register(new ApprovalRequestChooseServiceMapping());
                 this.register(new ApprovalRequestLinkServiceMapping());
                 this.register(new ApprovalTemplateChooseServiceMapping());
-                this.register(new BOApprovalProcessServiceMapping());
+                this.register(new ApprovalProcessServiceMapping());
                 // 注册常驻应用
                 this.register(new ApprovalProcessApp());
             }

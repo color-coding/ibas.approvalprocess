@@ -58,8 +58,8 @@ namespace approvalprocess {
             }
             /** 运行服务 */
             runService(contract: ibas.IBOServiceContract): void {
-                if (!ibas.objects.isNull(contract) && !ibas.objects.isNull(contract.data)) {
-                    let bo: ibas.IBusinessObject;
+                let bo: ibas.IBusinessObject;
+                if (!ibas.objects.isNull(contract)) {
                     // 传入的数据可能是数组
                     if (contract.data instanceof Array) {
                         // 数组只处理第一个
@@ -67,6 +67,12 @@ namespace approvalprocess {
                     } else {
                         bo = contract.data;
                     }
+                }
+                if (ibas.objects.isNull(bo)) {
+                    // 输入数据无效，服务不运行
+                    this.proceeding(ibas.emMessageType.WARNING,
+                        ibas.i18n.prop("approvalprocess_bo_approval_service") + ibas.i18n.prop("sys_invalid_parameter", "data"));
+                } else {
                     let criteria: ibas.ICriteria = new ibas.Criteria();
                     let condition: ibas.ICondition = criteria.conditions.create();
                     condition.alias = approvalprocess.bo.ApprovalRequest.PROPERTY_ACTIVATED_NAME;
@@ -75,10 +81,6 @@ namespace approvalprocess {
                     condition.alias = approvalprocess.bo.ApprovalRequest.PROPERTY_BOKEYS_NAME;
                     condition.value = bo.toString();
                     this.fetchData(criteria);
-                } else {
-                    // 输入数据无效，服务不运行
-                    this.proceeding(ibas.emMessageType.WARNING,
-                        ibas.i18n.prop("approvalprocess_bo_approval_service") + ibas.i18n.prop("sys_invalid_parameter", "data"));
                 }
             }
             /** 关联的审批请求 */
@@ -172,7 +174,7 @@ namespace approvalprocess {
             showApprovalRequestSteps(datas: bo.ApprovalRequestStep[]): void;
         }
         /** 业务对象审批流程服务映射 */
-        export class BOApprovalProcessServiceMapping extends ibas.ServiceMapping {
+        export class ApprovalProcessServiceMapping extends ibas.ServiceMapping {
 
             constructor() {
                 super();
