@@ -29,6 +29,7 @@ namespace approvalprocess {
                 // 其他事件
                 this.view.showListEvent = this.showList;
                 this.view.approvalEvent = this.approval;
+                this.view.viewDataEvent = this.viewData;
             }
             /** 运行,覆盖原方法 */
             run(): void {
@@ -127,6 +128,13 @@ namespace approvalprocess {
                     }
                 });
             }
+            protected viewData(ap: bo.ApprovalRequest): void {
+                let app: ApprovalProcessService = new ApprovalProcessService();
+                app.viewShower = this.viewShower;
+                app.navigation = this.navigation;
+                app.run(ap);
+                this.close();
+            }
         }
         /** 视图-审批流程 */
         export interface IApprovalProcessView extends ibas.IResidentView {
@@ -136,6 +144,8 @@ namespace approvalprocess {
             showData(datas: bo.ApprovalRequest[]): void;
             // 审批操作，参数1，审批请求；参数2，操作
             approvalEvent: Function;
+            // 查看详情
+            viewDataEvent: Function;
         }
     }
 }

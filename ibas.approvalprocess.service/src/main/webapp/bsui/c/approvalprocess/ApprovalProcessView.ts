@@ -16,6 +16,8 @@ namespace approvalprocess {
                 showListEvent: Function;
                 // 审批操作，参数1，审批请求；参数2，操作
                 approvalEvent: Function;
+                // 查看详情
+                viewDataEvent: Function;
                 /** 绘制工具条视图 */
                 drawBar(): any {
                     let that: this = this;
@@ -87,7 +89,7 @@ namespace approvalprocess {
                             authorPicture: "sap-icon://customer-history",
                             press: function (): void {
                                 // 详情
-
+                                that.fireViewEvents(that.viewDataEvent, apItem);
                             },
                             buttons: [
                                 new sap.m.Button("", {
