@@ -27,6 +27,9 @@ namespace approvalprocess {
                     case app.ApprovalProcessApp.APPLICATION_ID:
                         view = new m.ApprovalProcessView();
                         break;
+                    case app.ApprovalProcessService.APPLICATION_ID:
+                        view = new m.ApprovalProcessServiceView();
+                        break;
                 }
                 return view;
             }
