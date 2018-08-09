@@ -1,9 +1,0 @@
-[
-  {
-    "Id": "b3382a56-bdda-412c-bc2f-af17cd19142e",
-    "Name": "ApprovalProcess",
-    "Category": "",
-    "Address": ".../",
-    "Repository": "http://localhost:8080/approvalprocess/services/rest/data"
-  }
-]
