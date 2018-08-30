@@ -211,12 +211,14 @@ namespace approvalprocess {
                 let that: this = this;
                 ibas.servicesManager.runChooseService<initialfantasy.bo.IUser>({
                     boCode: initialfantasy.bo.BO_CODE_USER,
+                    chooseType: ibas.emChooseType.SINGLE,
                     criteria: [
                         new ibas.Condition("Activated", ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
                     ],
                     onCompleted(selecteds: ibas.IList<initialfantasy.bo.IUser>): void {
                         let selected: initialfantasy.bo.IUser = selecteds.firstOrDefault();
                         caller.stepOwner = selected.docEntry;
+                        caller.stepName = ibas.i18n.prop("approvalprocess_approvaltemplate_name", selected.name);
                     }
                 });
 

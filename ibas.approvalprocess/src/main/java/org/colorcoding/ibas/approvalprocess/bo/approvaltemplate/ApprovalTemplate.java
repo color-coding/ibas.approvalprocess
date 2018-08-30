@@ -79,8 +79,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-编号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setObjectKey(Integer value) {
 		this.setProperty(PROPERTY_OBJECTKEY, value);
@@ -111,8 +110,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setObjectCode(String value) {
 		this.setProperty(PROPERTY_OBJECTCODE, value);
@@ -143,8 +141,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-实例号（版本）
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLogInst(Integer value) {
 		this.setProperty(PROPERTY_LOGINST, value);
@@ -175,8 +172,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-服务系列
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setSeries(Integer value) {
 		this.setProperty(PROPERTY_SERIES, value);
@@ -207,8 +203,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-数据源
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDataSource(String value) {
 		this.setProperty(PROPERTY_DATASOURCE, value);
@@ -239,8 +234,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-创建日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateDate(DateTime value) {
 		this.setProperty(PROPERTY_CREATEDATE, value);
@@ -271,8 +265,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-创建时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateTime(Short value) {
 		this.setProperty(PROPERTY_CREATETIME, value);
@@ -303,8 +296,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-修改日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateDate(DateTime value) {
 		this.setProperty(PROPERTY_UPDATEDATE, value);
@@ -335,8 +327,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-修改时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateTime(Short value) {
 		this.setProperty(PROPERTY_UPDATETIME, value);
@@ -367,8 +358,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-创建动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateActionId(String value) {
 		this.setProperty(PROPERTY_CREATEACTIONID, value);
@@ -399,8 +389,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-更新动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateActionId(String value) {
 		this.setProperty(PROPERTY_UPDATEACTIONID, value);
@@ -431,8 +420,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-创建用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateUserSign(Integer value) {
 		this.setProperty(PROPERTY_CREATEUSERSIGN, value);
@@ -463,8 +451,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-修改用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateUserSign(Integer value) {
 		this.setProperty(PROPERTY_UPDATEUSERSIGN, value);
@@ -495,8 +482,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-数据所有者
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDataOwner(Integer value) {
 		this.setProperty(PROPERTY_DATAOWNER, value);
@@ -527,8 +513,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-数据所属组织
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setOrganization(String value) {
 		this.setProperty(PROPERTY_ORGANIZATION, value);
@@ -559,8 +544,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-参考1
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setReference1(String value) {
 		this.setProperty(PROPERTY_REFERENCE1, value);
@@ -591,8 +575,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-参考2
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setReference2(String value) {
 		this.setProperty(PROPERTY_REFERENCE2, value);
@@ -623,8 +606,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-备注
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setRemarks(String value) {
 		this.setProperty(PROPERTY_REMARKS, value);
@@ -655,8 +637,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-审批流程名称
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setName(String value) {
 		this.setProperty(PROPERTY_NAME, value);
@@ -670,7 +651,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 审批的对象类型 属性
 	 */
-	@DbField(name = "ApvlObjectCode", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "ApvlCode", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
 	public static final IPropertyInfo<String> PROPERTY_APPROVALOBJECTCODE = registerProperty(
 			PROPERTY_APPROVALOBJECTCODE_NAME, String.class, MY_CLASS);
 
@@ -687,8 +668,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-审批的对象类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setApprovalObjectCode(String value) {
 		this.setProperty(PROPERTY_APPROVALOBJECTCODE, value);
@@ -719,8 +699,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-激活的
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setActivated(emYesNo value) {
 		this.setProperty(PROPERTY_ACTIVATED, value);
@@ -751,8 +730,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-生效日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setValidDate(DateTime value) {
 		this.setProperty(PROPERTY_VALIDDATE, value);
@@ -783,8 +761,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-失效日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setInvalidDate(DateTime value) {
 		this.setProperty(PROPERTY_INVALIDDATE, value);
@@ -816,8 +793,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	/**
 	 * 设置-审批模板步骤集合
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setApprovalTemplateSteps(IApprovalTemplateSteps value) {
 		this.setProperty(PROPERTY_APPROVALTEMPLATESTEPS, value);

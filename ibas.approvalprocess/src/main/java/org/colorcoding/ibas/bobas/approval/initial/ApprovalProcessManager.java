@@ -9,6 +9,7 @@ import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplat
 import org.colorcoding.ibas.approvalprocess.repository.BORepositoryApprovalProcess;
 import org.colorcoding.ibas.approvalprocess.repository.IBORepositoryApprovalProcessApp;
 import org.colorcoding.ibas.bobas.approval.IApprovalProcess;
+import org.colorcoding.ibas.bobas.common.ConditionOperation;
 import org.colorcoding.ibas.bobas.common.ConditionRelationship;
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
@@ -16,6 +17,7 @@ import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.common.ISort;
 import org.colorcoding.ibas.bobas.common.SortType;
+import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.message.Logger;
 import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
@@ -24,7 +26,7 @@ import org.colorcoding.ibas.bobas.repository.InvalidTokenException;
 /**
  * 审批流程管理员
  * 
- * 需要在app.xml中配置 <add key="ApprovalWay" value="fantasy" />
+ * 需要在app.xml中配置 <add key="ApprovalWay" value="initial" />
  * 
  * @author Niuren.Zhu
  *
@@ -65,12 +67,46 @@ public class ApprovalProcessManager extends org.colorcoding.ibas.bobas.approval.
 		// 根据 boCode 查询审批流程模板 AT
 		ICriteria criteria = new Criteria();
 		ICondition condition = criteria.getConditions().create();
+		condition.setBracketOpen(1);
 		condition.setAlias(ApprovalTemplate.PROPERTY_APPROVALOBJECTCODE.getName());
 		condition.setValue(boCode);
 		condition = criteria.getConditions().create();
 		condition.setRelationship(ConditionRelationship.AND);
 		condition.setAlias(ApprovalTemplate.PROPERTY_ACTIVATED.getName());
 		condition.setValue(emYesNo.YES);
+		condition.setBracketClose(1);
+		// 审模板的有效日期
+		DateTime today = DateTime.getToday();
+		condition = criteria.getConditions().create();
+		condition.setBracketOpen(1);
+		condition.setAlias(ApprovalTemplate.PROPERTY_VALIDDATE.getName());
+		condition.setOperation(ConditionOperation.IS_NULL);
+		condition = criteria.getConditions().create();
+		condition.setRelationship(ConditionRelationship.OR);
+		condition.setBracketOpen(1);
+		condition.setAlias(ApprovalTemplate.PROPERTY_VALIDDATE.getName());
+		condition.setOperation(ConditionOperation.NOT_NULL);
+		condition = criteria.getConditions().create();
+		condition.setBracketClose(2);
+		condition.setAlias(ApprovalTemplate.PROPERTY_VALIDDATE.getName());
+		condition.setOperation(ConditionOperation.LESS_EQUAL);
+		condition.setValue(today);
+		// 失效日期
+		condition = criteria.getConditions().create();
+		condition.setBracketOpen(1);
+		condition.setAlias(ApprovalTemplate.PROPERTY_INVALIDDATE.getName());
+		condition.setOperation(ConditionOperation.IS_NULL);
+		condition = criteria.getConditions().create();
+		condition.setRelationship(ConditionRelationship.OR);
+		condition.setBracketOpen(1);
+		condition.setAlias(ApprovalTemplate.PROPERTY_INVALIDDATE.getName());
+		condition.setOperation(ConditionOperation.NOT_NULL);
+		condition = criteria.getConditions().create();
+		condition.setBracketClose(2);
+		condition.setAlias(ApprovalTemplate.PROPERTY_INVALIDDATE.getName());
+		condition.setOperation(ConditionOperation.GRATER_EQUAL);
+		condition.setValue(today);
+		// 排序，最新优先
 		ISort sort = criteria.getSorts().create();
 		sort.setAlias(ApprovalTemplate.PROPERTY_OBJECTKEY.getName());
 		sort.setSortType(SortType.DESCENDING);
@@ -134,8 +170,7 @@ public class ApprovalProcessManager extends org.colorcoding.ibas.bobas.approval.
 	/**
 	 * 加载审批过程
 	 * 
-	 * @param key
-	 *            审批请求编号
+	 * @param key 审批请求编号
 	 * @return
 	 */
 	public IApprovalProcess loadApprovalProcess(int key) {

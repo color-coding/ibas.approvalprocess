@@ -144,15 +144,6 @@ namespace approvalprocess {
                                 })
                             }),
                             new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_approvaltemplatestep_stepname"),
-                                template: new sap.m.Input("", {
-                                    width: "100%",
-                                    type: sap.m.InputType.Text
-                                }).bindProperty("value", {
-                                    path: "stepName",
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestep_stepownertype"),
                                 template: new sap.m.Select("", {
                                     width: "100%",
@@ -164,7 +155,7 @@ namespace approvalprocess {
                             }),
                             new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestep_stepowner"),
-                                template: new sap.m.ex.DataOwnerInput("", {
+                                template: new sap.m.Input("", {
                                     width: "100%",
                                     showValueHelp: true,
                                     valueHelpRequest: function (): void {
@@ -173,10 +164,18 @@ namespace approvalprocess {
                                             this.getBindingContext().getObject()
                                         );
                                     },
-                                    bindingValue: {
-                                        path: "stepOwner"
-                                    }
+                                }).bindProperty("value", {
+                                    path: "stepOwner",
                                 }),
+                            }),
+                            new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_approvaltemplatestep_stepname"),
+                                template: new sap.m.Input("", {
+                                    width: "100%",
+                                    type: sap.m.InputType.Text
+                                }).bindProperty("value", {
+                                    path: "stepName",
+                                })
                             }),
                             new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestep_stepcanmodify"),

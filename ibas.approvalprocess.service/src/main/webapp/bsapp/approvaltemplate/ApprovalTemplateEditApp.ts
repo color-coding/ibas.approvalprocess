@@ -276,9 +276,11 @@ namespace approvalprocess {
                 ibas.servicesManager.runChooseService<initialfantasy.bo.IBOInformation>({
                     boCode: initialfantasy.bo.BO_CODE_BOINFORMATION,
                     criteria: criteria,
+                    chooseType: ibas.emChooseType.SINGLE,
                     onCompleted(selecteds: ibas.IList<initialfantasy.bo.IBOInformation>): void {
                         let selected: initialfantasy.bo.IBOInformation = selecteds.firstOrDefault();
                         that.editData.approvalObjectCode = selected.code;
+                        that.editData.name = ibas.i18n.prop("approvalprocess_approvaltemplate_name", selected.description);
                         that.view.showApprovalTemplate(that.editData);
                     }
                 });
@@ -288,6 +290,7 @@ namespace approvalprocess {
                 let that: this = this;
                 ibas.servicesManager.runChooseService<initialfantasy.bo.IUser>({
                     boCode: initialfantasy.bo.BO_CODE_USER,
+                    chooseType: ibas.emChooseType.SINGLE,
                     criteria: [
                         new ibas.Condition("Activated", ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
                     ],
@@ -295,10 +298,10 @@ namespace approvalprocess {
                         // 获取触发的对象
                         let index: number = that.editData.approvalTemplateSteps.indexOf(caller);
                         let item: bo.ApprovalTemplateStep = that.editData.approvalTemplateSteps[index];
-
                         let selected: initialfantasy.bo.IUser = selecteds.firstOrDefault();
-                        if (!ibas.objects.isNull(item) && !ibas.objects.isNull(selected)) {
+                        if (!ibas.objects.isNull(item)) {
                             item.stepOwner = selected.docEntry;
+                            item.stepName = ibas.i18n.prop("approvalprocess_approvaltemplate_name", selected.name);
                         }
                     }
                 });

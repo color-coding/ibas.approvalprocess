@@ -12,7 +12,7 @@ namespace approvalprocess {
             /** 应用标识 */
             static APPLICATION_ID: string = "d524386b-c3af-4ff5-8c47-29aa3745440d";
             /** 应用名称 */
-            static APPLICATION_NAME: string = "approvalprocess_bo_approval_service";
+            static APPLICATION_NAME: string = "approvalprocess_app_approvalprocess";
             /** 构造函数 */
             constructor() {
                 super();

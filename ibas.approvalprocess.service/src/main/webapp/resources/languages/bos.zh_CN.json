@@ -130,5 +130,8 @@
         "bo_approvaltemplatestepcondition_bracketclose": "闭括号数",
         "bo_approvaltemplate_closing_delimiter": "----结束----"
     },
-    {}
+    {
+        "em_property_value": "属性值",
+        "em_sql_script": "SQL值"
+    }
 ]

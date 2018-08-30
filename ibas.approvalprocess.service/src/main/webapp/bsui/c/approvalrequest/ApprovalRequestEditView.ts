@@ -29,7 +29,7 @@ namespace approvalprocess {
                     this.form = new sap.ui.layout.form.SimpleForm("", {
                         editable: true,
                         content: [
-                            new sap.ui.core.Title("", { text: ibas.i18n.prop("initialfantasy_title_general") }),
+                            new sap.ui.core.Title("", { text: ibas.i18n.prop("approvalprocess_title_general") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_name") }),
                             new sap.m.Input("", {
                                 editable: false,
@@ -37,17 +37,13 @@ namespace approvalprocess {
                             }).bindProperty("value", {
                                 path: "name",
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_approvalstatus") }),
-                            new sap.m.Select("", {
-                                enabled: false,
-                                items: openui5.utils.createComboBoxItems(ibas.emApprovalStatus)
-                            }).bindProperty("selectedKey", {
-                                path: "approvalStatus",
-                                type: "sap.ui.model.type.Integer"
-                            }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_approvalowner") }),
-                            new sap.m.ex.DataOwnerInput("", {
+                            new sap.m.ex.BOInput("", {
                                 editable: false,
+                                boText: "name",
+                                boKey: "docEntry",
+                                boCode: ibas.config.applyVariables(initialfantasy.bo.BO_CODE_USER),
+                                repositoryName: initialfantasy.bo.BO_REPOSITORY_INITIALFANTASY,
                                 bindingValue: {
                                     path: "approvalOwner"
                                 }
@@ -58,8 +54,25 @@ namespace approvalprocess {
                                 type: sap.m.InputType.Text
                             }).bindProperty("value", {
                                 path: "boKeys",
+                                formatter(data: any): any {
+                                    return ibas.businessobjects.describe(data);
+                                }
                             }),
-                            new sap.ui.core.Title("", { text: ibas.i18n.prop("initialfantasy_title_others") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_remarks") }),
+                            new sap.m.TextArea("", {
+                                rows: 3,
+                            }).bindProperty("value", {
+                                path: "remarks",
+                            }),
+                            new sap.ui.core.Title("", { text: ibas.i18n.prop("approvalprocess_title_others") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_approvalstatus") }),
+                            new sap.m.Select("", {
+                                enabled: false,
+                                items: openui5.utils.createComboBoxItems(ibas.emApprovalStatus)
+                            }).bindProperty("selectedKey", {
+                                path: "approvalStatus",
+                                type: "sap.ui.model.type.Integer"
+                            }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_startedtime") }),
                             new sap.m.DatePicker("", {
                                 editable: false,
@@ -75,6 +88,13 @@ namespace approvalprocess {
                                 displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                             }).bindProperty("dateValue", {
                                 path: "finishedTime",
+                            }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_approvaltemplate") }),
+                            new sap.m.Input("", {
+                                editable: false,
+                                type: sap.m.InputType.Text
+                            }).bindProperty("value", {
+                                path: "approvalTemplate",
                             }),
                         ]
                     });
@@ -117,16 +137,8 @@ namespace approvalprocess {
                                 })
                             }),
                             new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_approvalrequeststep_stepname"),
-                                template: new sap.m.Text("", {
-                                    width: "100%",
-                                }).bindProperty("text", {
-                                    path: "stepName"
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_approvalrequeststep_stepowner"),
-                                template: new sap.m.ex.DataOwnerInput("", {
+                                template: new sap.m.Input("", {
                                     width: "100%",
                                     showValueHelp: true,
                                     valueHelpRequest: function (): void {
@@ -135,10 +147,18 @@ namespace approvalprocess {
                                             this.getBindingContext().getObject()
                                         );
                                     },
-                                    bindingValue: {
-                                        path: "stepOwner"
-                                    }
+                                }).bindProperty("value", {
+                                    path: "stepOwner",
                                 }),
+                            }),
+                            new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_approvalrequeststep_stepname"),
+                                template: new sap.m.Input("", {
+                                    width: "100%",
+                                    type: sap.m.InputType.Text
+                                }).bindProperty("value", {
+                                    path: "stepName"
+                                })
                             }),
                             new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_approvalrequeststep_stepstatus"),
@@ -155,6 +175,7 @@ namespace approvalprocess {
                                 label: ibas.i18n.prop("bo_approvalrequeststep_judgment"),
                                 template: new sap.m.Input("", {
                                     width: "100%",
+                                    editable: false,
                                 }).bindProperty("value", {
                                     path: "judgment"
                                 })
@@ -174,6 +195,7 @@ namespace approvalprocess {
                                         that.fireViewEvents(that.saveDataEvent);
                                     }
                                 }),
+                                /*
                                 new sap.m.Button("", {
                                     text: ibas.i18n.prop("shell_data_delete"),
                                     type: sap.m.ButtonType.Transparent,
@@ -182,33 +204,7 @@ namespace approvalprocess {
                                         that.fireViewEvents(that.deleteDataEvent);
                                     }
                                 }),
-                                new sap.m.ToolbarSeparator(""),
-                                new sap.m.MenuButton("", {
-                                    text: ibas.strings.format("{0}/{1}",
-                                        ibas.i18n.prop("shell_data_new"), ibas.i18n.prop("shell_data_clone")),
-                                    icon: "sap-icon://create",
-                                    type: sap.m.ButtonType.Transparent,
-                                    menu: new sap.m.Menu("", {
-                                        items: [
-                                            new sap.m.MenuItem("", {
-                                                text: ibas.i18n.prop("shell_data_new"),
-                                                icon: "sap-icon://create",
-                                                press: function (): void {
-                                                    // 创建新的对象
-                                                    that.fireViewEvents(that.createDataEvent, false);
-                                                }
-                                            }),
-                                            new sap.m.MenuItem("", {
-                                                text: ibas.i18n.prop("shell_data_clone"),
-                                                icon: "sap-icon://copy",
-                                                press: function (): void {
-                                                    // 复制当前对象
-                                                    that.fireViewEvents(that.createDataEvent, true);
-                                                }
-                                            }),
-                                        ],
-                                    })
-                                }),
+                                */
                             ]
                         }),
                         content: [this.form]

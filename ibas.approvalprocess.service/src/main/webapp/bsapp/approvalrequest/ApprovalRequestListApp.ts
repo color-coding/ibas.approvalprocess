@@ -30,6 +30,7 @@ namespace approvalprocess {
                 super.registerView();
                 // 其他事件
                 this.view.editDataEvent = this.editData;
+                this.view.viewDataEvent = this.viewData;
                 this.view.deleteDataEvent = this.deleteData;
             }
             /** 视图显示后 */
@@ -79,11 +80,10 @@ namespace approvalprocess {
                     ));
                     return;
                 }
-                let app: ApprovalRequestViewApp = new ApprovalRequestViewApp();
-                app.navigation = this.navigation;
+                let app: ApprovalProcessService = new ApprovalProcessService();
                 app.viewShower = this.viewShower;
+                app.navigation = this.navigation;
                 app.run(data);
-
             }
             /** 编辑数据，参数：目标数据 */
             protected editData(data: bo.ApprovalRequest): void {

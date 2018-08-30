@@ -21,7 +21,7 @@
     <Property Name="Reference2" Description="参考2" DataType="Alphanumeric" DataSubType="Default" EditSize="50" Mapped="Ref2"/>
     <Property Name="Remarks" Description="备注" DataType="Memo" DataSubType="Default" EditSize="8" Mapped="Remarks"/>
     <Property Name="Name" Description="审批流程名称" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="Name"/>
-    <Property Name="ApprovalObjectCode" Description="审批的对象类型" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="ApvlObjectCode"/>
+    <Property Name="ApprovalObjectCode" Description="审批对象类型" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="ApvlCode"/>
     <Property Name="Activated" Description="激活的" DataType="Alphanumeric" DataSubType="Default" EditSize="1" DeclaredType="emYesNo" Mapped="Activated"/>
     <Property Name="ValidDate" Description="生效日期" DataType="Date" DataSubType="Default" EditSize="8" Mapped="ValidDate"/>
     <Property Name="InvalidDate" Description="失效日期" DataType="Date" DataSubType="Default" EditSize="8" Mapped="InvalidDate"/>

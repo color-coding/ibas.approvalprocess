@@ -12,7 +12,6 @@ import org.colorcoding.ibas.bobas.approval.ApprovalProcessException;
 import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.approval.IApprovalDataSummary;
 import org.colorcoding.ibas.bobas.approval.IApprovalProcessStep;
-import org.colorcoding.ibas.bobas.approval.UnauthorizedException;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.core.BOFactory;
 import org.colorcoding.ibas.bobas.data.DateTime;
@@ -185,7 +184,7 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 	}
 
 	@Override
-	public void checkToSave(IUser user) throws UnauthorizedException {
+	public void checkToSave(IUser user) throws ApprovalProcessException {
 		if (Integer.compare(this.getApprovalData().getDataOwner(), user.getId()) != 0) {
 			// 修改用户不是数据所有者时
 			IApprovalProcessStep tmpStep = this.currentStep();

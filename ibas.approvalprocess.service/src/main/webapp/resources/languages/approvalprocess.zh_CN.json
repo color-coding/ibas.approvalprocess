@@ -15,13 +15,13 @@
   "approvalprocess_title_general": "常规信息",
   "approvalprocess_title_others": "其他信息",
   "approvalprocess_app_approvalprocess": "审批流程",
-  "approvalprocess_bo_approval_service": "审批流程",
   "approvalprocess_app_approvalprocess_title": "待审批列表",
   "approvalprocess_app_approvalprocess_seemore": "更多",
   "approvalprocess_msg_not_found_approvalrequest": "没有找到审批请求",
   "approvalprocess_approve": "批准",
   "approvalprocess_reject": "拒绝",
   "approvalprocess_reset": "重置",
+  "approvalprocess_approvaltemplate_name": "{0}的审批",
   "approvalprocess_day": "天",
   "approvalprocess_closing_delimiter": "----结束----"
 }

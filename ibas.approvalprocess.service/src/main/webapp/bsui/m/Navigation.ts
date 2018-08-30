@@ -9,7 +9,6 @@
 /// <reference path="../../3rdparty/openui5/index.d.ts" />
 /// <reference path="../../index.d.ts" />
 /// <reference path="./approvalrequest/index.ts" />
-/// <reference path="./approvaltemplate/index.ts" />
 /// <reference path="./approvalprocess/index.ts" />
 namespace approvalprocess {
     export namespace ui {

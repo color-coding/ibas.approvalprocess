@@ -63,15 +63,23 @@ namespace approvalprocess {
                                 template: new sap.m.Text("", {
                                     wrapping: false
                                 }).bindProperty("text", {
-                                    path: "boKeys"
+                                    path: "boKeys",
+                                    formatter(data: any): any {
+                                        return ibas.businessobjects.describe(data);
+                                    }
                                 })
                             }),
                             new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_approvalrequest_approvalowner"),
-                                template: new sap.m.Text("", {
-                                    wrapping: false
-                                }).bindProperty("text", {
-                                    path: "approvalOwner"
+                                template: new sap.m.ex.BOText("", {
+                                    wrapping: false,
+                                    boText: "name",
+                                    boKey: "docEntry",
+                                    boCode: ibas.config.applyVariables(initialfantasy.bo.BO_CODE_USER),
+                                    repositoryName: initialfantasy.bo.BO_REPOSITORY_INITIALFANTASY,
+                                    bindingValue: {
+                                        path: "approvalOwner"
+                                    }
                                 })
                             }),
                             new sap.ui.table.Column("", {
@@ -120,17 +128,17 @@ namespace approvalprocess {
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://display",
                                     press: function (): void {
-                                        that.fireViewEvents(that.editDataEvent,
+                                        that.fireViewEvents(that.viewDataEvent,
                                             // 获取表格选中的对象
                                             openui5.utils.getSelecteds<bo.ApprovalRequest>(that.table).firstOrDefault()
                                         );
                                     }
                                 }),
-                                /*
                                 new sap.m.Button("", {
                                     text: ibas.i18n.prop("shell_data_edit"),
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://edit",
+                                    visible: ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_SUPER) === true ? true : false,
                                     press: function (): void {
                                         that.fireViewEvents(that.editDataEvent,
                                             // 获取表格选中的对象
@@ -138,6 +146,7 @@ namespace approvalprocess {
                                         );
                                     }
                                 }),
+                                /*
                                 new sap.m.ToolbarSeparator(""),
                                 new sap.m.Button("", {
                                     text: ibas.i18n.prop("shell_data_delete"),

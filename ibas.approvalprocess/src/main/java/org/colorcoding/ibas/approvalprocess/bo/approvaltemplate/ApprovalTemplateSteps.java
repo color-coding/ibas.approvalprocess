@@ -5,6 +5,11 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.approvalprocess.MyConfiguration;
 import org.colorcoding.ibas.bobas.bo.BusinessObjects;
+import org.colorcoding.ibas.bobas.common.Criteria;
+import org.colorcoding.ibas.bobas.common.ICondition;
+import org.colorcoding.ibas.bobas.common.ICriteria;
+import org.colorcoding.ibas.bobas.common.ISort;
+import org.colorcoding.ibas.bobas.common.SortType;
 
 /**
  * 审批模板步骤 集合
@@ -34,8 +39,7 @@ public class ApprovalTemplateSteps extends BusinessObjects<IApprovalTemplateStep
 	/**
 	 * 构造方法
 	 * 
-	 * @param parent
-	 *            父项对象
+	 * @param parent 父项对象
 	 */
 	public ApprovalTemplateSteps(IApprovalTemplate parent) {
 		super(parent);
@@ -61,4 +65,18 @@ public class ApprovalTemplateSteps extends BusinessObjects<IApprovalTemplateStep
 		return null;
 	}
 
+	@Override
+	public ICriteria getElementCriteria() {
+		ICriteria criteria = new Criteria();
+		ICondition condition = criteria.getConditions().create();
+		condition.setAlias(ApprovalTemplateStep.PROPERTY_OBJECTKEY.getName());
+		condition.setValue(this.getParent().getObjectKey());
+		ISort sort = criteria.getSorts().create();
+		sort.setAlias(ApprovalTemplateStep.PROPERTY_OBJECTKEY.getName());
+		sort.setSortType(SortType.ASCENDING);
+		sort = criteria.getSorts().create();
+		sort.setAlias(ApprovalTemplateStep.PROPERTY_STEPORDER.getName());
+		sort.setSortType(SortType.ASCENDING);
+		return criteria;
+	}
 }
