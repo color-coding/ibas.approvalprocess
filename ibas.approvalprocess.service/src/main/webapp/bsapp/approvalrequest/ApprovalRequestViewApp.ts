@@ -34,6 +34,7 @@ namespace approvalprocess {
             /** 视图显示后 */
             protected viewShowed(): void {
                 // 视图加载完成
+                super.viewShowed();
             }
             /** 编辑数据，参数：目标数据 */
             protected editData(): void {

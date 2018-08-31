@@ -79,7 +79,9 @@ namespace approvalprocess {
                         let nlItem: sap.m.NotificationListItem = new sap.m.NotificationListItem("", {
                             title: ibas.strings.format("#{1} · {0}", apItem.name, apItem.objectKey),
                             width: "auto",
-                            description: apItem.remarks,
+                            description: ibas.strings.format("{0}\n {1}",
+                                ibas.businessobjects.describe(apItem.boKeys),
+                                ibas.strings.isEmpty(apItem.remarks) ? "" : apItem.remarks),
                             priority: this.getPriority(apItem),
                             showCloseButton: false,
                             datetime: ibas.strings.format("{0}{1}",

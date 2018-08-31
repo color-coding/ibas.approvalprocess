@@ -50,26 +50,19 @@ namespace approvalprocess {
                                     let approvalRequest: bo.ApprovalRequest = this.getBindingContext().getObject();
                                     let boKeys: string = approvalRequest.boKeys;
                                     if (!ibas.strings.isEmpty(boKeys)) {
-                                        boKeys = boKeys.replace(/{/g, "").replace(/}/g, "")
-                                            .replace(/\[/g, "").replace(/\]/g, "");
-                                        let splits: string[] = boKeys.split(".");
-                                        if (splits.length === 2) {
-                                            let boCode: string = splits[0];
-                                            let value: string = splits[1];
-                                            let criteria: ibas.Criteria = new ibas.Criteria();
-                                            criteria.result = 1;
-                                            for (let item of value.split("&")) {
-                                                let tmps: string[] = item.split("=");
-                                                if (tmps.length >= 2) {
-                                                    let condition: ibas.ICondition = criteria.conditions.create();
-                                                    condition.alias = tmps[0];
-                                                    condition.value = tmps[1];
-                                                }
-                                            }
-                                            ibas.servicesManager.runLinkService({
-                                                boCode: boCode,
+                                        let criteria: ibas.ICriteria = ibas.criterias.valueOf(boKeys);
+                                        if (!ibas.objects.isNull(criteria)) {
+                                            let done: boolean = ibas.servicesManager.runLinkService({
+                                                boCode: criteria.businessObject,
                                                 linkValue: criteria
                                             });
+                                            if (!done) {
+                                                that.application.viewShower.proceeding(
+                                                    that,
+                                                    ibas.emMessageType.WARNING,
+                                                    ibas.i18n.prop("approvalprocess_not_found_businessojbect_link_service", ibas.businessobjects.describe(criteria.businessObject))
+                                                );
+                                            }
                                         }
                                     }
                                 }
