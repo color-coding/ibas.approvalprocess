@@ -25,7 +25,7 @@
         <!-- 配置项目-组织方式 -->
         <add key="OrganizationWay" value="initial" />
         <!-- 配置项目-权限判断方式 -->
-        <add key="OwnershipWay" value="initial" />
+        <add key="OwnershipWay" value="approval" />
         <!-- 配置项目-配置方式 -->
         <add key="ConfigurationWay" value="initial" />
         <!-- 配置项目-组织过期时间（建议600） -->
