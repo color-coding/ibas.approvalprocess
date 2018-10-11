@@ -4,7 +4,6 @@ import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequestS
 import org.colorcoding.ibas.bobas.approval.IApprovalProcessStepCondition;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emApprovalStepStatus;
-import org.colorcoding.ibas.bobas.organization.IOrganizationManager;
 import org.colorcoding.ibas.bobas.organization.IUser;
 import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
 
@@ -64,13 +63,12 @@ public class ApprovalProcessStep extends org.colorcoding.ibas.bobas.approval.App
 
 	@Override
 	public IUser getOwner() {
-		if (owner == null) {
-			IOrganizationManager orgManager = OrganizationFactory.create().createManager();
-			IUser tmpUser = orgManager.getUser(this.getApprovalRequestStep().getStepOwner());
-			if (tmpUser == null) {
-				tmpUser = OrganizationFactory.UNKNOWN_USER;
-			}
-			owner = tmpUser;
+		if (this.owner == null) {
+			this.owner = OrganizationFactory.create().createManager()
+					.getUser(this.getApprovalRequestStep().getStepOwner());
+		}
+		if (this.owner == null) {
+			this.owner = OrganizationFactory.UNKNOWN_USER;
 		}
 		return owner;
 	}

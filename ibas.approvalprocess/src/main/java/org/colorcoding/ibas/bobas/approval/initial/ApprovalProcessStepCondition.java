@@ -34,8 +34,6 @@ public class ApprovalProcessStepCondition extends Serializable
 
 	private static final long serialVersionUID = -1846059685439243305L;
 
-	public static final String NAMESPACE = "http://colorcoding.org/ibas/approval/initial";
-
 	public static IApprovalProcessStepCondition[] create(String condition) {
 		if (condition != null) {
 			ISerializer<?> serializer = SerializerFactory.create().createManager().create(ISerializerManager.TYPE_JSON);
@@ -56,7 +54,7 @@ public class ApprovalProcessStepCondition extends Serializable
 					// 此处需要特别注意：UI编辑时，属性比较用数据库字段(考虑自定义字段没有属性)
 					stepCondition.setPropertyValueMode(ValueMode.DB_FIELD);
 					if (item.getConditionType() == emApprovalConditionType.PROPERTY_VALUE) {
-						stepCondition.setConditionValueMode(ValueMode.INPUT);;
+						stepCondition.setConditionValueMode(ValueMode.INPUT);
 					} else if (item.getConditionType() == emApprovalConditionType.SQL_SCRIPT) {
 						stepCondition.setConditionValueMode(ValueMode.SQL_SCRIPT);
 					}

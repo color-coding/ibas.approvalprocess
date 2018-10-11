@@ -166,6 +166,14 @@ namespace approvalprocess {
                                     },
                                 }).bindProperty("value", {
                                     path: "stepOwner",
+                                }).bindProperty("enabled", {
+                                    path: "stepOwnerType",
+                                    formatter(data: any): any {
+                                        if (data === bo.emApprovalStepOwnerType.USER) {
+                                            return true;
+                                        }
+                                        return false;
+                                    }
                                 }),
                             }),
                             new sap.ui.table.Column("", {

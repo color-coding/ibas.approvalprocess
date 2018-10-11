@@ -25,11 +25,11 @@ namespace approvalprocess {
          */
         export enum emApprovalStepOwnerType {
             USER,
+            DATA_OWNER,
+            PROJECT_MANAGER,
             /*
-             DATA_OWNER,
              DIRECT_SUPERIOR,
              DATA_ORGANIZATION_MANAGER,
-             PROJECT_MANAGER,
              PROJECT_ORGANIZATION_MANAGER
             */
         }

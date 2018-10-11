@@ -6,12 +6,16 @@ import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequestStep;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplate;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplateStep;
+import org.colorcoding.ibas.approvalprocess.data.emApprovalStepOwnerType;
 import org.colorcoding.ibas.approvalprocess.repository.BORepositoryApprovalProcess;
 import org.colorcoding.ibas.bobas.approval.ApprovalDataProxy;
 import org.colorcoding.ibas.bobas.approval.ApprovalProcessException;
 import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.approval.IApprovalDataSummary;
 import org.colorcoding.ibas.bobas.approval.IApprovalProcessStep;
+import org.colorcoding.ibas.bobas.common.Criteria;
+import org.colorcoding.ibas.bobas.common.ICondition;
+import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.core.BOFactory;
 import org.colorcoding.ibas.bobas.data.DateTime;
@@ -19,6 +23,10 @@ import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.organization.IUser;
 import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
+import org.colorcoding.ibas.initialfantasy.bo.project.IProject;
+import org.colorcoding.ibas.initialfantasy.bo.project.Project;
+import org.colorcoding.ibas.initialfantasy.data.IProjectData;
+import org.colorcoding.ibas.initialfantasy.repository.BORepositoryInitialFantasy;
 
 /**
  * 审批流程
@@ -27,8 +35,12 @@ import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
  *
  */
 public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.ApprovalProcess {
+	/**
+	 * 步骤所有者类型组，-1000
+	 */
+	public static final int STEP_OWNER_TYPE_GROUP = -1000;
 
-	public static ApprovalProcess create(IApprovalTemplate template) {
+	public static ApprovalProcess create(IApprovalTemplate template) throws RuntimeException {
 		ApprovalRequest aq = new ApprovalRequest();
 		aq.setApprovalTemplate(template.getObjectKey());
 		aq.setApprovalObjectCode(template.getApprovalObjectCode());
@@ -36,11 +48,17 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 		for (IApprovalTemplateStep item : template.getApprovalTemplateSteps()) {
 			ApprovalRequestStep aqStep = new ApprovalRequestStep();
 			aqStep.setStepOrder(item.getStepOrder());
-			aqStep.setStepCanModify(item.getStepCanModify());
 			aqStep.setStepName(item.getStepName());
+			aqStep.setStepCanModify(item.getStepCanModify());
 			aqStep.setStepOwner(item.getStepOwner());
 			aqStep.setStepConditions(ApprovalProcessStepCondition.serialize(item.getApprovalTemplateStepConditions()));
-
+			if (item.getStepOwnerType() == emApprovalStepOwnerType.USER) {
+				// 明确用户，指定用户
+				aqStep.setStepOwner(item.getStepOwner());
+			} else {
+				// 非明确用户指向类型的反值
+				aqStep.setStepOwner(STEP_OWNER_TYPE_GROUP - item.getStepOwnerType().ordinal());
+			}
 			aq.getApprovalRequestSteps().add(aqStep);
 		}
 		return create(aq);
@@ -50,9 +68,15 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 		if (aq == null) {
 			return null;
 		}
-		ApprovalProcess approvalProcess = new ApprovalProcess();
-		approvalProcess.setApprovalRequest(aq);
-		return approvalProcess;
+		return new ApprovalProcess(aq);
+	}
+
+	public ApprovalProcess() {
+	}
+
+	public ApprovalProcess(IApprovalRequest approvalRequest) {
+		this();
+		this.setApprovalRequest(approvalRequest);
 	}
 
 	private IApprovalRequest approvalRequest;
@@ -158,10 +182,6 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 	@Override
 	public void saveProcess() throws ApprovalProcessException {
 		try {
-			BORepositoryApprovalProcess apRepository = new BORepositoryApprovalProcess();
-			apRepository.setRefetchAfterSave(false);// 保存成功后，不重新获取副本
-			apRepository.setRepository(this.getRepository());
-			apRepository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
 			if (this.getApprovalRequest().isNew() && this.getApprovalData() instanceof IApprovalDataSummary) {
 				// 修改审批请求名称为数据摘要
 				String summary = ((IApprovalDataSummary) this.getApprovalData()).getSummary();
@@ -169,6 +189,41 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 					this.getApprovalRequest().setName(summary);
 				}
 			}
+			// 修正步骤所有者
+			for (IApprovalRequestStep step : this.getApprovalRequest().getApprovalRequestSteps()) {
+				if (step.getStepOwner() <= STEP_OWNER_TYPE_GROUP) {
+					// 未明确步骤所有者
+					int value = Math.abs(step.getStepOwner() - STEP_OWNER_TYPE_GROUP);
+					if (value == emApprovalStepOwnerType.DATA_OWNER.ordinal()) {
+						step.setStepOwner(this.getApprovalData().getDataOwner());
+					} else if (value == emApprovalStepOwnerType.PROJECT_MANAGER.ordinal()) {
+						if (this.getApprovalData() instanceof IProjectData) {
+							// 查询项目经理
+							IProjectData projectData = (IProjectData) this.getApprovalData();
+							if (projectData.getProject() != null && !projectData.getProject().isEmpty()) {
+								ICriteria criteria = new Criteria();
+								ICondition condition = criteria.getConditions().create();
+								condition.setAlias(Project.PROPERTY_CODE.getName());
+								condition.setValue(projectData.getProject());
+								condition = criteria.getConditions().create();
+								condition.setAlias(Project.PROPERTY_ACTIVATED.getName());
+								condition.setValue(emYesNo.YES);
+								BORepositoryInitialFantasy ifRepository = new BORepositoryInitialFantasy();
+								ifRepository.setRepository(this.getRepository());
+								ifRepository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
+								IOperationResult<IProject> operationResult = ifRepository.fetchProject(criteria);
+								if (!operationResult.getResultObjects().isEmpty()) {
+									step.setStepOwner(operationResult.getResultObjects().firstOrDefault().getManager());
+								}
+							}
+						}
+					}
+				}
+			}
+			BORepositoryApprovalProcess apRepository = new BORepositoryApprovalProcess();
+			apRepository.setRefetchAfterSave(false);// 保存成功后，不重新获取副本
+			apRepository.setRepository(this.getRepository());
+			apRepository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
 			IOperationResult<IApprovalRequest> operationResult = apRepository
 					.saveApprovalRequest(this.getApprovalRequest());
 			if (operationResult.getError() != null) {

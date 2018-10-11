@@ -133,5 +133,10 @@
     {
         "em_property_value": "属性值",
         "em_sql_script": "SQL值"
+    },
+    {
+        "em_user": "用户",
+        "em_data_owner": "数据所有者",
+        "em_project_manager": "项目经理"
     }
 ]

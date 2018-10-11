@@ -52,10 +52,12 @@ namespace approvalprocess {
                 } else if (boName === bo.ApprovalTemplateStep.name) {
                     if (property === bo.ApprovalTemplateStep.PROPERTY_STEPOWNERTYPE_NAME) {
                         return ibas.enums.toString(emApprovalStepOwnerType, value);
+                    } else if (property === bo.ApprovalTemplateStep.PROPERTY_STEPCANMODIFY_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
                     }
                 } else if (boName === bo.ApprovalRequestStep.name) {
                     if (property === bo.ApprovalRequestStep.PROPERTY_STEPSTATUS_NAME) {
-                        return ibas.enums.toString(ibas.emApprovalStatus, value);
+                        return ibas.enums.toString(ibas.emApprovalStepStatus, value);
                     }
                 }
                 return super.convertData(boName, property, value);
@@ -79,10 +81,12 @@ namespace approvalprocess {
                 } else if (boName === bo.ApprovalTemplateStep.name) {
                     if (property === bo.ApprovalTemplateStep.PROPERTY_STEPOWNERTYPE_NAME) {
                         return ibas.enums.valueOf(emApprovalStepOwnerType, value);
+                    } else if (property === bo.ApprovalTemplateStep.PROPERTY_STEPCANMODIFY_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
                     }
                 } else if (boName === bo.ApprovalRequestStep.name) {
                     if (property === bo.ApprovalRequestStep.PROPERTY_STEPSTATUS_NAME) {
-                        return ibas.enums.valueOf(ibas.emApprovalStatus, value);
+                        return ibas.enums.valueOf(ibas.emApprovalStepStatus, value);
                     }
                 }
                 return super.parsingData(boName, property, value);

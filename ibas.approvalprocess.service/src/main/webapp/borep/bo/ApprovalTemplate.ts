@@ -300,6 +300,23 @@ namespace approvalprocess {
                 this.add(item);
                 return item;
             }
+            /**
+             * 添加项目后
+             * @param item 项目
+             */
+            protected afterAdd(item: ApprovalTemplateStep): void {
+                super.afterAdd(item);
+                let max: number = 0;
+                for (let element of this) {
+                    if (element.stepOrder > max) {
+                        max = element.stepOrder;
+                    }
+                }
+                item.stepOrder = (Math.round((max / 10)) + 1) * 10;
+                if (item.stepOrder <= 0) {
+                    item.stepOrder = 10;
+                }
+            }
         }
 
         /** 审批模板步骤 */
@@ -545,8 +562,40 @@ namespace approvalprocess {
                 this.approvalTemplateStepConditions = new ApprovalTemplateStepConditions(this);
                 this.stepOwnerType = emApprovalStepOwnerType.USER;
             }
-        }
 
+            protected registerRules(): ibas.IBusinessRule[] {
+                return [
+                    // 根据所有者类型，改变名称
+                    new ChangeStepName(
+                        ApprovalTemplateStep.PROPERTY_STEPNAME_NAME, ApprovalTemplateStep.PROPERTY_STEPOWNERTYPE_NAME),
+                ];
+            }
+        }
+        /** 业务规则-更新步骤名称 */
+        class ChangeStepName extends ibas.BusinessRuleCommon {
+            /**
+             *
+             * @param length 长度
+             * @param properties 属性
+             */
+            constructor(stepName: string, ownerType: string) {
+                super();
+                this.stepName = stepName;
+                this.ownerType = ownerType;
+                this.inputProperties.add(this.ownerType);
+                this.affectedProperties.add(this.stepName);
+            }
+            /** 所有者类型 */
+            ownerType: string;
+            /** 步骤名称 */
+            stepName: string;
+            /** 计算规则 */
+            protected compute(context: ibas.BusinessRuleContextCommon): void {
+                let type: emApprovalStepOwnerType = context.inputValues.get(this.ownerType);
+                let name: string = ibas.i18n.prop("approvalprocess_approvaltemplate_name", ibas.enums.describe(emApprovalStepOwnerType, type));
+                context.outputValues.set(this.stepName, name);
+            }
+        }
         /** 审批模板步骤条件 集合 */
         export class ApprovalTemplateStepConditions extends ibas.BusinessObjects<ApprovalTemplateStepCondition, ApprovalTemplateStep> implements IApprovalTemplateStepConditions {
 
