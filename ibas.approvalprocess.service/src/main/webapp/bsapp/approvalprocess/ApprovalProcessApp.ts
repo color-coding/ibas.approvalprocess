@@ -93,7 +93,8 @@ namespace approvalprocess {
                         try {
                             that.busy(false);
                             if (opRslt.resultCode !== 0) {
-                                throw new Error(opRslt.message);
+                                throw new Error(ibas.i18n.prop("approvalprocess_msg_not_found_approvalrequest")
+                                    + ", " + opRslt.message);
                             }
                             that.view.showData(opRslt.resultObjects);
                             if (!that.refresh) {
@@ -101,32 +102,54 @@ namespace approvalprocess {
                             }
                         } catch (error) {
                             that.refresh = false;
-                            that.messages(error);
+                            that.proceeding(error);
                         }
                     }
                 });
             }
             protected approval(ap: bo.ApprovalRequest, result: number): void {
-                this.busy(true);
                 let that: this = this;
-                let boRepository: bo.BORepositoryApprovalProcess = new bo.BORepositoryApprovalProcess();
-                boRepository.approval({
-                    apRequestId: ap.objectKey,
-                    apStepId: ap.approvalRequestSteps.firstOrDefault().lineId,
-                    apResult: result,
-                    judgment: "",
-                    onCompleted(opRslt: ibas.IOperationMessage): void {
-                        try {
-                            that.busy(false);
-                            if (opRslt.resultCode !== 0) {
-                                throw new Error(opRslt.message);
-                            }
-                            that.messages(ibas.emMessageType.SUCCESS, opRslt.message);
-                        } catch (error) {
-                            that.messages(error);
+                let caller: ibas.IMessgesCaller = {
+                    type: ibas.emMessageType.QUESTION,
+                    title: ibas.i18n.prop(this.name),
+                    message: ibas.i18n.prop("shell_continue"),
+                    actions: [ibas.emMessageAction.YES, ibas.emMessageAction.NO],
+                    onCompleted(action: ibas.emMessageAction): void {
+                        if (action !== ibas.emMessageAction.YES) {
+                            return;
                         }
+                        that.busy(true);
+                        let boRepository: bo.BORepositoryApprovalProcess = new bo.BORepositoryApprovalProcess();
+                        boRepository.approval({
+                            apRequestId: ap.objectKey,
+                            apStepId: ap.approvalRequestSteps.firstOrDefault().lineId,
+                            apResult: result,
+                            judgment: "",
+                            onCompleted(opRslt: ibas.IOperationMessage): void {
+                                try {
+                                    that.busy(false);
+                                    if (opRslt.resultCode !== 0) {
+                                        throw new Error(opRslt.message);
+                                    }
+                                    that.messages(ibas.emMessageType.SUCCESS, opRslt.message);
+                                } catch (error) {
+                                    that.messages(error);
+                                }
+                            }
+                        });
                     }
-                });
+                };
+                if (result === ibas.emApprovalResult.APPROVED) {
+                    caller.type = ibas.emMessageType.SUCCESS;
+                    caller.message = ibas.i18n.prop("approvalprocess_approval_process_continue", ibas.businessobjects.describe(ap.boKeys));
+                } else if (result === ibas.emApprovalResult.REJECTED) {
+                    caller.type = ibas.emMessageType.ERROR;
+                    caller.message = ibas.i18n.prop("approvalprocess_rejected_process_continue", ibas.businessobjects.describe(ap.boKeys));
+                } else if (result === ibas.emApprovalResult.PROCESSING) {
+                    caller.type = ibas.emMessageType.WARNING;
+                    caller.message = ibas.i18n.prop("approvalprocess_reset_process_continue", ibas.businessobjects.describe(ap.boKeys));
+                }
+                this.messages(caller);
             }
             protected viewData(ap: bo.ApprovalRequest): void {
                 let app: ApprovalProcessService = new ApprovalProcessService();

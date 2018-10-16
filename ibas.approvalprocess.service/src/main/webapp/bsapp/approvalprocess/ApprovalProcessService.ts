@@ -141,27 +141,49 @@ namespace approvalprocess {
              * @param result 操作
              */
             protected approval(step: bo.ApprovalRequestStep, result: number): void {
-                this.busy(true);
                 let that: this = this;
-                let boRepository: bo.BORepositoryApprovalProcess = new bo.BORepositoryApprovalProcess();
-                boRepository.approval({
-                    apRequestId: step.objectKey,
-                    apStepId: step.lineId,
-                    apResult: result,
-                    judgment: step.judgment,
-                    onCompleted(opRslt: ibas.IOperationMessage): void {
-                        try {
-                            that.busy(false);
-                            if (opRslt.resultCode !== 0) {
-                                throw new Error(opRslt.message);
-                            }
-                            that.messages(ibas.emMessageType.SUCCESS, opRslt.message);
-                            that.fetchData(that.approvalRequest.criteria());
-                        } catch (error) {
-                            that.messages(error);
+                let caller: ibas.IMessgesCaller = {
+                    type: ibas.emMessageType.QUESTION,
+                    title: ibas.i18n.prop(this.name),
+                    message: ibas.i18n.prop("shell_continue"),
+                    actions: [ibas.emMessageAction.YES, ibas.emMessageAction.NO],
+                    onCompleted(action: ibas.emMessageAction): void {
+                        if (action !== ibas.emMessageAction.YES) {
+                            return;
                         }
+                        that.busy(true);
+                        let boRepository: bo.BORepositoryApprovalProcess = new bo.BORepositoryApprovalProcess();
+                        boRepository.approval({
+                            apRequestId: step.objectKey,
+                            apStepId: step.lineId,
+                            apResult: result,
+                            judgment: step.judgment,
+                            onCompleted(opRslt: ibas.IOperationMessage): void {
+                                try {
+                                    that.busy(false);
+                                    if (opRslt.resultCode !== 0) {
+                                        throw new Error(opRslt.message);
+                                    }
+                                    that.messages(ibas.emMessageType.SUCCESS, opRslt.message);
+                                    that.fetchData(that.approvalRequest.criteria());
+                                } catch (error) {
+                                    that.messages(error);
+                                }
+                            }
+                        });
                     }
-                });
+                };
+                if (result === ibas.emApprovalResult.APPROVED) {
+                    caller.type = ibas.emMessageType.SUCCESS;
+                    caller.message = ibas.i18n.prop("approvalprocess_approval_process_continue", that.approvalRequest.boKeys);
+                } else if (result === ibas.emApprovalResult.REJECTED) {
+                    caller.type = ibas.emMessageType.ERROR;
+                    caller.message = ibas.i18n.prop("approvalprocess_rejected_process_continue", that.approvalRequest.boKeys);
+                } else if (result === ibas.emApprovalResult.PROCESSING) {
+                    caller.type = ibas.emMessageType.WARNING;
+                    caller.message = ibas.i18n.prop("approvalprocess_reset_process_continue", that.approvalRequest.boKeys);
+                }
+                this.messages(caller);
             }
         }
         /** 视图-审批流程 */
