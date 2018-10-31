@@ -22,7 +22,6 @@ import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.organization.IUser;
-import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
 import org.colorcoding.ibas.finance.bo.project.IProject;
 import org.colorcoding.ibas.finance.bo.project.Project;
 import org.colorcoding.ibas.finance.data.IProjectData;
@@ -110,14 +109,6 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 	@Override
 	public void setApprovalData(IApprovalData approvalData) {
 		this.approvalData = approvalData;
-		if (this.getApprovalData() != null && approvalData != null) {
-			// 保存检索值
-			this.getApprovalRequest().setBOKeys(approvalData.getIdentifiers());
-			// 保存对象语言类型
-			this.getApprovalRequest().setClassName(approvalData.getClass().getName());
-			// 保存审批所有者
-			this.getApprovalRequest().setApprovalOwner(approvalData.getDataOwner());
-		}
 	}
 
 	@Override
@@ -182,11 +173,19 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 	@Override
 	public void saveProcess() throws ApprovalProcessException {
 		try {
-			if (this.getApprovalRequest().isNew() && this.getApprovalData() instanceof IApprovalDataSummary) {
+			if (this.getApprovalRequest().isNew()) {
+				// 保存检索值
+				this.getApprovalRequest().setBOKeys(this.getApprovalData().getIdentifiers());
+				// 保存对象语言类型
+				this.getApprovalRequest().setClassName(this.getApprovalData().getClass().getName());
+				// 保存审批所有者
+				this.getApprovalRequest().setApprovalOwner(this.getApprovalData().getDataOwner());
 				// 修改审批请求名称为数据摘要
-				String summary = ((IApprovalDataSummary) this.getApprovalData()).getSummary();
-				if (summary != null && !summary.isEmpty()) {
-					this.getApprovalRequest().setName(summary);
+				if (this.getApprovalData() instanceof IApprovalDataSummary) {
+					IApprovalDataSummary data = (IApprovalDataSummary) this.getApprovalData();
+					if (data.getSummary() != null && !data.getSummary().isEmpty()) {
+						this.getApprovalRequest().setName(data.getSummary());
+					}
 				}
 			}
 			// 修正步骤所有者
@@ -210,7 +209,6 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 								condition.setValue(emYesNo.YES);
 								BORepositoryFinance fiRepository = new BORepositoryFinance();
 								fiRepository.setRepository(this.getRepository());
-								fiRepository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
 								IOperationResult<IProject> operationResult = fiRepository.fetchProject(criteria);
 								if (!operationResult.getResultObjects().isEmpty()) {
 									step.setStepOwner(operationResult.getResultObjects().firstOrDefault().getManager());
@@ -223,16 +221,11 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 			BORepositoryApprovalProcess apRepository = new BORepositoryApprovalProcess();
 			apRepository.setRefetchAfterSave(false);// 保存成功后，不重新获取副本
 			apRepository.setRepository(this.getRepository());
-			apRepository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
 			IOperationResult<IApprovalRequest> operationResult = apRepository
 					.saveApprovalRequest(this.getApprovalRequest());
 			if (operationResult.getError() != null) {
 				throw operationResult.getError();
 			}
-			if (operationResult.getResultCode() != 0) {
-				throw new ApprovalProcessException(operationResult.getMessage());
-			}
-
 		} catch (Exception e) {
 			throw new ApprovalProcessException(e);
 		}
@@ -258,10 +251,15 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 	}
 
 	public void loadClasses() throws ClassNotFoundException {
-		if (this.getApprovalRequest() != null && this.getApprovalRequest().getClassName() != null) {
-			Class<?> type = BOFactory.create().loadClass(this.getApprovalRequest().getClassName());
-			BOFactory.create().register(this.getApprovalData().getObjectCode(), type);
+		if (this.getApprovalRequest() == null) {
+			return;
 		}
+		if (this.getApprovalRequest().getClassName() == null || this.getApprovalRequest().getClassName().isEmpty()) {
+			return;
+		}
+		// 加载类
+		Class<?> type = BOFactory.create().loadClass(this.getApprovalRequest().getClassName());
+		BOFactory.create().register(this.getApprovalData().getObjectCode(), type);
 	}
 
 }

@@ -45,11 +45,11 @@ public class ApprovalProcessManager extends org.colorcoding.ibas.bobas.approval.
 	 * @return
 	 */
 	private IBORepositoryApprovalProcessApp createRepository() {
-		if (repository == null) {
+		if (this.repository == null) {
 			// 设置用户口令，系统用户
 			try {
-				repository = new BORepositoryApprovalProcess();
-				repository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
+				this.repository = new BORepositoryApprovalProcess();
+				this.repository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
 			} catch (InvalidTokenException e) {
 				throw new RuntimeException(e);
 			}

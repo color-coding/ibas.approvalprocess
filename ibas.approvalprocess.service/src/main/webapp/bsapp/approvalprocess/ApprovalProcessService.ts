@@ -164,7 +164,7 @@ namespace approvalprocess {
                                     if (opRslt.resultCode !== 0) {
                                         throw new Error(opRslt.message);
                                     }
-                                    that.messages(ibas.emMessageType.SUCCESS, opRslt.message);
+                                    that.messages(ibas.emMessageType.SUCCESS, ibas.i18n.prop("shell_sucessful"));
                                     that.fetchData(that.approvalRequest.criteria());
                                 } catch (error) {
                                     that.messages(error);
