@@ -22,6 +22,7 @@
   "approvalprocess_reject": "拒绝",
   "approvalprocess_reset": "重置",
   "approvalprocess_approvaltemplate_name": "{0}的审批",
+  "approvalprocess_view_data": "查看数据",
   "approvalprocess_not_found_businessojbect_link_service": "没有查看[{0}]的服务",
   "approvalprocess_approval_process_continue": "[{0}]将被批准，是否继续？",
   "approvalprocess_rejected_process_continue": "[{0}]将被拒绝，是否继续？",

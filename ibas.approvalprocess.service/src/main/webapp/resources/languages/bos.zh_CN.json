@@ -22,7 +22,7 @@
         "bo_approvalrequest_approvalobjectcode": "审批的对象类型",
         "bo_approvalrequest_activated": "激活的",
         "bo_approvalrequest_approvaltemplate": "审批模板",
-        "bo_approvalrequest_bokeys": "业务对象标识",
+        "bo_approvalrequest_bokeys": "待审批数据",
         "bo_approvalrequest_approvalstatus": "审批状态",
         "bo_approvalrequest_approvalowner": "审批所有者",
         "bo_approvalrequest_startedtime": "开始时间",
