@@ -11,7 +11,7 @@ namespace approvalprocess {
             /**
              * 视图-审批流程
              */
-            export class ApprovalProcessView extends ibas.BOResidentView implements app.IApprovalProcessView {
+            export class ApprovalProcessView extends ibas.ResidentView implements app.IApprovalProcessView {
                 // 显示列表
                 showListEvent: Function;
                 // 审批操作，参数1，审批请求；参数2，操作
@@ -21,18 +21,14 @@ namespace approvalprocess {
                 /** 绘制工具条视图 */
                 drawBar(): any {
                     let that: this = this;
-                    // 不重复创建工具条钮
-                    if (ibas.objects.isNull(this.bar)) {
-                        this.bar = new sap.m.Button("", {
-                            tooltip: this.title,
-                            icon: "sap-icon://ui-notifications",
-                            type: sap.m.ButtonType.Transparent,
-                            press: function (): void {
-                                that.fireViewEvents(that.showFullViewEvent);
-                            }
-                        });
-                    }
-                    return this.bar;
+                    return this.bar = new sap.m.Button("", {
+                        tooltip: this.title,
+                        icon: "sap-icon://ui-notifications",
+                        type: sap.m.ButtonType.Transparent,
+                        press: function (): void {
+                            that.fireViewEvents(that.showFullViewEvent);
+                        }
+                    });
                 }
                 private bar: sap.m.Button;
                 private form: sap.m.ResponsivePopover;
