@@ -22,10 +22,10 @@ import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.organization.IUser;
-import org.colorcoding.ibas.finance.bo.project.IProject;
-import org.colorcoding.ibas.finance.bo.project.Project;
-import org.colorcoding.ibas.finance.data.IProjectData;
-import org.colorcoding.ibas.finance.repository.BORepositoryFinance;
+import org.colorcoding.ibas.accounting.bo.project.IProject;
+import org.colorcoding.ibas.accounting.bo.project.Project;
+import org.colorcoding.ibas.accounting.data.IProjectData;
+import org.colorcoding.ibas.accounting.repository.BORepositoryAccounting;
 
 /**
  * 审批流程
@@ -207,7 +207,7 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 								condition = criteria.getConditions().create();
 								condition.setAlias(Project.PROPERTY_ACTIVATED.getName());
 								condition.setValue(emYesNo.YES);
-								BORepositoryFinance fiRepository = new BORepositoryFinance();
+								BORepositoryAccounting fiRepository = new BORepositoryAccounting();
 								fiRepository.setRepository(this.getRepository());
 								IOperationResult<IProject> operationResult = fiRepository.fetchProject(criteria);
 								if (!operationResult.getResultObjects().isEmpty()) {
