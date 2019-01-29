@@ -39,7 +39,7 @@ namespace approvalprocess {
                         title: ibas.i18n.prop("approvalprocess_app_approvalprocess_title"),
                         contentWidth: "300px",
                         showCloseButton: true,
-                        endButton: new sap.m.Button({
+                        endButton: new sap.m.Button("", {
                             text: ibas.i18n.prop("approvalprocess_app_approvalprocess_seemore"),
                             press: function (): void {
                                 that.fireViewEvents(that.showListEvent);
