@@ -28,9 +28,6 @@ namespace approvalprocess {
                     case app.ApprovalRequestChooseApp.APPLICATION_ID:
                         view = new c.ApprovalRequestChooseView();
                         break;
-                    case app.ApprovalRequestViewApp.APPLICATION_ID:
-                        view = new c.ApprovalRequestViewView();
-                        break;
                     case app.ApprovalRequestEditApp.APPLICATION_ID:
                         view = new c.ApprovalRequestEditView();
                         break;

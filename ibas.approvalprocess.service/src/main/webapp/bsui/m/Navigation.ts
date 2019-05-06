@@ -6,7 +6,6 @@
  * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
  */
 /// <reference path="../../index.d.ts" />
-/// <reference path="./approvalrequest/index.ts" />
 /// <reference path="./approvalprocess/index.ts" />
 namespace approvalprocess {
     export namespace ui {

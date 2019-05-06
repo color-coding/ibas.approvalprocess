@@ -8,4 +8,3 @@
 /// <reference path="./ApprovalRequestChooseView.ts" />
 /// <reference path="./ApprovalRequestEditView.ts" />
 /// <reference path="./ApprovalRequestListView.ts" />
-/// <reference path="./ApprovalRequestViewView.ts" />

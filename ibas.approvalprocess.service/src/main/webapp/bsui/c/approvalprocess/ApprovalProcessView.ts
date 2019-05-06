@@ -30,8 +30,6 @@ namespace approvalprocess {
                         }
                     });
                 }
-                private bar: sap.m.Button;
-                private form: sap.m.ResponsivePopover;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
@@ -52,6 +50,8 @@ namespace approvalprocess {
                     });
                     return this.form;
                 }
+                private bar: sap.m.Button;
+                private form: sap.m.ResponsivePopover;
 
                 private getPriority(ap: bo.ApprovalRequest): sap.ui.core.Priority {
                     let diffDay: number = ibas.dates.difference(ibas.dates.emDifferenceType.DAY, ibas.dates.today(), ap.startedTime);
