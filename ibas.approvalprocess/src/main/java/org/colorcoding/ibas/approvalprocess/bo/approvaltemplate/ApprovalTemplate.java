@@ -12,7 +12,7 @@ import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.bobas.mapping.BOCode;
+import org.colorcoding.ibas.bobas.mapping.BusinessObjectUnit;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
@@ -26,7 +26,7 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = ApprovalTemplate.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlRootElement(name = ApprovalTemplate.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
-@BOCode(ApprovalTemplate.BUSINESS_OBJECT_CODE)
+@BusinessObjectUnit(code = ApprovalTemplate.BUSINESS_OBJECT_CODE)
 public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implements IApprovalTemplate {
 
 	/**

@@ -45,6 +45,10 @@ namespace approvalprocess {
                         // 界面显示时，不刷新
                         return;
                     }
+                    if (!!globalThis.document.hidden) {
+                        // 窗口为激活，不刷新
+                        return;
+                    }
                     that.fetchApprovalRequest();
                 }, time * 1000);
             }
