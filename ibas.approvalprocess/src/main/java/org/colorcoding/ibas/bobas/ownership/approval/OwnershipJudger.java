@@ -33,7 +33,7 @@ public class OwnershipJudger extends org.colorcoding.ibas.bobas.ownership.initia
 			if (data == null || user == null) {
 				return false;
 			}
-			boolean result = this.filtering(data, user);
+			boolean result = super.canRead(data, user);
 			if (!result && data instanceof IApprovalData) {
 				// 数据不可读，检查是否存在审批流程，存在则可读
 				IApprovalData apData = (IApprovalData) data;

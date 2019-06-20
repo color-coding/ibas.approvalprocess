@@ -17,6 +17,8 @@ import org.colorcoding.ibas.bobas.common.ISort;
 import org.colorcoding.ibas.bobas.common.OperationMessage;
 import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.bobas.common.SortType;
+import org.colorcoding.ibas.bobas.core.BORepositoryBase;
+import org.colorcoding.ibas.bobas.core.IBORepository;
 import org.colorcoding.ibas.bobas.data.emApprovalResult;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emApprovalStepStatus;
@@ -35,10 +37,8 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 	/**
 	 * 查询-审批模板
 	 * 
-	 * @param criteria
-	 *            查询
-	 * @param token
-	 *            口令
+	 * @param criteria 查询
+	 * @param token    口令
 	 * @return 操作结果
 	 */
 	public OperationResult<ApprovalTemplate> fetchApprovalTemplate(ICriteria criteria, String token) {
@@ -48,8 +48,7 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 	/**
 	 * 查询-审批模板（提前设置用户口令）
 	 * 
-	 * @param criteria
-	 *            查询
+	 * @param criteria 查询
 	 * @return 操作结果
 	 */
 	public IOperationResult<IApprovalTemplate> fetchApprovalTemplate(ICriteria criteria) {
@@ -59,10 +58,8 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 	/**
 	 * 保存-审批模板
 	 * 
-	 * @param bo
-	 *            对象实例
-	 * @param token
-	 *            口令
+	 * @param bo    对象实例
+	 * @param token 口令
 	 * @return 操作结果
 	 */
 	public OperationResult<ApprovalTemplate> saveApprovalTemplate(ApprovalTemplate bo, String token) {
@@ -72,8 +69,7 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 	/**
 	 * 保存-审批模板（提前设置用户口令）
 	 * 
-	 * @param bo
-	 *            对象实例
+	 * @param bo 对象实例
 	 * @return 操作结果
 	 */
 	public IOperationResult<IApprovalTemplate> saveApprovalTemplate(IApprovalTemplate bo) {
@@ -85,10 +81,8 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 	/**
 	 * 查询-审批记录
 	 * 
-	 * @param criteria
-	 *            查询
-	 * @param token
-	 *            口令
+	 * @param criteria 查询
+	 * @param token    口令
 	 * @return 操作结果
 	 */
 	public OperationResult<ApprovalRequest> fetchApprovalRequest(ICriteria criteria, String token) {
@@ -98,8 +92,7 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 	/**
 	 * 查询-审批记录（提前设置用户口令）
 	 * 
-	 * @param criteria
-	 *            查询
+	 * @param criteria 查询
 	 * @return 操作结果
 	 */
 	public IOperationResult<IApprovalRequest> fetchApprovalRequest(ICriteria criteria) {
@@ -109,10 +102,8 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 	/**
 	 * 保存-审批记录
 	 * 
-	 * @param bo
-	 *            对象实例
-	 * @param token
-	 *            口令
+	 * @param bo    对象实例
+	 * @param token 口令
 	 * @return 操作结果
 	 */
 	public OperationResult<ApprovalRequest> saveApprovalRequest(ApprovalRequest bo, String token) {
@@ -122,8 +113,7 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 	/**
 	 * 保存-审批记录（提前设置用户口令）
 	 * 
-	 * @param bo
-	 *            对象实例
+	 * @param bo 对象实例
 	 * @return 操作结果
 	 */
 	public IOperationResult<IApprovalRequest> saveApprovalRequest(IApprovalRequest bo) {
@@ -188,8 +178,12 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 				ApprovalProcess myAP = (ApprovalProcess) ap;
 				myAP.loadClasses();
 			}
-			this.getRepository().setCurrentUser(OrganizationFactory.SYSTEM_USER);
-			ap.setRepository(this.getRepository());
+			IBORepository repository = this.getRepository();
+			if (repository instanceof BORepositoryBase) {
+				repository = (IBORepository) ((BORepositoryBase) this.getRepository()).clone();
+				repository.setCurrentUser(OrganizationFactory.SYSTEM_USER);
+			}
+			ap.setRepository(repository);
 			ap.approval(apStepId, apResult, token, judgment);
 			ap.save();
 		} catch (Exception e) {
