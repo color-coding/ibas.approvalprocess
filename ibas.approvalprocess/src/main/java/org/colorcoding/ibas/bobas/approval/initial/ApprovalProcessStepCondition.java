@@ -68,9 +68,10 @@ public class ApprovalProcessStepCondition extends Serializable
 				}
 				ISerializer<?> serializer = SerializerFactory.create().createManager()
 						.create(ISerializerManager.TYPE_JSON);
-				ByteArrayOutputStream writer = new ByteArrayOutputStream();
-				serializer.serialize(stepConditions, writer, ApprovalProcessStepCondition.class);
-				return new String(writer.toByteArray(), "utf-8");
+				try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+					serializer.serialize(stepConditions, writer, ApprovalProcessStepCondition.class);
+					return new String(writer.toByteArray(), "utf-8");
+				}
 			}
 			return null;
 		} catch (Exception e) {

@@ -48,11 +48,11 @@ namespace approvalprocess {
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_approvalobjectcode") }),
                             new sap.extension.m.RepositoryInput("", {
                                 showValueHelp: true,
-                                repository: initialfantasy.bo.BO_REPOSITORY_INITIALFANTASY,
+                                repository: initialfantasy.bo.BORepositoryInitialFantasy,
                                 dataInfo: {
-                                    type: ibas.boFactory.classOf(initialfantasy.bo.BO_CODE_BOINFORMATION),
-                                    key: "Code",
-                                    text: "Description"
+                                    type: initialfantasy.bo.BOInformation,
+                                    key: initialfantasy.bo.BOInformation.PROPERTY_CODE_NAME,
+                                    text: initialfantasy.bo.BOInformation.PROPERTY_DESCRIPTION_NAME
                                 },
                                 valueHelpRequest: function (): void {
                                     that.fireViewEvents(that.chooseApprovalTemplateBOInformationEvent);
@@ -151,11 +151,11 @@ namespace approvalprocess {
                                 label: ibas.i18n.prop("bo_approvaltemplatestep_stepowner"),
                                 template: new sap.extension.m.RepositoryInput("", {
                                     showValueHelp: true,
-                                    repository: initialfantasy.bo.BO_REPOSITORY_INITIALFANTASY,
+                                    repository: initialfantasy.bo.BORepositoryInitialFantasy,
                                     dataInfo: {
-                                        type: ibas.boFactory.classOf(initialfantasy.bo.BO_CODE_USER),
-                                        key: "DocEntry",
-                                        text: "Name"
+                                        type: initialfantasy.bo.User,
+                                        key: initialfantasy.bo.User.PROPERTY_DOCENTRY_NAME,
+                                        text: initialfantasy.bo.User.PROPERTY_NAME_NAME
                                     },
                                     valueHelpRequest: function (): void {
                                         that.fireViewEvents(that.chooseApprovalTemplateStepUserEvent,

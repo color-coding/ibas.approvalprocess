@@ -92,8 +92,8 @@ namespace approvalprocess {
                                 repository: bo.BORepositoryApprovalProcess,
                                 dataInfo: {
                                     type: bo.ApprovalTemplate,
-                                    key: "ObjectKey",
-                                    text: "Name"
+                                    key: bo.ApprovalTemplate.PROPERTY_OBJECTKEY_NAME,
+                                    text: bo.ApprovalTemplate.PROPERTY_NAME_NAME
                                 },
                             }).bindProperty("bindingValue", {
                                 path: "approvalTemplate",
@@ -146,11 +146,11 @@ namespace approvalprocess {
                                         label: ibas.i18n.prop("bo_approvalrequeststep_stepowner"),
                                         template: new sap.extension.m.RepositoryInput("", {
                                             showValueHelp: true,
-                                            repository: initialfantasy.bo.BO_REPOSITORY_INITIALFANTASY,
+                                            repository: initialfantasy.bo.BORepositoryInitialFantasy,
                                             dataInfo: {
-                                                type: ibas.boFactory.classOf(initialfantasy.bo.BO_CODE_USER),
-                                                key: "DocEntry",
-                                                text: "Name"
+                                                type: initialfantasy.bo.User,
+                                                key: initialfantasy.bo.User.PROPERTY_DOCENTRY_NAME,
+                                                text: initialfantasy.bo.User.PROPERTY_NAME_NAME
                                             },
                                             valueHelpRequest: function (): void {
                                                 that.fireViewEvents(that.chooseApprovalRequestStepOwnerEvent,
