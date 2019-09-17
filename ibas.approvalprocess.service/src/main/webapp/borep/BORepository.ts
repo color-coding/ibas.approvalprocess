@@ -27,7 +27,9 @@ namespace approvalprocess {
                 let method: string =
                     ibas.strings.format("fetchUserApprovalRequest?user={0}&token={1}",
                         fetcher.user, this.token);
-                boRepository.callRemoteMethod(method, undefined, fetcher);
+                boRepository.callRemoteMethod(method, undefined, (opRslt) => {
+                    fetcher.onCompleted.call(ibas.objects.isNull(fetcher.caller) ? fetcher : fetcher.caller, opRslt);
+                });
             }
             /**
              * 审批
@@ -41,7 +43,9 @@ namespace approvalprocess {
                 let method: string =
                     ibas.strings.format("approval?apRequestId={0}&apStepId={1}&apResult={2}&judgment={3}&token={4}",
                         caller.apRequestId, caller.apStepId, caller.apResult, caller.judgment, this.token);
-                boRepository.callRemoteMethod(method, undefined, caller);
+                boRepository.callRemoteMethod(method, undefined, (opRslt) => {
+                    caller.onCompleted.call(ibas.objects.isNull(caller.caller) ? caller : caller.caller, opRslt);
+                });
             }
 
             /**
