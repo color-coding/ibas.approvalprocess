@@ -45,9 +45,9 @@ namespace approvalprocess {
                     if (property === bo.ApprovalTemplateStepCondition.PROPERTY_CONDITIONTYPE_NAME) {
                         return ibas.enums.toString(emApprovalConditionType, value);
                     } else if (property === bo.ApprovalTemplateStepCondition.PROPERTY_RELATIONSHIP_NAME) {
-                        return ibas.enums.toString(ibas.emConditionRelationship, value);
+                        return ibas.enums.toString(initialfantasy.bo.emConditionRelationship, value);
                     } else if (property === bo.ApprovalTemplateStepCondition.PROPERTY_OPERATION_NAME) {
-                        return ibas.enums.toString(ibas.emConditionOperation, value);
+                        return ibas.enums.toString(initialfantasy.bo.emConditionOperation, value);
                     }
                 } else if (boName === bo.ApprovalTemplateStep.name) {
                     if (property === bo.ApprovalTemplateStep.PROPERTY_STEPOWNERTYPE_NAME) {
@@ -74,9 +74,9 @@ namespace approvalprocess {
                     if (property === bo.ApprovalTemplateStepCondition.PROPERTY_CONDITIONTYPE_NAME) {
                         return ibas.enums.valueOf(emApprovalConditionType, value);
                     } else if (property === bo.ApprovalTemplateStepCondition.PROPERTY_RELATIONSHIP_NAME) {
-                        return ibas.enums.valueOf(ibas.emConditionRelationship, value);
+                        return ibas.enums.valueOf(initialfantasy.bo.emConditionRelationship, value);
                     } else if (property === bo.ApprovalTemplateStepCondition.PROPERTY_OPERATION_NAME) {
-                        return ibas.enums.valueOf(ibas.emConditionOperation, value);
+                        return ibas.enums.valueOf(initialfantasy.bo.emConditionOperation, value);
                     }
                 } else if (boName === bo.ApprovalTemplateStep.name) {
                     if (property === bo.ApprovalTemplateStep.PROPERTY_STEPOWNERTYPE_NAME) {

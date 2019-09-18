@@ -230,10 +230,10 @@ namespace approvalprocess {
             conditionValue: string;
 
             /** 比较的方法 */
-            operation: ibas.emConditionOperation;
+            operation: initialfantasy.bo.emConditionOperation;
 
             /** 与上一个条件的关系 */
-            relationship: ibas.emConditionRelationship;
+            relationship: initialfantasy.bo.emConditionRelationship;
 
             /** 开括号数 */
             bracketOpen: number;

@@ -240,10 +240,12 @@ namespace approvalprocess {
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestepcondition_relationship"),
                                 template: new sap.extension.m.EnumSelect("", {
-                                    enumType: ibas.emConditionRelationship
+                                    enumType: initialfantasy.bo.emConditionRelationship
                                 }).bindProperty("bindingValue", {
                                     path: "relationship",
-                                    type: new sap.extension.data.ConditionRelationship()
+                                    type: new sap.extension.data.Enum({
+                                        enumType: initialfantasy.bo.emConditionRelationship
+                                    })
                                 })
                             }),
                             new sap.extension.table.DataColumn("", {
@@ -277,10 +279,12 @@ namespace approvalprocess {
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestepcondition_operation"),
                                 template: new sap.extension.m.EnumSelect("", {
-                                    enumType: ibas.emConditionOperation
+                                    enumType: initialfantasy.bo.emConditionOperation
                                 }).bindProperty("bindingValue", {
                                     path: "operation",
-                                    type: new sap.extension.data.ConditionOperation()
+                                    type: new sap.extension.data.Enum({
+                                        enumType: initialfantasy.bo.emConditionOperation
+                                    })
                                 })
                             }),
                             new sap.extension.table.DataColumn("", {

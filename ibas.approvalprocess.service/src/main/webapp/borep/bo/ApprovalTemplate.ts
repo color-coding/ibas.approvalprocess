@@ -825,22 +825,22 @@ namespace approvalprocess {
             /** 映射的属性名称-比较的方法 */
             static PROPERTY_OPERATION_NAME: string = "Operation";
             /** 获取-比较的方法 */
-            get operation(): ibas.emConditionOperation {
-                return this.getProperty<ibas.emConditionOperation>(ApprovalTemplateStepCondition.PROPERTY_OPERATION_NAME);
+            get operation(): initialfantasy.bo.emConditionOperation {
+                return this.getProperty<initialfantasy.bo.emConditionOperation>(ApprovalTemplateStepCondition.PROPERTY_OPERATION_NAME);
             }
             /** 设置-比较的方法 */
-            set operation(value: ibas.emConditionOperation) {
+            set operation(value: initialfantasy.bo.emConditionOperation) {
                 this.setProperty(ApprovalTemplateStepCondition.PROPERTY_OPERATION_NAME, value);
             }
 
             /** 映射的属性名称-与上一个条件的关系 */
             static PROPERTY_RELATIONSHIP_NAME: string = "Relationship";
             /** 获取-与上一个条件的关系 */
-            get relationship(): ibas.emConditionRelationship {
-                return this.getProperty<ibas.emConditionRelationship>(ApprovalTemplateStepCondition.PROPERTY_RELATIONSHIP_NAME);
+            get relationship(): initialfantasy.bo.emConditionRelationship {
+                return this.getProperty<initialfantasy.bo.emConditionRelationship>(ApprovalTemplateStepCondition.PROPERTY_RELATIONSHIP_NAME);
             }
             /** 设置-与上一个条件的关系 */
-            set relationship(value: ibas.emConditionRelationship) {
+            set relationship(value: initialfantasy.bo.emConditionRelationship) {
                 this.setProperty(ApprovalTemplateStepCondition.PROPERTY_RELATIONSHIP_NAME, value);
             }
 
@@ -869,8 +869,8 @@ namespace approvalprocess {
             /** 初始化数据 */
             protected init(): void {
                 this.conditionType = emApprovalConditionType.PROPERTY_VALUE;
-                this.operation = ibas.emConditionOperation.EQUAL;
-                this.relationship = ibas.emConditionRelationship.AND;
+                this.operation = initialfantasy.bo.emConditionOperation.EQUAL;
+                this.relationship = initialfantasy.bo.emConditionRelationship.AND;
             }
         }
 
