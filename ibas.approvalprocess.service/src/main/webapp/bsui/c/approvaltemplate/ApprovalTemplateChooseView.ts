@@ -75,7 +75,7 @@ namespace approvalprocess {
                             that.fireViewEvents(that.fetchDataEvent, criteria);
                         }
                     });
-                    return new sap.m.Dialog("", {
+                    return new sap.extension.m.Dialog("", {
                         title: this.title,
                         type: sap.m.DialogType.Standard,
                         state: sap.ui.core.ValueState.None,

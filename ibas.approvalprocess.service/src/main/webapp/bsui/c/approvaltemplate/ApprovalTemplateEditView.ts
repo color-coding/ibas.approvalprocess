@@ -413,7 +413,7 @@ namespace approvalprocess {
                     // 加载可选项
                     let criteria: ibas.ICriteria = new ibas.Criteria();
                     let condition: ibas.ICondition = criteria.conditions.create();
-                    condition.alias = "Code";
+                    condition.alias = initialfantasy.bo.BOInformation.PROPERTY_CODE_NAME;
                     condition.value = data.approvalObjectCode;
                     let boRepository: initialfantasy.bo.BORepositoryInitialFantasy = new initialfantasy.bo.BORepositoryInitialFantasy();
                     boRepository.fetchBOInformation({
