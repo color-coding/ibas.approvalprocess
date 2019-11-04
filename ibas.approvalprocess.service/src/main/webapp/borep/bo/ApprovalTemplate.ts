@@ -308,6 +308,9 @@ namespace approvalprocess {
                 super.afterAdd(item);
                 let max: number = 0;
                 for (let element of this) {
+                    if (item === element) {
+                        continue;
+                    }
                     if (element.stepOrder > max) {
                         max = element.stepOrder;
                     }

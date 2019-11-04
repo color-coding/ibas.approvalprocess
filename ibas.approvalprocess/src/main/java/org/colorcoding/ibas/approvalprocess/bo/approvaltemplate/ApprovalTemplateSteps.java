@@ -70,6 +70,9 @@ public class ApprovalTemplateSteps extends BusinessObjects<IApprovalTemplateStep
 		super.afterAddItem(item);
 		int max = 0;
 		for (IApprovalTemplateStep element : this) {
+			if (item == element) {
+				continue;
+			}
 			if (element.getStepOrder() > max) {
 				max = element.getStepOrder();
 			}

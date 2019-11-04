@@ -1,5 +1,9 @@
 package org.colorcoding.ibas.bobas.approval.initial;
 
+import org.colorcoding.ibas.accounting.bo.project.IProject;
+import org.colorcoding.ibas.accounting.bo.project.Project;
+import org.colorcoding.ibas.accounting.data.IProjectData;
+import org.colorcoding.ibas.accounting.repository.BORepositoryAccounting;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequestStep;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequest;
@@ -22,10 +26,6 @@ import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.organization.IUser;
-import org.colorcoding.ibas.accounting.bo.project.IProject;
-import org.colorcoding.ibas.accounting.bo.project.Project;
-import org.colorcoding.ibas.accounting.data.IProjectData;
-import org.colorcoding.ibas.accounting.repository.BORepositoryAccounting;
 
 /**
  * 审批流程
@@ -246,6 +246,10 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 					}
 				}
 			}
+		} else if (this.approvalRequest.isNew()
+				&& Integer.compare(this.getApprovalData().getDataOwner(), user.getId()) == 0) {
+			// 新的审批请求时，仅数据所有者可修改
+			return;
 		}
 		super.checkToSave(user);
 	}
