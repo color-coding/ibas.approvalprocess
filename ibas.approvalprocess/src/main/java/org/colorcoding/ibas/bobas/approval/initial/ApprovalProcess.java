@@ -26,6 +26,7 @@ import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.organization.IUser;
+import org.colorcoding.ibas.initialfantasy.bo.shell.User;
 
 /**
  * 审批流程
@@ -233,6 +234,13 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 
 	@Override
 	public void checkToSave(IUser user) throws ApprovalProcessException {
+		// 超级用户允许修改审批数据
+		if (user instanceof User) {
+			User sUser = (User) user;
+			if (sUser.isSuper()) {
+				return;
+			}
+		}
 		if (Integer.compare(this.getApprovalData().getDataOwner(), user.getId()) != 0) {
 			// 修改用户不是数据所有者时
 			IApprovalProcessStep tmpStep = this.currentStep();

@@ -137,7 +137,7 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 			// 排序
 			ISort sort = criteria.getSorts().create();
 			sort.setAlias(ApprovalRequest.PROPERTY_STARTEDTIME.getName());
-			sort.setSortType(SortType.ASCENDING);
+			sort.setSortType(SortType.DESCENDING);
 			// 子项查询
 			IChildCriteria childCriteria = criteria.getChildCriterias().create();
 			childCriteria.setOnlyHasChilds(true);

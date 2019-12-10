@@ -95,7 +95,7 @@ public class ApprovalTemplateStepConditions
 	}
 
 	@Override
-	public void onParentPropertyChanged(PropertyChangeEvent arg0) {
+	protected void onParentPropertyChanged(PropertyChangeEvent arg0) {
 		super.onParentPropertyChanged(arg0);
 		if (arg0.getPropertyName().equals(IBOLine.SECONDARY_PRIMARY_KEY_NAME)) {
 			for (IApprovalTemplateStepCondition item : this) {
