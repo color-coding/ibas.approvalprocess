@@ -37,6 +37,43 @@ namespace approvalprocess {
                         title: ibas.i18n.prop("approvalprocess_app_approvalprocess_title"),
                         contentWidth: "300px",
                         showCloseButton: true,
+                        placement: sap.m.PlacementType.Bottom,
+                        subHeader: new sap.m.Toolbar("", {
+                            content: [
+                                new sap.m.SearchField("", {
+                                    search(event: sap.ui.base.Event): void {
+                                        let source: any = event.getSource();
+                                        if (source instanceof sap.m.SearchField) {
+                                            that.form.setBusy(true);
+                                            let search: string = source.getValue();
+                                            let content: string;
+                                            if (search) {
+                                                search = search.trim().toLowerCase();
+                                            }
+                                            for (let item of that.form.getContent()) {
+                                                if (item instanceof sap.m.NotificationListItem) {
+                                                    item.setVisible(true);
+                                                    if (ibas.strings.isEmpty(search)) {
+                                                        continue;
+                                                    }
+                                                    content = item.getTitle(); if (content && content.toLowerCase().indexOf(search) >= 0) {
+                                                        continue;
+                                                    }
+                                                    content = item.getAuthorName(); if (content && content.toLowerCase().indexOf(search) >= 0) {
+                                                        continue;
+                                                    }
+                                                    content = item.getDescription(); if (content && content.toLowerCase().indexOf(search) >= 0) {
+                                                        continue;
+                                                    }
+                                                    item.setVisible(false);
+                                                }
+                                            }
+                                            that.form.setBusy(false);
+                                        }
+                                    }
+                                }),
+                            ]
+                        }),
                         endButton: new sap.m.Button("", {
                             text: ibas.i18n.prop("approvalprocess_app_approvalprocess_seemore"),
                             press: function (): void {
@@ -44,7 +81,6 @@ namespace approvalprocess {
                                 that.fireViewEvents(that.closeEvent);
                             }
                         }),
-                        placement: sap.m.PlacementType.Bottom,
                         content: [
                         ],
                     });
