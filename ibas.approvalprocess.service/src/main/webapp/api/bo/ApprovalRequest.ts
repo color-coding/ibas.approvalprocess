@@ -76,6 +76,9 @@ namespace approvalprocess {
             /** 业务对象标识 */
             boKeys: string;
 
+            /** 审批摘要 */
+            summary: string;
+
             /** 审批状态 */
             approvalStatus: ibas.emApprovalStatus;
 

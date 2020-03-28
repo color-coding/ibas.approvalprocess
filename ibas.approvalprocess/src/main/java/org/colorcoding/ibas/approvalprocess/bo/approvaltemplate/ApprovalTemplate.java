@@ -644,19 +644,19 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	}
 
 	/**
-	 * 属性名称-审批的对象类型
+	 * 属性名称-审批对象类型
 	 */
 	private static final String PROPERTY_APPROVALOBJECTCODE_NAME = "ApprovalObjectCode";
 
 	/**
-	 * 审批的对象类型 属性
+	 * 审批对象类型 属性
 	 */
 	@DbField(name = "ApvlCode", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
 	public static final IPropertyInfo<String> PROPERTY_APPROVALOBJECTCODE = registerProperty(
 			PROPERTY_APPROVALOBJECTCODE_NAME, String.class, MY_CLASS);
 
 	/**
-	 * 获取-审批的对象类型
+	 * 获取-审批对象类型
 	 * 
 	 * @return 值
 	 */
@@ -666,7 +666,7 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	}
 
 	/**
-	 * 设置-审批的对象类型
+	 * 设置-审批对象类型
 	 * 
 	 * @param value 值
 	 */
@@ -765,6 +765,37 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	 */
 	public final void setInvalidDate(DateTime value) {
 		this.setProperty(PROPERTY_INVALIDDATE, value);
+	}
+
+	/**
+	 * 属性名称-审批流程摘要
+	 */
+	private static final String PROPERTY_SUMMARY_NAME = "Summary";
+
+	/**
+	 * 审批流程摘要 属性
+	 */
+	@DbField(name = "Summary", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_SUMMARY = registerProperty(PROPERTY_SUMMARY_NAME, String.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-审批流程摘要
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_SUMMARY_NAME)
+	public final String getSummary() {
+		return this.getProperty(PROPERTY_SUMMARY);
+	}
+
+	/**
+	 * 设置-审批流程摘要
+	 * 
+	 * @param value 值
+	 */
+	public final void setSummary(String value) {
+		this.setProperty(PROPERTY_SUMMARY, value);
 	}
 
 	/**

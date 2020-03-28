@@ -258,6 +258,17 @@ namespace approvalprocess {
                 this.setProperty(ApprovalRequest.PROPERTY_BOKEYS_NAME, value);
             }
 
+            /** 映射的属性名称-审批摘要 */
+            static PROPERTY_SUMMARY_NAME: string = "Summary";
+            /** 获取-审批摘要 */
+            get summary(): string {
+                return this.getProperty<string>(ApprovalRequest.PROPERTY_SUMMARY_NAME);
+            }
+            /** 设置-审批摘要 */
+            set summary(value: string) {
+                this.setProperty(ApprovalRequest.PROPERTY_SUMMARY_NAME, value);
+            }
+
             /** 映射的属性名称-审批状态 */
             static PROPERTY_APPROVALSTATUS_NAME: string = "ApprovalStatus";
             /** 获取-审批状态 */

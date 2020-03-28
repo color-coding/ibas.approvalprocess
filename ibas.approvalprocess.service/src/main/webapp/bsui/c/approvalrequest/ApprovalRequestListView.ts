@@ -65,6 +65,14 @@ namespace approvalprocess {
                                 }),
                             }),
                             new sap.extension.table.DataColumn("", {
+                                label: ibas.i18n.prop("bo_approvalrequest_summary"),
+                                template: new sap.extension.m.Text("", {
+                                }).bindProperty("bindingValue", {
+                                    path: "summary",
+                                    type: new sap.extension.data.Alphanumeric()
+                                }),
+                            }),
+                            new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvalrequest_approvalowner"),
                                 template: new sap.extension.m.UserText("", {
                                 }).bindProperty("bindingValue", {

@@ -54,6 +54,7 @@ public class TestApprovalProcess extends TestCase {
 		ApprovalTemplate at = new ApprovalTemplate();
 		at.setApprovalObjectCode(MyConfiguration.applyVariables(User.BUSINESS_OBJECT_CODE));
 		at.setName("超级用户的审批");
+		at.setSummary("${Name} (${Code})");
 		IApprovalTemplateStep atStep01 = at.getApprovalTemplateSteps().create();
 		atStep01.setStepOrder(1);
 		atStep01.setStepName("manager审批");

@@ -21,8 +21,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-编号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setObjectKey(Integer value);
 
@@ -36,8 +35,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setObjectCode(String value);
 
@@ -51,8 +49,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-实例号（版本）
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLogInst(Integer value);
 
@@ -66,8 +63,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-服务系列
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setSeries(Integer value);
 
@@ -81,8 +77,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-数据源
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDataSource(String value);
 
@@ -96,8 +91,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-创建日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateDate(DateTime value);
 
@@ -111,8 +105,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-创建时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateTime(Short value);
 
@@ -126,8 +119,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-修改日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateDate(DateTime value);
 
@@ -141,8 +133,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-修改时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateTime(Short value);
 
@@ -156,8 +147,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-创建动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateActionId(String value);
 
@@ -171,8 +161,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-更新动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateActionId(String value);
 
@@ -186,8 +175,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-创建用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateUserSign(Integer value);
 
@@ -201,8 +189,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-修改用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateUserSign(Integer value);
 
@@ -216,8 +203,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-数据所有者
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDataOwner(Integer value);
 
@@ -231,8 +217,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-参考1
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setReference1(String value);
 
@@ -246,8 +231,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-参考2
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setReference2(String value);
 
@@ -261,8 +245,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-备注
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setRemarks(String value);
 
@@ -276,25 +259,9 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-审批请求名称
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setName(String value);
-
-	/**
-	 * 获取-审批的对象类型
-	 * 
-	 * @return 值
-	 */
-	String getApprovalObjectCode();
-
-	/**
-	 * 设置-审批的对象类型
-	 * 
-	 * @param value
-	 *            值
-	 */
-	void setApprovalObjectCode(String value);
 
 	/**
 	 * 获取-激活的
@@ -306,10 +273,23 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-激活的
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setActivated(emYesNo value);
+
+	/**
+	 * 获取-审批对象类型
+	 * 
+	 * @return 值
+	 */
+	String getApprovalObjectCode();
+
+	/**
+	 * 设置-审批对象类型
+	 * 
+	 * @param value 值
+	 */
+	void setApprovalObjectCode(String value);
 
 	/**
 	 * 获取-审批模板
@@ -321,25 +301,9 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-审批模板
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setApprovalTemplate(Integer value);
-
-	/**
-	 * 获取-业务对象标识
-	 * 
-	 * @return 值
-	 */
-	String getBOKeys();
-
-	/**
-	 * 设置-业务对象标识
-	 * 
-	 * @param value
-	 *            值
-	 */
-	void setBOKeys(String value);
 
 	/**
 	 * 获取-审批状态
@@ -351,8 +315,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-审批状态
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setApprovalStatus(emApprovalStatus value);
 
@@ -366,10 +329,37 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-审批所有者
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setApprovalOwner(Integer value);
+
+	/**
+	 * 获取-业务对象标识
+	 * 
+	 * @return 值
+	 */
+	String getBOKeys();
+
+	/**
+	 * 设置-业务对象标识
+	 * 
+	 * @param value 值
+	 */
+	void setBOKeys(String value);
+
+	/**
+	 * 获取-审批摘要
+	 * 
+	 * @return 值
+	 */
+	String getSummary();
+
+	/**
+	 * 设置-审批摘要
+	 * 
+	 * @param value 值
+	 */
+	void setSummary(String value);
 
 	/**
 	 * 获取-开始时间
@@ -381,8 +371,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-开始时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setStartedTime(DateTime value);
 
@@ -396,8 +385,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-结束时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setFinishedTime(DateTime value);
 
@@ -411,8 +399,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-语言类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setClassName(String value);
 
@@ -426,8 +413,7 @@ public interface IApprovalRequest extends IBOSimple {
 	/**
 	 * 设置-审批请求步骤集合
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setApprovalRequestSteps(IApprovalRequestSteps value);
 

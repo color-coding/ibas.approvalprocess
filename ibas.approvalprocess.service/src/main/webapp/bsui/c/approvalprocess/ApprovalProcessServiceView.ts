@@ -52,6 +52,9 @@ namespace approvalprocess {
                         wrapping: false,
                         text: ibas.businessobjects.describe(data.boKeys)
                     }));
+                    pageBar.addContent(new sap.extension.m.Text("", {
+                        wrapping: false,
+                    }).setText(data.summary));
                     pageBar.addContent(new sap.m.ToolbarSpacer(""));
                     pageBar.addContent(new sap.m.Button("", {
                         text: ibas.i18n.prop("approvalprocess_view_data"),

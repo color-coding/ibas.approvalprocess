@@ -1,9 +1,13 @@
 package org.colorcoding.ibas.bobas.approval.initial;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.colorcoding.ibas.accounting.bo.project.IProject;
 import org.colorcoding.ibas.accounting.bo.project.Project;
 import org.colorcoding.ibas.accounting.data.IProjectData;
 import org.colorcoding.ibas.accounting.repository.BORepositoryAccounting;
+import org.colorcoding.ibas.approvalprocess.MyConfiguration;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequestStep;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequest;
@@ -15,13 +19,14 @@ import org.colorcoding.ibas.approvalprocess.repository.BORepositoryApprovalProce
 import org.colorcoding.ibas.bobas.approval.ApprovalDataProxy;
 import org.colorcoding.ibas.bobas.approval.ApprovalProcessException;
 import org.colorcoding.ibas.bobas.approval.IApprovalData;
-import org.colorcoding.ibas.bobas.approval.IApprovalDataSummary;
 import org.colorcoding.ibas.bobas.approval.IApprovalProcessStep;
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
 import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.core.BOFactory;
+import org.colorcoding.ibas.bobas.core.fields.IFieldData;
+import org.colorcoding.ibas.bobas.core.fields.IManagedFields;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
@@ -45,6 +50,7 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 		aq.setApprovalTemplate(template.getObjectKey());
 		aq.setApprovalObjectCode(template.getApprovalObjectCode());
 		aq.setName(template.getName());
+		aq.setSummary(template.getSummary());
 		for (IApprovalTemplateStep item : template.getApprovalTemplateSteps()) {
 			ApprovalRequestStep aqStep = new ApprovalRequestStep();
 			aqStep.setStepOrder(item.getStepOrder());
@@ -181,11 +187,21 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 				this.getApprovalRequest().setClassName(this.getApprovalData().getClass().getName());
 				// 保存审批所有者
 				this.getApprovalRequest().setApprovalOwner(this.getApprovalData().getDataOwner());
-				// 修改审批请求名称为数据摘要
-				if (this.getApprovalData() instanceof IApprovalDataSummary) {
-					IApprovalDataSummary data = (IApprovalDataSummary) this.getApprovalData();
-					if (data.getSummary() != null && !data.getSummary().isEmpty()) {
-						this.getApprovalRequest().setName(data.getSummary());
+				// 替换摘要中的变量
+				if (this.getApprovalData() instanceof IManagedFields) {
+					IManagedFields boFields = (IManagedFields) this.getApprovalData();
+					if (this.getApprovalRequest().getSummary() != null) {
+						String summary = this.getApprovalRequest().getSummary();
+						Matcher matcher = Pattern.compile(MyConfiguration.VARIABLE_PATTERN).matcher(summary);
+						while (matcher.find()) {
+							// 带格式名称${}
+							String pName = matcher.group(0);
+							IFieldData field = boFields.getField(pName.substring(2, pName.length() - 1));
+							if (field != null) {
+								summary = summary.replace(pName, String.valueOf(field.getValue()));
+							}
+						}
+						this.getApprovalRequest().setSummary(summary);
 					}
 				}
 			}

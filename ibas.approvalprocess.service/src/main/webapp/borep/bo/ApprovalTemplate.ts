@@ -270,6 +270,16 @@ namespace approvalprocess {
                 this.setProperty(ApprovalTemplate.PROPERTY_INVALIDDATE_NAME, value);
             }
 
+            /** 映射的属性名称-审批流程摘要 */
+            static PROPERTY_SUMMARY_NAME: string = "Summary";
+            /** 获取-审批流程摘要 */
+            get summary(): string {
+                return this.getProperty<string>(ApprovalTemplate.PROPERTY_SUMMARY_NAME);
+            }
+            /** 设置-审批流程摘要 */
+            set summary(value: string) {
+                this.setProperty(ApprovalTemplate.PROPERTY_SUMMARY_NAME, value);
+            }
 
             /** 映射的属性名称-审批模板步骤集合 */
             static PROPERTY_APPROVALTEMPLATESTEPS_NAME: string = "ApprovalTemplateSteps";

@@ -30,6 +30,8 @@ namespace approvalprocess {
                 chooseApprovalTemplateBOInformationEvent: Function;
                 /** 审批步骤选择步骤所有者 */
                 chooseApprovalTemplateStepUserEvent: Function;
+                /** 选择业务对象属性 */
+                chooseApprovalTemplateBOPropertyEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
@@ -82,7 +84,21 @@ namespace approvalprocess {
                                 path: "invalidDate",
                                 type: new sap.extension.data.Date()
                             }),
-                            new sap.ui.core.Title("", {}),
+                            new sap.ui.core.Title("", { text: ibas.i18n.prop("approvalprocess_title_others") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_summary") }),
+                            new sap.extension.m.TextArea("", {
+                                rows: 6,
+                            }).bindProperty("bindingValue", {
+                                path: "summary",
+                                type: new sap.extension.data.Alphanumeric()
+                            }),
+                            new sap.m.Label("", {}),
+                            new sap.m.Button("", {
+                                text: ibas.i18n.prop("approvalprocess_add_bo_property"),
+                                press: function (): void {
+                                    that.fireViewEvents(that.chooseApprovalTemplateBOPropertyEvent);
+                                }
+                            }),
                         ]
                     });
                     this.tableApprovalTemplateStep = new sap.extension.table.DataTable("", {

@@ -37,7 +37,8 @@ namespace approvalprocess {
                 this.view.addApprovalTemplateStepConditionEvent = this.addApprovalTemplateStepCondition;
                 this.view.removeApprovalTemplateStepConditionEvent = this.removeApprovalTemplateStepCondition;
                 this.view.chooseApprovalTemplateStepUserEvent = this.chooseApprovalTemplateStepUserEvent;
-                this.view.chooseApprovalTemplateBOInformationEvent = this.chooseApprovalTemplateBOInformationEvent;
+                this.view.chooseApprovalTemplateBOInformationEvent = this.chooseApprovalTemplateBOInformation;
+                this.view.chooseApprovalTemplateBOPropertyEvent = this.chooseApprovalTemplateBOProperty;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -266,7 +267,7 @@ namespace approvalprocess {
                 this.view.showApprovalTemplateStepConditions(this.editApprovalTemplateStepData.approvalTemplateStepConditions.filterDeleted());
             }
             /** 选择业务对象类型 */
-            private chooseApprovalTemplateBOInformationEvent(): void {
+            private chooseApprovalTemplateBOInformation(): void {
                 let that: this = this;
                 let criteria: ibas.ICriteria = new ibas.Criteria();
                 criteria.noChilds = true;
@@ -307,6 +308,31 @@ namespace approvalprocess {
                     }
                 });
             }
+            /** 选择业务对象类型 */
+            private chooseApprovalTemplateBOProperty(): void {
+                let that: this = this;
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                let condition: ibas.ICondition = criteria.conditions.create();
+                condition.alias = initialfantasy.bo.BOInformation.PROPERTY_CODE_NAME;
+                condition.value = this.editData.approvalObjectCode;
+                ibas.servicesManager.runChooseService<initialfantasy.bo.IBOPropertyInformation>({
+                    boCode: initialfantasy.bo.BO_CODE_BOPROPERTY,
+                    criteria: criteria,
+                    chooseType: ibas.emChooseType.MULTIPLE,
+                    onCompleted(selecteds: ibas.IList<initialfantasy.bo.IBOPropertyInformation>): void {
+                        let builder: ibas.StringBuilder = new ibas.StringBuilder();
+                        builder.map(null, "");
+                        builder.map(undefined, "");
+                        builder.append(that.editData.summary);
+                        for (let item of selecteds) {
+                            builder.append("${");
+                            builder.append(item.property);
+                            builder.append("}");
+                        }
+                        that.editData.summary = builder.toString();
+                    }
+                });
+            }
         }
         /** 视图-审批模板 */
         export interface IApprovalTemplateEditView extends ibas.IBOEditView {
@@ -334,6 +360,8 @@ namespace approvalprocess {
             chooseApprovalTemplateBOInformationEvent: Function;
             /** 审批步骤选择步骤所有者 */
             chooseApprovalTemplateStepUserEvent: Function;
+            /** 选择业务对象属性 */
+            chooseApprovalTemplateBOPropertyEvent: Function;
         }
     }
 }

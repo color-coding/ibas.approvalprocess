@@ -611,37 +611,6 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	}
 
 	/**
-	 * 属性名称-审批的对象类型
-	 */
-	private static final String PROPERTY_APPROVALOBJECTCODE_NAME = "ApprovalObjectCode";
-
-	/**
-	 * 审批的对象类型 属性
-	 */
-	@DbField(name = "ApvlCode", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_APPROVALOBJECTCODE = registerProperty(
-			PROPERTY_APPROVALOBJECTCODE_NAME, String.class, MY_CLASS);
-
-	/**
-	 * 获取-审批的对象类型
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_APPROVALOBJECTCODE_NAME)
-	public final String getApprovalObjectCode() {
-		return this.getProperty(PROPERTY_APPROVALOBJECTCODE);
-	}
-
-	/**
-	 * 设置-审批的对象类型
-	 * 
-	 * @param value 值
-	 */
-	public final void setApprovalObjectCode(String value) {
-		this.setProperty(PROPERTY_APPROVALOBJECTCODE, value);
-	}
-
-	/**
 	 * 属性名称-激活的
 	 */
 	private static final String PROPERTY_ACTIVATED_NAME = "Activated";
@@ -673,6 +642,37 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	}
 
 	/**
+	 * 属性名称-审批对象类型
+	 */
+	private static final String PROPERTY_APPROVALOBJECTCODE_NAME = "ApprovalObjectCode";
+
+	/**
+	 * 审批对象类型 属性
+	 */
+	@DbField(name = "ApvlCode", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_APPROVALOBJECTCODE = registerProperty(
+			PROPERTY_APPROVALOBJECTCODE_NAME, String.class, MY_CLASS);
+
+	/**
+	 * 获取-审批对象类型
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_APPROVALOBJECTCODE_NAME)
+	public final String getApprovalObjectCode() {
+		return this.getProperty(PROPERTY_APPROVALOBJECTCODE);
+	}
+
+	/**
+	 * 设置-审批对象类型
+	 * 
+	 * @param value 值
+	 */
+	public final void setApprovalObjectCode(String value) {
+		this.setProperty(PROPERTY_APPROVALOBJECTCODE, value);
+	}
+
+	/**
 	 * 属性名称-审批模板
 	 */
 	private static final String PROPERTY_APPROVALTEMPLATE_NAME = "ApprovalTemplate";
@@ -701,37 +701,6 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	 */
 	public final void setApprovalTemplate(Integer value) {
 		this.setProperty(PROPERTY_APPROVALTEMPLATE, value);
-	}
-
-	/**
-	 * 属性名称-业务对象标识
-	 */
-	private static final String PROPERTY_BOKEYS_NAME = "BOKeys";
-
-	/**
-	 * 业务对象标识 属性
-	 */
-	@DbField(name = "BOKeys", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_BOKEYS = registerProperty(PROPERTY_BOKEYS_NAME, String.class,
-			MY_CLASS);
-
-	/**
-	 * 获取-业务对象标识
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_BOKEYS_NAME)
-	public final String getBOKeys() {
-		return this.getProperty(PROPERTY_BOKEYS);
-	}
-
-	/**
-	 * 设置-业务对象标识
-	 * 
-	 * @param value 值
-	 */
-	public final void setBOKeys(String value) {
-		this.setProperty(PROPERTY_BOKEYS, value);
 	}
 
 	/**
@@ -794,6 +763,68 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	 */
 	public final void setApprovalOwner(Integer value) {
 		this.setProperty(PROPERTY_APPROVALOWNER, value);
+	}
+
+	/**
+	 * 属性名称-业务对象标识
+	 */
+	private static final String PROPERTY_BOKEYS_NAME = "BOKeys";
+
+	/**
+	 * 业务对象标识 属性
+	 */
+	@DbField(name = "BOKeys", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_BOKEYS = registerProperty(PROPERTY_BOKEYS_NAME, String.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-业务对象标识
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_BOKEYS_NAME)
+	public final String getBOKeys() {
+		return this.getProperty(PROPERTY_BOKEYS);
+	}
+
+	/**
+	 * 设置-业务对象标识
+	 * 
+	 * @param value 值
+	 */
+	public final void setBOKeys(String value) {
+		this.setProperty(PROPERTY_BOKEYS, value);
+	}
+
+	/**
+	 * 属性名称-审批摘要
+	 */
+	private static final String PROPERTY_SUMMARY_NAME = "Summary";
+
+	/**
+	 * 审批摘要 属性
+	 */
+	@DbField(name = "Summary", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_SUMMARY = registerProperty(PROPERTY_SUMMARY_NAME, String.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-审批摘要
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_SUMMARY_NAME)
+	public final String getSummary() {
+		return this.getProperty(PROPERTY_SUMMARY);
+	}
+
+	/**
+	 * 设置-审批摘要
+	 * 
+	 * @param value 值
+	 */
+	public final void setSummary(String value) {
+		this.setProperty(PROPERTY_SUMMARY, value);
 	}
 
 	/**

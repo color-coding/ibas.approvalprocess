@@ -55,11 +55,12 @@ namespace approvalprocess {
                                     return ibas.businessobjects.describe(data);
                                 }
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_remarks") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_summary") }),
                             new sap.extension.m.TextArea("", {
+                                editable: false,
                                 rows: 3,
                             }).bindProperty("bindingValue", {
-                                path: "remarks",
+                                path: "summary",
                                 type: new sap.extension.data.Alphanumeric()
                             }),
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("approvalprocess_title_others") }),
@@ -197,6 +198,20 @@ namespace approvalprocess {
                             }),
                         ]
                     });
+                    let formBottom: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
+                        editable: true,
+                        content: [
+                            new sap.ui.core.Title("", { text: ibas.i18n.prop("approvalprocess_title_others") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_remarks") }),
+                            new sap.extension.m.TextArea("", {
+                                rows: 3,
+                            }).bindProperty("bindingValue", {
+                                path: "remarks",
+                                type: new sap.extension.data.Alphanumeric()
+                            }),
+                            new sap.ui.core.Title("", {}),
+                        ]
+                    });
                     return this.page = new sap.extension.m.DataPage("", {
                         showHeader: false,
                         dataInfo: {
@@ -217,6 +232,7 @@ namespace approvalprocess {
                         content: [
                             formTop,
                             formApprovalRequestStep,
+                            formBottom,
                         ]
                     });
                 }

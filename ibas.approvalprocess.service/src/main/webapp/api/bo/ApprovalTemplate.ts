@@ -78,6 +78,8 @@ namespace approvalprocess {
             /** 失效日期 */
             invalidDate: Date;
 
+            /** 审批摘要 */
+            summary: string;
 
             /** 审批模板步骤集合 */
             approvalTemplateSteps: IApprovalTemplateSteps;
