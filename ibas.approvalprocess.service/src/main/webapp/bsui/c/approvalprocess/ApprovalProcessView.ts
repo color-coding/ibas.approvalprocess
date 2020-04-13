@@ -8,6 +8,8 @@
 namespace approvalprocess {
     export namespace ui {
         export namespace c {
+            const SORT_SIGN_ASC: string = "sap-icon://sort-ascending";
+            const SORT_SIGN_DESC: string = "sap-icon://sort-descending";
             /**
              * 视图-审批流程
              */
@@ -35,7 +37,7 @@ namespace approvalprocess {
                     let that: this = this;
                     this.form = new sap.m.ResponsivePopover("", {
                         title: ibas.i18n.prop("approvalprocess_app_approvalprocess_title"),
-                        contentWidth: "300px",
+                        contentWidth: "auto",
                         showCloseButton: true,
                         placement: sap.m.PlacementType.Bottom,
                         subHeader: new sap.m.Toolbar("", {
@@ -72,6 +74,36 @@ namespace approvalprocess {
                                         }
                                     }
                                 }),
+                                this.sortButton = new sap.m.Button("", {
+                                    icon: SORT_SIGN_ASC,
+                                    press(event: sap.ui.base.Event): void {
+                                        let source: any = event.getSource();
+                                        if (source instanceof sap.m.Button) {
+                                            let items: sap.ui.core.Control[] = that.form.getContent();
+                                            if (source.getIcon() === SORT_SIGN_ASC) {
+                                                source.setIcon(SORT_SIGN_DESC);
+                                                items = items.sort((a, b) => {
+                                                    if (a instanceof sap.m.NotificationListItem && b instanceof sap.m.NotificationListItem) {
+                                                        return a.getDatetime().localeCompare(b.getDatetime());
+                                                    }
+                                                    return 0;
+                                                });
+                                            } else if (source.getIcon() === SORT_SIGN_DESC) {
+                                                source.setIcon(SORT_SIGN_ASC);
+                                                items = items.sort((a, b) => {
+                                                    if (a instanceof sap.m.NotificationListItem && b instanceof sap.m.NotificationListItem) {
+                                                        return b.getDatetime().localeCompare(a.getDatetime());
+                                                    }
+                                                    return 0;
+                                                });
+                                            }
+                                            that.form.removeAllContent();
+                                            for (let item of items) {
+                                                that.form.addContent(item);
+                                            }
+                                        }
+                                    }
+                                })
                             ]
                         }),
                         endButton: new sap.m.Button("", {
@@ -88,6 +120,7 @@ namespace approvalprocess {
                 }
                 private bar: sap.m.Button;
                 private form: sap.m.ResponsivePopover;
+                private sortButton: sap.m.Button;
 
                 private getPriority(ap: bo.ApprovalRequest): sap.ui.core.Priority {
                     let diffDay: number = ibas.dates.difference(ibas.dates.emDifferenceType.DAY, ibas.dates.today(), ap.startedTime);
