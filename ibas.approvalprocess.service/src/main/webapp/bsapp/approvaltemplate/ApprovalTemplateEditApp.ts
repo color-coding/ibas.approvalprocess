@@ -99,9 +99,6 @@ namespace approvalprocess {
                 }
                 super.run.apply(this, arguments);
             }
-
-            /** 待编辑的数据 */
-            protected editData: bo.ApprovalTemplate;
             /** 待编辑的审批步骤数据 */
             protected editApprovalTemplateStepData: bo.ApprovalTemplateStep;
             /** 保存数据 */

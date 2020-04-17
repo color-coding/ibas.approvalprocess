@@ -54,7 +54,6 @@ namespace approvalprocess {
                     super.run.apply(this, arguments);
                 }
             }
-            protected viewData: bo.ApprovalRequest;
             /** 查询数据 */
             protected fetchData(criteria: ibas.ICriteria | string): void {
                 this.busy(true);
