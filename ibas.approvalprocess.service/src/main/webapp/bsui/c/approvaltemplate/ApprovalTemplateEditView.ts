@@ -330,9 +330,9 @@ namespace approvalprocess {
                         editable: true,
                         content: [
                             this.tableTitle = new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_approvaltemplatestep") }),
-                            this.splitContainer = new sap.m.SplitContainer("", {
-                                mode: sap.m.SplitAppMode.HideMode,
-                                detailPages: [
+                            this.container = new sap.m.NavContainer("", {
+                                height: "22rem",
+                                pages: [
                                     this.tableApprovalTemplateStep,
                                     this.tableApprovalTemplateStepCondition
                                 ]
@@ -401,7 +401,7 @@ namespace approvalprocess {
                 private tableApprovalTemplateStep: sap.extension.table.Table;
                 private tableApprovalTemplateStepCondition: sap.extension.table.Table;
                 private tableTitle: sap.ui.core.Title;
-                private splitContainer: sap.m.SplitContainer;
+                private container: sap.m.NavContainer;
                 private columnProperty: sap.extension.table.DataColumn;
 
                 /** 显示数据 */
@@ -449,13 +449,13 @@ namespace approvalprocess {
                 /** 显示数据 */
                 showApprovalTemplateSteps(datas: bo.ApprovalTemplateStep[]): void {
                     this.tableTitle.setText(ibas.i18n.prop("bo_approvaltemplatestep"));
-                    this.splitContainer.backToTopDetail(null, null);
+                    this.container.backToTop();
                     this.tableApprovalTemplateStep.setModel(new sap.extension.model.JSONModel({ rows: datas }));
                 }
                 /** 显示数据 */
                 showApprovalTemplateStepConditions(datas: bo.ApprovalTemplateStepCondition[]): void {
                     this.tableTitle.setText(ibas.i18n.prop("bo_approvaltemplatestepcondition"));
-                    this.splitContainer.toDetail(this.tableApprovalTemplateStepCondition.getId(), null, null, null);
+                    this.container.to(this.tableApprovalTemplateStepCondition.getId());
                     this.tableApprovalTemplateStepCondition.setModel(new sap.extension.model.JSONModel({ rows: datas }));
                 }
             }

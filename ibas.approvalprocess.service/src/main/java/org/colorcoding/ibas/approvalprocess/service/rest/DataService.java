@@ -13,6 +13,7 @@ import org.colorcoding.ibas.approvalprocess.repository.BORepositoryApprovalProce
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.OperationMessage;
 import org.colorcoding.ibas.bobas.common.OperationResult;
+import org.colorcoding.ibas.bobas.data.DataConvert;
 import org.colorcoding.ibas.bobas.data.emApprovalResult;
 
 /**
@@ -24,10 +25,8 @@ public class DataService extends BORepositoryApprovalProcess {
 	/**
 	 * 查询-审批模板
 	 * 
-	 * @param criteria
-	 *            查询
-	 * @param token
-	 *            口令
+	 * @param criteria 查询
+	 * @param token    口令
 	 * @return 操作结果
 	 */
 	@POST
@@ -42,10 +41,8 @@ public class DataService extends BORepositoryApprovalProcess {
 	/**
 	 * 保存-审批模板
 	 * 
-	 * @param bo
-	 *            对象实例
-	 * @param token
-	 *            口令
+	 * @param bo    对象实例
+	 * @param token 口令
 	 * @return 操作结果
 	 */
 	@POST
@@ -61,10 +58,8 @@ public class DataService extends BORepositoryApprovalProcess {
 	/**
 	 * 查询-审批记录
 	 * 
-	 * @param criteria
-	 *            查询
-	 * @param token
-	 *            口令
+	 * @param criteria 查询
+	 * @param token    口令
 	 * @return 操作结果
 	 */
 	@POST
@@ -78,10 +73,8 @@ public class DataService extends BORepositoryApprovalProcess {
 	/**
 	 * 保存-审批记录
 	 * 
-	 * @param bo
-	 *            对象实例
-	 * @param token
-	 *            口令
+	 * @param bo    对象实例
+	 * @param token 口令
 	 * @return 操作结果
 	 */
 	@POST
@@ -96,16 +89,11 @@ public class DataService extends BORepositoryApprovalProcess {
 	/**
 	 * 审批操作
 	 * 
-	 * @param apRequestId
-	 *            审批请求编号
-	 * @param apStepId
-	 *            审批请求步骤编号
-	 * @param apResult
-	 *            审批的结果
-	 * @param judgment
-	 *            审批意见
-	 * @param token
-	 *            口令
+	 * @param apRequestId 审批请求编号
+	 * @param apStepId    审批请求步骤编号
+	 * @param apResult    审批的结果
+	 * @param judgment    审批意见
+	 * @param token       口令
 	 * @return
 	 */
 	@POST
@@ -116,16 +104,9 @@ public class DataService extends BORepositoryApprovalProcess {
 			@QueryParam("apResult") String apResult, @QueryParam("judgment") String judgment,
 			@QueryParam("token") String token) {
 		if (apResult != null && !apResult.isEmpty()) {
-			boolean numeric = true;
-			for (Character item : apResult.toCharArray()) {
-				if (!Character.isDigit(item)) {
-					numeric = false;
-					break;
-				}
-			}
 			emApprovalResult approvalResult = null;
-			if (numeric) {
-				approvalResult = emApprovalResult.forValue(Integer.valueOf(apResult));
+			if (DataConvert.isNumeric(apResult)) {
+				approvalResult = emApprovalResult.valueOf(Integer.valueOf(apResult));
 			} else {
 				approvalResult = emApprovalResult.valueOf(apResult);
 			}

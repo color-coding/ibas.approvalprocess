@@ -6,6 +6,7 @@
  * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
  */
 /// <reference path="../../index.d.ts" />
+/// <reference path="./approvalrequest/index.ts" />
 /// <reference path="./approvalprocess/index.ts" />
 namespace approvalprocess {
     export namespace ui {
@@ -20,6 +21,9 @@ namespace approvalprocess {
             protected newView(id: string): ibas.IView {
                 let view: ibas.IView = null;
                 switch (id) {
+                    case app.ApprovalRequestListApp.APPLICATION_ID:
+                        view = new m.ApprovalRequestListView();
+                        break;
                     case app.ApprovalProcessApp.APPLICATION_ID:
                         view = new m.ApprovalProcessView();
                         break;

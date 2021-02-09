@@ -8,6 +8,7 @@
 namespace approvalprocess {
     export namespace ui {
         export namespace c {
+            const PLANTFORM: ibas.emPlantform = ibas.config.get(ibas.CONFIG_ITEM_PLANTFORM);
             /**
              * 视图-审批流程
              */
@@ -36,17 +37,21 @@ namespace approvalprocess {
                 showApprovalRequest(data: bo.ApprovalRequest): void {
                     let pageBar: sap.m.Toolbar = <sap.m.Toolbar>this.page.getSubHeader();
                     pageBar.destroyContent();
-                    pageBar.addContent(new sap.m.ToolbarSeparator(""));
                     pageBar.addContent(new sap.m.Title("", {
                         text: ibas.i18n.prop("bo_approvalrequest"),
+                        visible: PLANTFORM !== ibas.emPlantform.PHONE ? true : false,
                     }));
                     pageBar.addContent(new sap.extension.m.Text("", {
                         wrapping: false,
                         text: data.name,
+                        visible: PLANTFORM !== ibas.emPlantform.PHONE ? true : false,
                     }));
-                    pageBar.addContent(new sap.m.ToolbarSeparator(""));
+                    pageBar.addContent(new sap.m.ToolbarSeparator("", {
+                        visible: PLANTFORM !== ibas.emPlantform.PHONE ? true : false,
+                    }));
                     pageBar.addContent(new sap.m.Title("", {
                         text: ibas.i18n.prop("bo_approvalrequest_bokeys"),
+                        visible: PLANTFORM !== ibas.emPlantform.PHONE ? true : false,
                     }));
                     pageBar.addContent(new sap.extension.m.Text("", {
                         wrapping: false,
@@ -57,7 +62,7 @@ namespace approvalprocess {
                     }).setText(data.summary));
                     pageBar.addContent(new sap.m.ToolbarSpacer(""));
                     pageBar.addContent(new sap.m.Button("", {
-                        text: ibas.i18n.prop("approvalprocess_view_data"),
+                        text: PLANTFORM !== ibas.emPlantform.PHONE ? ibas.i18n.prop("approvalprocess_view_data") : "",
                         type: sap.m.ButtonType.Transparent,
                         icon: "sap-icon://detail-view",
                         press: function (): void {
@@ -186,7 +191,8 @@ namespace approvalprocess {
                                         new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_stepname") }),
                                         new sap.extension.m.Input("", {
                                             editable: false,
-                                            type: sap.m.InputType.Text
+                                            type: sap.m.InputType.Text,
+                                            visible: PLANTFORM !== ibas.emPlantform.PHONE ? true : false,
                                         }).bindProperty("bindingValue", {
                                             path: "stepName",
                                             type: new sap.extension.data.Alphanumeric()
@@ -201,7 +207,8 @@ namespace approvalprocess {
                                         new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_stepstatus") }),
                                         new sap.extension.m.EnumSelect("", {
                                             enabled: false,
-                                            enumType: ibas.emApprovalStepStatus
+                                            enumType: ibas.emApprovalStepStatus,
+                                            visible: PLANTFORM !== ibas.emPlantform.PHONE ? true : false,
                                         }).bindProperty("bindingValue", {
                                             path: "stepStatus",
                                             type: new sap.extension.data.ApprovalStepStatus()
@@ -228,35 +235,49 @@ namespace approvalprocess {
                                             path: "judgment",
                                             type: new sap.extension.data.Alphanumeric()
                                         }),
-                                        new sap.m.Button("", {
-                                            enabled: enabled,
-                                            type: sap.m.ButtonType.Accept,
-                                            text: ibas.i18n.prop("approvalprocess_approve"),
-                                            press: function (): void {
-                                                that.fireViewEvents(that.approvalEvent,
-                                                    this.getBindingContext().getObject(), ibas.emApprovalResult.APPROVED
-                                                );
-                                            },
-                                        }),
-                                        new sap.m.Button("", {
-                                            enabled: enabled,
-                                            type: sap.m.ButtonType.Reject,
-                                            text: ibas.i18n.prop("approvalprocess_reject"),
-                                            press: function (): void {
-                                                that.fireViewEvents(that.approvalEvent,
-                                                    this.getBindingContext().getObject(), ibas.emApprovalResult.REJECTED
-                                                );
-                                            },
-                                        }),
-                                        new sap.m.Button("", {
-                                            enabled: data.stepStatus === ibas.emApprovalStepStatus.PENDING ? false : !enabled,
-                                            type: sap.m.ButtonType.Emphasized,
-                                            text: ibas.i18n.prop("approvalprocess_reset"),
-                                            press: function (): void {
-                                                that.fireViewEvents(that.approvalEvent,
-                                                    this.getBindingContext().getObject(), ibas.emApprovalResult.PROCESSING
-                                                );
-                                            },
+                                        new sap.m.Label("", {}),
+                                        new sap.m.HBox("", {
+                                            fitContainer: true,
+                                            items: [
+                                                new sap.m.Toolbar("", {
+                                                    style: sap.m.ToolbarStyle.Clear,
+                                                    content: [
+                                                        new sap.m.ToolbarSpacer("", {
+                                                            visible: PLANTFORM === ibas.emPlantform.PHONE ? true : false,
+                                                        }),
+                                                        new sap.m.Button("", {
+                                                            enabled: enabled,
+                                                            type: sap.m.ButtonType.Accept,
+                                                            text: ibas.i18n.prop("approvalprocess_approve"),
+                                                            press: function (): void {
+                                                                that.fireViewEvents(that.approvalEvent,
+                                                                    this.getBindingContext().getObject(), ibas.emApprovalResult.APPROVED
+                                                                );
+                                                            },
+                                                        }),
+                                                        new sap.m.Button("", {
+                                                            enabled: enabled,
+                                                            type: sap.m.ButtonType.Reject,
+                                                            text: ibas.i18n.prop("approvalprocess_reject"),
+                                                            press: function (): void {
+                                                                that.fireViewEvents(that.approvalEvent,
+                                                                    this.getBindingContext().getObject(), ibas.emApprovalResult.REJECTED
+                                                                );
+                                                            },
+                                                        }),
+                                                        new sap.m.Button("", {
+                                                            enabled: data.stepStatus === ibas.emApprovalStepStatus.PENDING ? false : !enabled,
+                                                            type: sap.m.ButtonType.Default,
+                                                            text: ibas.i18n.prop("approvalprocess_reset"),
+                                                            press: function (): void {
+                                                                that.fireViewEvents(that.approvalEvent,
+                                                                    this.getBindingContext().getObject(), ibas.emApprovalResult.PROCESSING
+                                                                );
+                                                            },
+                                                        }),
+                                                    ]
+                                                })
+                                            ]
                                         }),
                                     ]
                                 })

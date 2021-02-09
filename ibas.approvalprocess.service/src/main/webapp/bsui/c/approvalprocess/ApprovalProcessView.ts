@@ -8,8 +8,6 @@
 namespace approvalprocess {
     export namespace ui {
         export namespace c {
-            const SORT_SIGN_ASC: string = "sap-icon://sort-ascending";
-            const SORT_SIGN_DESC: string = "sap-icon://sort-descending";
             /**
              * 视图-审批流程
              */
@@ -38,7 +36,6 @@ namespace approvalprocess {
                     this.form = new sap.m.ResponsivePopover("", {
                         title: ibas.i18n.prop("approvalprocess_app_approvalprocess_title"),
                         contentWidth: "auto",
-                        showCloseButton: true,
                         placement: sap.m.PlacementType.Bottom,
                         subHeader: new sap.m.Toolbar("", {
                             content: [
@@ -74,22 +71,22 @@ namespace approvalprocess {
                                         }
                                     }
                                 }),
-                                this.sortButton = new sap.m.Button("", {
-                                    icon: SORT_SIGN_ASC,
+                                new sap.m.Button("", {
+                                    icon: "sap-icon://sort-ascending",
                                     press(event: sap.ui.base.Event): void {
                                         let source: any = event.getSource();
                                         if (source instanceof sap.m.Button) {
                                             let items: sap.ui.core.Control[] = that.form.getContent();
-                                            if (source.getIcon() === SORT_SIGN_ASC) {
-                                                source.setIcon(SORT_SIGN_DESC);
+                                            if (source.getIcon() === "sap-icon://sort-ascending") {
+                                                source.setIcon("sap-icon://sort-descending");
                                                 items = items.sort((a, b) => {
                                                     if (a instanceof sap.m.NotificationListItem && b instanceof sap.m.NotificationListItem) {
                                                         return a.getDatetime().localeCompare(b.getDatetime());
                                                     }
                                                     return 0;
                                                 });
-                                            } else if (source.getIcon() === SORT_SIGN_DESC) {
-                                                source.setIcon(SORT_SIGN_ASC);
+                                            } else if (source.getIcon() === "sap-icon://sort-descending") {
+                                                source.setIcon("sap-icon://sort-ascending");
                                                 items = items.sort((a, b) => {
                                                     if (a instanceof sap.m.NotificationListItem && b instanceof sap.m.NotificationListItem) {
                                                         return b.getDatetime().localeCompare(a.getDatetime());
@@ -120,7 +117,6 @@ namespace approvalprocess {
                 }
                 private bar: sap.m.Button;
                 private form: sap.m.ResponsivePopover;
-                private sortButton: sap.m.Button;
 
                 private getPriority(ap: bo.ApprovalRequest): sap.ui.core.Priority {
                     let diffDay: number = ibas.dates.difference(ibas.dates.emDifferenceType.DAY, ibas.dates.today(), ap.startedTime);
@@ -133,7 +129,14 @@ namespace approvalprocess {
                 }
 
                 showData(datas: bo.ApprovalRequest[]): void {
-                    this.bar.setText(datas.length.toString());
+                    if (sap.m.BadgeCustomData) {
+                        this.bar.addCustomData(new sap.m.BadgeCustomData("", {
+                            key: "badge",
+                            value: datas.length,
+                        }));
+                    } else {
+                        this.bar.setText(datas.length.toString());
+                    }
                     if (!this.isDisplayed) {
                         // 没有显示，退出。
                         return;
