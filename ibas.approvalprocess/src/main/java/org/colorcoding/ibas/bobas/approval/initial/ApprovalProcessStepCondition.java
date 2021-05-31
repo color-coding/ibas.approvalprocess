@@ -52,12 +52,12 @@ public class ApprovalProcessStepCondition extends Serializable
 				for (IApprovalTemplateStepCondition item : conditions) {
 					ApprovalProcessStepCondition stepCondition = new ApprovalProcessStepCondition();
 					// 此处需要特别注意：UI编辑时，属性比较用数据库字段(考虑自定义字段没有属性)
-					stepCondition.setPropertyValueMode(ValueMode.DB_FIELD);
-					if (item.getConditionType() == emApprovalConditionType.PROPERTY_VALUE) {
-						stepCondition.setConditionValueMode(ValueMode.INPUT);
-					} else if (item.getConditionType() == emApprovalConditionType.SQL_SCRIPT) {
-						stepCondition.setConditionValueMode(ValueMode.SQL_SCRIPT);
+					if (item.getConditionType() == emApprovalConditionType.SQL_SCRIPT) {
+						stepCondition.setPropertyValueMode(ValueMode.SQL_SCRIPT);
+					} else {
+						stepCondition.setPropertyValueMode(ValueMode.DB_FIELD);
 					}
+					stepCondition.setConditionValueMode(ValueMode.INPUT);
 					stepCondition.setRelation(item.getRelationship());
 					stepCondition.setPropertyName(item.getPropertyName());
 					stepCondition.setOperation(item.getOperation());

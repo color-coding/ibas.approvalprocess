@@ -287,11 +287,6 @@ namespace approvalprocess {
                             }),
                             this.columnProperty = new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestepcondition_propertyname"),
-                                template: new sap.extension.m.Select("", {
-                                }).bindProperty("bindingValue", {
-                                    path: "propertyName",
-                                    type: new sap.extension.data.Alphanumeric()
-                                })
                             }),
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestepcondition_operation"),
@@ -418,31 +413,126 @@ namespace approvalprocess {
                     boRepository.fetchBOInformation({
                         criteria: criteria,
                         onCompleted: (opRslt) => {
-                            let template: sap.extension.m.Select = new sap.extension.m.Select("", {
-                                items: [
-                                    new sap.ui.core.ListItem("", {
-                                        key: "",
-                                        text: ibas.i18n.prop("shell_please_chooose_data", ""),
-                                    })
-                                ]
+                            // 属性选择
+                            let propertySelect: sap.extension.m.Select = new sap.extension.m.Select("", {
+                                width: "100%",
+                                forceSelection: false,
                             }).bindProperty("bindingValue", {
                                 path: "propertyName",
                                 type: new sap.extension.data.Alphanumeric()
+                            }).bindProperty("visible", {
+                                path: "conditionType",
+                                formatter(data: any): boolean {
+                                    return data === bo.emApprovalConditionType.PROPERTY_VALUE ? true : false;
+                                }
                             });
-                            let boInfo: initialfantasy.bo.IBOInformation = opRslt.resultObjects.firstOrDefault();
-                            if (boInfo && boInfo.boPropertyInformations instanceof Array) {
-                                for (let property of boInfo.boPropertyInformations) {
-                                    if (property.editSize < 0) {
+                            propertySelect.addItem(new sap.ui.core.ListItem("", {
+                                key: "",
+                                text: ibas.i18n.prop("shell_please_chooose_data", ""),
+                            }));
+                            for (let boItem of opRslt.resultObjects) {
+                                for (let ptyItem of boItem.boPropertyInformations) {
+                                    if (ptyItem.editSize < 0) {
                                         // 对象类型属性跳过
                                         continue;
                                     }
-                                    template.addItem(new sap.ui.core.ListItem("", {
-                                        key: property.mapped,
-                                        text: property.description,
+                                    propertySelect.addItem(new sap.ui.core.ListItem("", {
+                                        key: ptyItem.mapped,
+                                        text: ptyItem.description,
                                     }));
                                 }
                             }
-                            this.columnProperty.setTemplate(template);
+                            // 语句输入
+                            let sqlsInput: sap.extension.m.Input = new sap.extension.m.Input("", {
+                                width: "100%",
+                                showValueHelp: true,
+                                valueHelpOnly: false,
+                                valueHelpRequest: function (event: sap.ui.base.Event): void {
+                                    let source: any = event.getSource();
+                                    if (!source) {
+                                        return;
+                                    }
+                                    let data: bo.ApprovalTemplateStepCondition = source.getBindingContext().getObject();
+                                    if (ibas.objects.isNull(data)) {
+                                        return;
+                                    }
+                                    jQuery.sap.require("sap.ui.codeeditor.CodeEditor");
+                                    let dialog: sap.m.Dialog = new sap.m.Dialog("", {
+                                        title: ibas.i18n.prop("bo_approvaltemplatestepcondition_sqls") + ibas.i18n.prop("shell_data_edit"),
+                                        type: sap.m.DialogType.Standard,
+                                        state: sap.ui.core.ValueState.None,
+                                        content: [
+                                            new sap.ui.codeeditor.CodeEditor("", {
+                                                height: ibas.strings.format("{0}px", window.innerHeight * 0.6),
+                                                width: ibas.strings.format("{0}px", window.innerWidth * 0.6),
+                                                type: "sql",
+                                                colorTheme: "eclipse",
+                                                value: {
+                                                    path: "/propertyName",
+                                                    type: new sap.extension.data.Unknown({
+                                                        formatValue(oValue: any, sInternalType: string): any {
+                                                            if (sInternalType === "string") {
+                                                                return ibas.strings.valueOf(oValue);
+                                                            }
+                                                            return oValue;
+                                                        },
+                                                        parseValue(oValue: any, sInternalType: string): any {
+                                                            if (sInternalType === "string") {
+                                                                return ibas.strings.valueOf(oValue).replace(/\r\n/g, " ").replace(/\n/g, " ");
+                                                            }
+                                                            return oValue;
+                                                        }
+                                                    })
+                                                }
+                                            })
+                                        ],
+                                        buttons: [
+                                            new sap.m.Button("", {
+                                                text: ibas.i18n.prop("approvalprocess_code_pretty"),
+                                                type: sap.m.ButtonType.Transparent,
+                                                icon: "sap-icon://text-formatting",
+                                                press: function (event: sap.ui.base.Event): void {
+                                                    let content: any = dialog.getContent()[0];
+                                                    if (content instanceof sap.ui.codeeditor.CodeEditor) {
+                                                        content.prettyPrint();
+                                                    }
+                                                }
+                                            }),
+                                            new sap.m.Button("", {
+                                                text: ibas.i18n.prop("shell_exit"),
+                                                type: sap.m.ButtonType.Transparent,
+                                                icon: "sap-icon://inspect-down",
+                                                press: function (): void {
+                                                    dialog.close();
+                                                    dialog = null;
+                                                }
+                                            }),
+                                        ]
+                                    }).addStyleClass("sapUiNoContentPadding");
+                                    dialog.setModel(new sap.extension.model.JSONModel(data));
+                                    dialog.open();
+                                    dialog.focus(undefined);
+                                }
+                            }).bindProperty("bindingValue", {
+                                path: "propertyName",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 500
+                                })
+                            }).bindProperty("visible", {
+                                path: "conditionType",
+                                formatter(data: any): boolean {
+                                    return data === bo.emApprovalConditionType.SQL_SCRIPT ? true : false;
+                                }
+                            });
+                            this.columnProperty.setTemplate(new sap.m.FlexBox("", {
+                                width: "auto",
+                                fitContainer: true,
+                                renderType: sap.m.FlexRendertype.Bare,
+                                items: [
+                                    propertySelect,
+                                    sqlsInput,
+                                ]
+                            }));
                         }
                     });
                 }

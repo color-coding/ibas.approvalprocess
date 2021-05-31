@@ -29,5 +29,6 @@
   "approvalprocess_reset_process_continue": "[{0}]将被重置，是否继续？",
   "approvalprocess_day": "天",
   "approvalprocess_add_bo_property": "添加对象属性",
+  "approvalprocess_code_pretty": "美化",
   "approvalprocess_closing_delimiter": "----结束----"
 }

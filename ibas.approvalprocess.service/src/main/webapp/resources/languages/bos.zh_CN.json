@@ -125,6 +125,7 @@
         "bo_approvaltemplatestepcondition_reference2": "参考2",
         "bo_approvaltemplatestepcondition_conditiontype": "比较的类型",
         "bo_approvaltemplatestepcondition_propertyname": "取值属性",
+        "bo_approvaltemplatestepcondition_sqls": "查询语句",
         "bo_approvaltemplatestepcondition_conditionvalue": "比较的值",
         "bo_approvaltemplatestepcondition_operation": "比较的方法",
         "bo_approvaltemplatestepcondition_relationship": "与上一个条件的关系",
@@ -134,7 +135,7 @@
     },
     {
         "em_approvalconditiontype_property_value": "属性值",
-        "em_approvalconditiontype_sql_script": "sql值"
+        "em_approvalconditiontype_sql_script": "SQL语句"
     },
     {
         "em_approvalstepownertype_user": "用户",
