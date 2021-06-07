@@ -7,47 +7,12 @@
  */
 namespace approvalprocess {
     export namespace bo {
-
         /** 业务对象仓库 */
         export class BORepositoryApprovalProcess extends ibas.BORepositoryApplication implements IBORepositoryApprovalProcess {
-
             /** 创建此模块的后端与前端数据的转换者 */
             protected createConverter(): ibas.IDataConverter {
                 return new DataConverter;
             }
-            /**
-             * 查询 用户审批请求
-             * @param fetcher 查询者
-             */
-            fetchUserApprovalRequest(fetcher: IUserMethodCaller<bo.ApprovalRequest>): void {
-                let boRepository: ibas.BORepositoryAjax = new ibas.BORepositoryAjax();
-                boRepository.address = this.address;
-                boRepository.token = this.token;
-                boRepository.converter = this.createConverter();
-                let method: string =
-                    ibas.strings.format("fetchUserApprovalRequest?user={0}&token={1}",
-                        fetcher.user, this.token);
-                boRepository.callRemoteMethod(method, undefined, (opRslt) => {
-                    fetcher.onCompleted.call(ibas.objects.isNull(fetcher.caller) ? fetcher : fetcher.caller, opRslt);
-                });
-            }
-            /**
-             * 审批
-             * @param caller 调用者
-             */
-            approval(caller: IApprovalMethodCaller): void {
-                let boRepository: ibas.BORepositoryAjax = new ibas.BORepositoryAjax();
-                boRepository.address = this.address;
-                boRepository.token = this.token;
-                boRepository.converter = this.createConverter();
-                let method: string =
-                    ibas.strings.format("approval?apRequestId={0}&apStepId={1}&apResult={2}&judgment={3}&token={4}",
-                        caller.apRequestId, caller.apStepId, caller.apResult, caller.judgment, this.token);
-                boRepository.callRemoteMethod(method, undefined, (opRslt) => {
-                    caller.onCompleted.call(ibas.objects.isNull(caller.caller) ? caller : caller.caller, opRslt);
-                });
-            }
-
             /**
              * 上传文件
              * @param caller 调用者
@@ -73,6 +38,22 @@ namespace approvalprocess {
                 fileRepository.download("download", caller);
             }
             /**
+             * 查询 用户审批请求
+             * @param fetcher 查询者
+             */
+            fetchUserApprovalRequest(fetcher: IUserMethodCaller<bo.ApprovalRequest>): void {
+                let boRepository: ibas.BORepositoryAjax = new ibas.BORepositoryAjax();
+                boRepository.address = this.address;
+                boRepository.token = this.token;
+                boRepository.converter = this.createConverter();
+                let method: string =
+                    ibas.strings.format("fetchUserApprovalRequest?user={0}&token={1}",
+                        fetcher.user, this.token);
+                boRepository.callRemoteMethod(method, undefined, (opRslt) => {
+                    fetcher.onCompleted.call(ibas.objects.isNull(fetcher.caller) ? fetcher : fetcher.caller, opRslt);
+                });
+            }
+            /**
              * 查询 审批请求
              * @param fetcher 查询者
              */
@@ -86,7 +67,6 @@ namespace approvalprocess {
             saveApprovalRequest(saver: ibas.ISaveCaller<bo.ApprovalRequest>): void {
                 super.save(bo.ApprovalRequest.name, saver);
             }
-
             /**
              * 查询 审批模板
              * @param fetcher 查询者
@@ -100,6 +80,45 @@ namespace approvalprocess {
              */
             saveApprovalTemplate(saver: ibas.ISaveCaller<bo.ApprovalTemplate>): void {
                 super.save(bo.ApprovalTemplate.name, saver);
+            }
+            /**
+             * 审批
+             * @param caller 调用者
+             */
+            approval(caller: IApprovalMethodCaller): void {
+                let boRepository: ibas.BORepositoryAjax = new ibas.BORepositoryAjax();
+                boRepository.address = this.address;
+                boRepository.token = this.token;
+                boRepository.converter = this.createConverter();
+                let builder: ibas.StringBuilder = new ibas.StringBuilder();
+                builder.map(null, "");
+                builder.map(undefined, "");
+                builder.append("approval");
+                builder.append("?");
+                builder.append("apRequestId");
+                builder.append("=");
+                builder.append(caller.apRequestId);
+                builder.append("&");
+                builder.append("apStepId");
+                builder.append("=");
+                builder.append(caller.apStepId);
+                builder.append("&");
+                builder.append("apResult");
+                builder.append("=");
+                builder.append(caller.apResult);
+                if (!ibas.strings.isEmpty(caller.judgment)) {
+                    builder.append("&");
+                    builder.append("judgment");
+                    builder.append("=");
+                    builder.append(encodeURIComponent(caller.judgment));
+                }
+                builder.append("&");
+                builder.append("token");
+                builder.append("=");
+                builder.append(this.token);
+                boRepository.callRemoteMethod(builder.toString(), undefined, (opRslt) => {
+                    caller.onCompleted.call(ibas.objects.isNull(caller.caller) ? caller : caller.caller, opRslt);
+                });
             }
 
         }

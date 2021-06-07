@@ -39,7 +39,7 @@ namespace approvalprocess {
                 this.register(new ApprovalTemplateChooseServiceMapping());
                 this.register(new ApprovalProcessServiceMapping());
                 // 注册常驻应用
-                this.register(new ApprovalProcessApp());
+                this.register(new ApprovalProcessApplicationMapping());
             }
             /** 运行 */
             run(): void {
@@ -81,7 +81,7 @@ namespace approvalprocess {
         export class ConsolePhone extends Console {
             protected registers(): void {
                 // 注册常驻应用
-                this.register(new ApprovalProcessApp());
+                this.register(new ApprovalProcessApplicationMapping());
             }
         }
     }
