@@ -174,5 +174,17 @@ namespace approvalprocess {
             // 查看详情
             viewDataEvent: Function;
         }
+        export class ApprovalProcessApplicationMapping extends ibas.ResidentApplicationMapping {
+            /** 构造函数 */
+            constructor() {
+                super();
+                this.id = ApprovalProcessApp.APPLICATION_ID;
+                this.name = ApprovalProcessApp.APPLICATION_NAME;
+                this.description = ibas.i18n.prop(this.name);
+            }
+            create(): ibas.ResidentApplication<ibas.IResidentView> {
+                return new ApprovalProcessApp();
+            }
+        }
     }
 }

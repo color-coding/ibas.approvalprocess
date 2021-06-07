@@ -221,9 +221,6 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 								ICondition condition = criteria.getConditions().create();
 								condition.setAlias(Project.PROPERTY_CODE.getName());
 								condition.setValue(projectData.getProject());
-								condition = criteria.getConditions().create();
-								condition.setAlias(Project.PROPERTY_ACTIVATED.getName());
-								condition.setValue(emYesNo.YES);
 								BORepositoryAccounting fiRepository = new BORepositoryAccounting();
 								fiRepository.setRepository(this.getRepository());
 								IOperationResult<IProject> operationResult = fiRepository.fetchProject(criteria);
