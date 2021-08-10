@@ -163,6 +163,7 @@ namespace approvalprocess {
                                             path: "stepOwner",
                                             type: new sap.extension.data.Numeric()
                                         }),
+                                        width: "14rem",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_approvalrequeststep_stepname"),
@@ -173,6 +174,7 @@ namespace approvalprocess {
                                                 maxLength: 30
                                             })
                                         }),
+                                        width: "16rem",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_approvalrequeststep_stepstatus"),
@@ -193,6 +195,7 @@ namespace approvalprocess {
                                                 maxLength: 50
                                             })
                                         }),
+                                        width: "100%",
                                     }),
                                 ]
                             }),

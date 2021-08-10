@@ -33,9 +33,10 @@ namespace approvalprocess {
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
-                    this.form = new sap.m.ResponsivePopover("", {
-                        title: ibas.i18n.prop("approvalprocess_app_approvalprocess_title"),
+                    return this.form = new sap.m.ResponsivePopover("", {
                         contentWidth: "auto",
+                        showCloseButton: true,
+                        title: ibas.i18n.prop("approvalprocess_app_approvalprocess_title"),
                         placement: sap.m.PlacementType.Bottom,
                         subHeader: new sap.m.Toolbar("", {
                             content: [
@@ -113,7 +114,6 @@ namespace approvalprocess {
                         content: [
                         ],
                     });
-                    return this.form;
                 }
                 private bar: sap.m.Button;
                 private form: sap.m.ResponsivePopover;

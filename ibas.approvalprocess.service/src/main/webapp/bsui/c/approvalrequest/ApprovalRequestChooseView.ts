@@ -40,6 +40,7 @@ namespace approvalprocess {
                                     path: "name",
                                     type: new sap.extension.data.Alphanumeric()
                                 }),
+                                width: "12rem",
                             }),
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvalrequest_approvalstatus"),
@@ -58,6 +59,7 @@ namespace approvalprocess {
                                         return ibas.businessobjects.describe(data);
                                     }
                                 }),
+                                width: "16rem",
                             }),
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvalrequest_summary"),
@@ -66,6 +68,7 @@ namespace approvalprocess {
                                     path: "summary",
                                     type: new sap.extension.data.Alphanumeric()
                                 }),
+                                width: "20rem",
                             }),
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvalrequest_approvalowner"),

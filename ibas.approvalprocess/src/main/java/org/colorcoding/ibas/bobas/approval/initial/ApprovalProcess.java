@@ -14,6 +14,7 @@ import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequestStep;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplate;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplateStep;
+import org.colorcoding.ibas.approvalprocess.data.DataConvert;
 import org.colorcoding.ibas.approvalprocess.data.emApprovalStepOwnerType;
 import org.colorcoding.ibas.approvalprocess.repository.BORepositoryApprovalProcess;
 import org.colorcoding.ibas.bobas.approval.ApprovalDataProxy;
@@ -31,7 +32,11 @@ import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.organization.IUser;
+import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
+import org.colorcoding.ibas.initialfantasy.bo.organization.IOrganization;
+import org.colorcoding.ibas.initialfantasy.bo.organization.Organization;
 import org.colorcoding.ibas.initialfantasy.bo.shell.User;
+import org.colorcoding.ibas.initialfantasy.repository.BORepositoryInitialFantasy;
 
 /**
  * 审批流程
@@ -212,20 +217,76 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 					int value = Math.abs(step.getStepOwner() - STEP_OWNER_TYPE_GROUP);
 					if (value == emApprovalStepOwnerType.DATA_OWNER.ordinal()) {
 						step.setStepOwner(this.getApprovalData().getDataOwner());
+					} else if (value == emApprovalStepOwnerType.DATA_ORGANIZATION_MANAGER.ordinal()) {
+						if (this.getApprovalData() instanceof IDataOwnership) {
+							// 查询数据所属组织负责人
+							IDataOwnership dataOwnership = (IDataOwnership) this.getApprovalData();
+							ICriteria criteria = new Criteria();
+							criteria.setResultCount(1);
+							ICondition condition = criteria.getConditions().create();
+							condition.setAlias(Organization.PROPERTY_CODE.getName());
+							condition.setValue(dataOwnership.getOrganization());
+							if (!DataConvert.isNullOrEmpty(condition.getValue())) {
+								BORepositoryInitialFantasy ifRepository = new BORepositoryInitialFantasy();
+								ifRepository.setRepository(this.getRepository());
+								IOperationResult<IOrganization> opRsltOrg = ifRepository.fetchOrganization(criteria);
+								if (!opRsltOrg.getResultObjects().isEmpty()) {
+									step.setStepOwner(opRsltOrg.getResultObjects().firstOrDefault().getDataOwner());
+								}
+							}
+						}
 					} else if (value == emApprovalStepOwnerType.PROJECT_MANAGER.ordinal()) {
 						if (this.getApprovalData() instanceof IProjectData) {
 							// 查询项目经理
 							IProjectData projectData = (IProjectData) this.getApprovalData();
-							if (projectData.getProject() != null && !projectData.getProject().isEmpty()) {
+							if (!DataConvert.isNullOrEmpty(projectData.getProject())) {
 								ICriteria criteria = new Criteria();
+								criteria.setResultCount(1);
 								ICondition condition = criteria.getConditions().create();
 								condition.setAlias(Project.PROPERTY_CODE.getName());
 								condition.setValue(projectData.getProject());
-								BORepositoryAccounting fiRepository = new BORepositoryAccounting();
-								fiRepository.setRepository(this.getRepository());
-								IOperationResult<IProject> operationResult = fiRepository.fetchProject(criteria);
-								if (!operationResult.getResultObjects().isEmpty()) {
-									step.setStepOwner(operationResult.getResultObjects().firstOrDefault().getManager());
+								if (!DataConvert.isNullOrEmpty(condition.getValue())) {
+									BORepositoryAccounting acRepository = new BORepositoryAccounting();
+									acRepository.setRepository(this.getRepository());
+									IOperationResult<IProject> opRsltPrj = acRepository.fetchProject(criteria);
+									if (!opRsltPrj.getResultObjects().isEmpty()) {
+										step.setStepOwner(opRsltPrj.getResultObjects().firstOrDefault().getManager());
+									}
+								}
+							}
+						}
+					} else if (value == emApprovalStepOwnerType.PROJECT_ORGANIZATION_MANAGER.ordinal()) {
+						if (this.getApprovalData() instanceof IProjectData) {
+							// 查询项目所属组织负责人
+							IProjectData projectData = (IProjectData) this.getApprovalData();
+							if (!DataConvert.isNullOrEmpty(projectData.getProject())) {
+								ICriteria criteria = new Criteria();
+								criteria.setResultCount(1);
+								ICondition condition = criteria.getConditions().create();
+								condition.setAlias(Project.PROPERTY_CODE.getName());
+								condition.setValue(projectData.getProject());
+								if (!DataConvert.isNullOrEmpty(condition.getValue())) {
+									BORepositoryAccounting acRepository = new BORepositoryAccounting();
+									acRepository.setRepository(this.getRepository());
+									IOperationResult<IProject> opRsltPrj = acRepository.fetchProject(criteria);
+									if (!opRsltPrj.getResultObjects().isEmpty()) {
+										criteria = new Criteria();
+										criteria.setResultCount(1);
+										condition = criteria.getConditions().create();
+										condition.setAlias(Organization.PROPERTY_CODE.getName());
+										condition.setValue(
+												opRsltPrj.getResultObjects().firstOrDefault().getOrganization());
+										if (!DataConvert.isNullOrEmpty(condition.getValue())) {
+											BORepositoryInitialFantasy ifRepository = new BORepositoryInitialFantasy();
+											ifRepository.setRepository(this.getRepository());
+											IOperationResult<IOrganization> opRsltOrg = ifRepository
+													.fetchOrganization(criteria);
+											if (!opRsltOrg.getResultObjects().isEmpty()) {
+												step.setStepOwner(
+														opRsltOrg.getResultObjects().firstOrDefault().getDataOwner());
+											}
+										}
+									}
 								}
 							}
 						}

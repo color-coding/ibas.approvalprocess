@@ -60,4 +60,9 @@ public class MyConfiguration extends org.colorcoding.ibas.bobas.MyConfiguration 
 	 */
 	public static final String NAMESPACE_INITIAL = NAMESPACE_ROOT + "initial";
 
+	/**
+	 * 配置项目-对象审批后是否可读
+	 */
+	public final static String CONFIG_ITEM_DATA_APPROVED_READABLE = "ApprovedReadable";
+
 }

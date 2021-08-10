@@ -1,6 +1,6 @@
 {
   "approvalprocess": "审批流程",
-  "approvalprocess_icon": "sap-icon://activities",
+  "approvalprocess_icon": "sap-icon://approvals",
   "approvalprocess_bo_approval_icon": "sap-icon://approvals",
   "approvalprocess_func_approvalrequest": "审批请求",
   "approvalprocess_app_approvalrequest_list": "审批请求列表",

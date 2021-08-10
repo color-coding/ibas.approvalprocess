@@ -162,6 +162,7 @@ namespace approvalprocess {
                                         enumType: bo.emApprovalStepOwnerType
                                     })
                                 }),
+                                width: "14rem",
                             }),
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestep_stepowner"),
@@ -182,12 +183,10 @@ namespace approvalprocess {
                                 }).bindProperty("editable", {
                                     path: "stepOwnerType",
                                     formatter(data: any): any {
-                                        if (data === bo.emApprovalStepOwnerType.DATA_OWNER) {
-                                            return false;
-                                        } else if (data === bo.emApprovalStepOwnerType.PROJECT_MANAGER) {
-                                            return false;
+                                        if (data === bo.emApprovalStepOwnerType.USER) {
+                                            return true;
                                         }
-                                        return true;
+                                        return false;
                                     }
                                 }).bindProperty("bindingValue", {
                                     path: "stepOwner",
@@ -203,6 +202,7 @@ namespace approvalprocess {
                                         maxLength: 30
                                     })
                                 }),
+                                width: "16rem",
                             }),
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestep_stepcanmodify"),

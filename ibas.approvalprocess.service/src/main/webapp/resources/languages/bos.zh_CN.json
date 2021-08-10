@@ -140,6 +140,8 @@
     {
         "em_approvalstepownertype_user": "用户",
         "em_approvalstepownertype_data_owner": "数据所有者",
-        "em_approvalstepownertype_project_manager": "项目经理"
+        "em_approvalstepownertype_project_manager": "项目经理",
+        "em_approvalstepownertype_data_organization_manager": "数据所属组织负责人",
+        "em_approvalstepownertype_project_organization_manager": "项目所属组织负责人"
     }
 ]

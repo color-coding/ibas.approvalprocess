@@ -1,11 +1,13 @@
 package org.colorcoding.ibas.bobas.ownership.approval;
 
+import org.colorcoding.ibas.approvalprocess.MyConfiguration;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequestStep;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.repository.BORepositoryApprovalProcess;
 import org.colorcoding.ibas.approvalprocess.repository.IBORepositoryApprovalProcessApp;
 import org.colorcoding.ibas.bobas.approval.IApprovalData;
+import org.colorcoding.ibas.bobas.common.ConditionRelationship;
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.IChildCriteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
@@ -57,14 +59,33 @@ public class OwnershipJudger extends org.colorcoding.ibas.bobas.ownership.initia
 					childCriteria.setOnlyHasChilds(true);
 					childCriteria.setNoChilds(false);
 					childCriteria.setPropertyPath(ApprovalRequest.PROPERTY_APPROVALREQUESTSTEPS.getName());
-					// 审批中的
-					condition = childCriteria.getConditions().create();
-					condition.setAlias(ApprovalRequestStep.PROPERTY_STEPSTATUS.getName());
-					condition.setValue(emApprovalStepStatus.PROCESSING);
 					// 此人的
 					condition = childCriteria.getConditions().create();
 					condition.setAlias(ApprovalRequestStep.PROPERTY_STEPOWNER.getName());
 					condition.setValue(user.getId());
+					if (MyConfiguration.getConfigValue(MyConfiguration.CONFIG_ITEM_DATA_APPROVED_READABLE, false)) {
+						// 审批中的
+						condition = childCriteria.getConditions().create();
+						condition.setAlias(ApprovalRequestStep.PROPERTY_STEPSTATUS.getName());
+						condition.setValue(emApprovalStepStatus.PROCESSING);
+						condition.setBracketOpen(1);
+						// 批准的
+						condition = childCriteria.getConditions().create();
+						condition.setAlias(ApprovalRequestStep.PROPERTY_STEPSTATUS.getName());
+						condition.setValue(emApprovalStepStatus.APPROVED);
+						condition.setRelationship(ConditionRelationship.OR);
+						// 拒绝的
+						condition = childCriteria.getConditions().create();
+						condition.setAlias(ApprovalRequestStep.PROPERTY_STEPSTATUS.getName());
+						condition.setValue(emApprovalStepStatus.REJECTED);
+						condition.setRelationship(ConditionRelationship.OR);
+						condition.setBracketClose(1);
+					} else {
+						// 审批中的
+						condition = childCriteria.getConditions().create();
+						condition.setAlias(ApprovalRequestStep.PROPERTY_STEPSTATUS.getName());
+						condition.setValue(emApprovalStepStatus.PROCESSING);
+					}
 					// 查询审批请求
 					IBORepositoryApprovalProcessApp boRepository = new BORepositoryApprovalProcess();
 					boRepository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());

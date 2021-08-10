@@ -45,6 +45,7 @@ namespace approvalprocess {
                                     path: "name",
                                     type: new sap.extension.data.Alphanumeric()
                                 }),
+                                width: "12rem",
                             }),
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvaltemplate_activated"),
@@ -85,6 +86,7 @@ namespace approvalprocess {
                                     path: "summary",
                                     type: new sap.extension.data.Alphanumeric()
                                 }),
+                                width: "20rem",
                             }),
                         ],
                         nextDataSet(event: sap.ui.base.Event): void {

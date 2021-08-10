@@ -3,17 +3,11 @@ package org.colorcoding.ibas.approvalprocess.data;
 import org.colorcoding.ibas.bobas.mapping.Value;
 
 public enum emApprovalStepOwnerType {
-
 	/**
 	 * 指定用户
 	 */
 	@Value(value = "U")
 	USER,
-	/**
-	 * 直接上级
-	 */
-	@Value(value = "I")
-	DIRECT_SUPERIOR,
 	/**
 	 * 数据所有者
 	 */

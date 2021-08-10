@@ -37,11 +37,8 @@ namespace approvalprocess {
             USER,
             DATA_OWNER,
             PROJECT_MANAGER,
-            /*
-             DIRECT_SUPERIOR,
-             DATA_ORGANIZATION_MANAGER,
-             PROJECT_ORGANIZATION_MANAGER
-            */
+            DATA_ORGANIZATION_MANAGER,
+            PROJECT_ORGANIZATION_MANAGER
         }
         /**
          * 审批条件类型
