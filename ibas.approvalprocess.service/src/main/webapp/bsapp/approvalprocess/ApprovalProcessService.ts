@@ -181,7 +181,11 @@ namespace approvalprocess {
                     caller.message = ibas.i18n.prop("approvalprocess_rejected_process_continue", that.approvalRequest.boKeys);
                 } else if (result === ibas.emApprovalResult.PROCESSING) {
                     caller.type = ibas.emMessageType.WARNING;
-                    caller.message = ibas.i18n.prop("approvalprocess_reset_process_continue", that.approvalRequest.boKeys);
+                    caller.message = ibas.i18n.prop("approvalprocess_reset_process_continue",
+                        that.approvalRequest.boKeys, ibas.enums.describe(ibas.emApprovalStepStatus, step.stepStatus));
+                } else if (result === ibas.emApprovalResult.RETURNED) {
+                    caller.type = ibas.emMessageType.WARNING;
+                    caller.message = ibas.i18n.prop("approvalprocess_return_process_continue", that.approvalRequest.boKeys);
                 }
                 this.messages(caller);
             }

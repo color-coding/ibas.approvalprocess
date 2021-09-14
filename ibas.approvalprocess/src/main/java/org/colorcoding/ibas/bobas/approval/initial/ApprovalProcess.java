@@ -166,6 +166,27 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 		this.getApprovalRequest().setFinishedTime(value);
 	}
 
+	/**
+	 * 状态发生变化时调用
+	 * 
+	 * @param value 当前状态
+	 */
+	@Override
+	protected void changeApprovalDataStatus(emApprovalStatus status) {
+		super.changeApprovalDataStatus(status);
+		if (status == emApprovalStatus.RETURNED) {
+			// 退回时，审批流程不激活
+			if (this.getApprovalRequest().getActivated() != emYesNo.NO) {
+				this.getApprovalRequest().setActivated(emYesNo.NO);
+			}
+		} else {
+			// 其他情况，审批为激活状态
+			if (this.getApprovalRequest().getActivated() != emYesNo.YES) {
+				this.getApprovalRequest().setActivated(emYesNo.YES);
+			}
+		}
+	}
+
 	private IApprovalProcessStep[] processSteps;
 
 	@Override
@@ -203,7 +224,8 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 							String pName = matcher.group(0);
 							IFieldData field = boFields.getField(pName.substring(2, pName.length() - 1));
 							if (field != null) {
-								summary = summary.replace(pName, String.valueOf(field.getValue()));
+								summary = summary.replace(pName,
+										String.valueOf(field.getValue() == null ? "" : field.getValue()));
 							}
 						}
 						this.getApprovalRequest().setSummary(summary);
