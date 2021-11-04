@@ -42,6 +42,8 @@ namespace approvalprocess {
                                             return sap.ui.core.ValueState.Warning;
                                         } else if (data === ibas.emApprovalStatus.REJECTED) {
                                             return sap.ui.core.ValueState.Error;
+                                        } else if (data === ibas.emApprovalStatus.RETURNED) {
+                                            return sap.ui.core.ValueState.Error;
                                         } else if (data === ibas.emApprovalStatus.CANCELLED) {
                                             return sap.ui.core.ValueState.None;
                                         }
@@ -97,6 +99,14 @@ namespace approvalprocess {
                                             path: "finishedTime",
                                             type: new sap.extension.data.Date(),
                                         }
+                                    }),
+                                    new sap.extension.m.ObjectAttribute("", {
+                                        title: ibas.i18n.prop("bo_approvalrequest_remarks"),
+                                        bindingValue: {
+                                            path: "remarks",
+                                            type: new sap.extension.data.Alphanumeric(),
+                                        },
+                                        width: "16rem",
                                     }),
                                 ],
                                 type: sap.m.ListType.Active,

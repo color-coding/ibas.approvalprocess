@@ -54,12 +54,6 @@ namespace approvalprocess {
             /** 数据所属组织 */
             organization: string;
 
-            /** 参考1 */
-            reference1: string;
-
-            /** 参考2 */
-            reference2: string;
-
             /** 备注 */
             remarks: string;
 
@@ -136,11 +130,8 @@ namespace approvalprocess {
             /** 修改用户 */
             updateUserSign: number;
 
-            /** 参考1 */
-            reference1: string;
-
-            /** 参考2 */
-            reference2: string;
+            /** 备注 */
+            remarks: string;
 
             /** 步骤名称 */
             stepName: string;
@@ -216,11 +207,8 @@ namespace approvalprocess {
             /** 更新动作标识 */
             updateActionId: string;
 
-            /** 参考1 */
-            reference1: string;
-
-            /** 参考2 */
-            reference2: string;
+            /** 备注 */
+            remarks: string;
 
             /** 比较的类型 */
             conditionType: emApprovalConditionType;

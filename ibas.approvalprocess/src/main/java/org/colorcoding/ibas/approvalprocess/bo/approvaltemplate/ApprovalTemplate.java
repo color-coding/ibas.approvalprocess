@@ -520,68 +520,6 @@ public class ApprovalTemplate extends BusinessObject<ApprovalTemplate> implement
 	}
 
 	/**
-	 * 属性名称-参考1
-	 */
-	private static final String PROPERTY_REFERENCE1_NAME = "Reference1";
-
-	/**
-	 * 参考1 属性
-	 */
-	@DbField(name = "Ref1", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_REFERENCE1 = registerProperty(PROPERTY_REFERENCE1_NAME,
-			String.class, MY_CLASS);
-
-	/**
-	 * 获取-参考1
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_REFERENCE1_NAME)
-	public final String getReference1() {
-		return this.getProperty(PROPERTY_REFERENCE1);
-	}
-
-	/**
-	 * 设置-参考1
-	 * 
-	 * @param value 值
-	 */
-	public final void setReference1(String value) {
-		this.setProperty(PROPERTY_REFERENCE1, value);
-	}
-
-	/**
-	 * 属性名称-参考2
-	 */
-	private static final String PROPERTY_REFERENCE2_NAME = "Reference2";
-
-	/**
-	 * 参考2 属性
-	 */
-	@DbField(name = "Ref2", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_REFERENCE2 = registerProperty(PROPERTY_REFERENCE2_NAME,
-			String.class, MY_CLASS);
-
-	/**
-	 * 获取-参考2
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_REFERENCE2_NAME)
-	public final String getReference2() {
-		return this.getProperty(PROPERTY_REFERENCE2);
-	}
-
-	/**
-	 * 设置-参考2
-	 * 
-	 * @param value 值
-	 */
-	public final void setReference2(String value) {
-		this.setProperty(PROPERTY_REFERENCE2, value);
-	}
-
-	/**
 	 * 属性名称-备注
 	 */
 	private static final String PROPERTY_REMARKS_NAME = "Remarks";

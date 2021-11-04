@@ -83,6 +83,15 @@ namespace approvalprocess {
                                 }),
                                 width: "20rem",
                             }),
+                            new sap.extension.table.DataColumn("", {
+                                label: ibas.i18n.prop("bo_approvaltemplate_remarks"),
+                                template: new sap.extension.m.Text("", {
+                                }).bindProperty("bindingValue", {
+                                    path: "remarks",
+                                    type: new sap.extension.data.Alphanumeric()
+                                }),
+                                width: "16rem",
+                            }),
                         ],
                         nextDataSet(event: sap.ui.base.Event): void {
                             // 查询下一个数据集

@@ -99,7 +99,50 @@ namespace approvalprocess {
                                     type: new sap.extension.data.Date()
                                 }),
                             }),
+                            new sap.extension.table.DataColumn("", {
+                                label: ibas.i18n.prop("bo_approvalrequest_remarks"),
+                                template: new sap.extension.m.Text("", {
+                                }).bindProperty("bindingValue", {
+                                    path: "remarks",
+                                    type: new sap.extension.data.Alphanumeric()
+                                }),
+                                width: "20rem",
+                            }),
                         ],
+                        rowSettingsTemplate: new sap.ui.table.RowSettings("", {
+                            highlight: {
+                                parts: [
+                                    {
+                                        path: "approvalStatus",
+                                        type: new sap.extension.data.ApprovalStatus(),
+                                    },
+                                    {
+                                        path: "activated",
+                                        type: new sap.extension.data.YesNo(),
+                                    }
+                                ],
+                                formatter(approvalStatus: ibas.emApprovalStatus, activated: ibas.emYesNo): sap.ui.core.ValueState {
+                                    // tslint:disable-next-line: triple-equals
+                                    if (activated == ibas.emYesNo.NO) {
+                                        return sap.ui.core.ValueState.Error;
+                                    }
+                                    // tslint:disable-next-line: triple-equals
+                                    if (approvalStatus == ibas.emApprovalStatus.CANCELLED
+                                        // tslint:disable-next-line: triple-equals
+                                        || approvalStatus == ibas.emApprovalStatus.REJECTED
+                                        // tslint:disable-next-line: triple-equals
+                                        || approvalStatus == ibas.emApprovalStatus.RETURNED) {
+                                        return sap.ui.core.ValueState.Error;
+                                        // tslint:disable-next-line: triple-equals
+                                    } else if (approvalStatus == ibas.emApprovalStatus.PROCESSING) {
+                                        return sap.ui.core.ValueState.Warning;
+                                        // tslint:disable-next-line: triple-equals
+                                    } else if (approvalStatus == ibas.emApprovalStatus.APPROVED) {
+                                        return sap.ui.core.ValueState.Success;
+                                    }
+                                }
+                            }
+                        }),
                         nextDataSet(event: sap.ui.base.Event): void {
                             // 查询下一个数据集
                             let data: any = event.getParameter("data");

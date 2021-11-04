@@ -16,8 +16,6 @@
     <Property Name="CreateUserSign" Description="创建用户" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="Creator"/>
     <Property Name="UpdateUserSign" Description="修改用户" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="Updator"/>
     <Property Name="DataOwner" Description="数据所有者" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="DataOwner"/>
-    <Property Name="Reference1" Description="参考1" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="Ref1"/>
-    <Property Name="Reference2" Description="参考2" DataType="Alphanumeric" DataSubType="Default" EditSize="50" Mapped="Ref2"/>
     <Property Name="Remarks" Description="备注" DataType="Memo" DataSubType="Default" EditSize="8" Mapped="Remarks"/>
     <Property Name="Name" Description="审批请求名称" DataType="Alphanumeric" DataSubType="Default" EditSize="100" Mapped="Name"/>
     <Property Name="Activated" Description="激活的" DataType="Alphanumeric" DataSubType="Default" EditSize="1" DeclaredType="emYesNo" Mapped="Activated"/>
@@ -45,8 +43,7 @@
     <Property Name="UpdateUserSign" Description="修改用户" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="Updator"/>
     <Property Name="CreateActionId" Description="创建动作标识" DataType="Alphanumeric" DataSubType="Default" EditSize="36" Mapped="CreateActId"/>
     <Property Name="UpdateActionId" Description="更新动作标识" DataType="Alphanumeric" DataSubType="Default" EditSize="36" Mapped="UpdateActId"/>
-    <Property Name="Reference1" Description="参考1" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="Ref1"/>
-    <Property Name="Reference2" Description="参考2" DataType="Alphanumeric" DataSubType="Default" EditSize="50" Mapped="Ref2"/>
+    <Property Name="Remarks" Description="备注" DataType="Memo" DataSubType="Default" EditSize="8" Mapped="Remarks"/>
     <Property Name="StepName" Description="步骤名称" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="StepName"/>
     <Property Name="StepOwner" Description="步骤所有者" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="StepOwner"/>
     <Property Name="StepOrder" Description="步骤执行顺序" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="StepOrder"/>

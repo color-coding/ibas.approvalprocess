@@ -73,8 +73,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-编号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setObjectKey(Integer value) {
 		this.setProperty(PROPERTY_OBJECTKEY, value);
@@ -105,8 +104,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setObjectCode(String value) {
 		this.setProperty(PROPERTY_OBJECTCODE, value);
@@ -137,8 +135,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-行号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLineId(Integer value) {
 		this.setProperty(PROPERTY_LINEID, value);
@@ -169,8 +166,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-实例号（版本）
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLogInst(Integer value) {
 		this.setProperty(PROPERTY_LOGINST, value);
@@ -201,8 +197,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-数据源
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDataSource(String value) {
 		this.setProperty(PROPERTY_DATASOURCE, value);
@@ -233,8 +228,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-创建日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateDate(DateTime value) {
 		this.setProperty(PROPERTY_CREATEDATE, value);
@@ -265,8 +259,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-创建时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateTime(Short value) {
 		this.setProperty(PROPERTY_CREATETIME, value);
@@ -297,8 +290,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-修改日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateDate(DateTime value) {
 		this.setProperty(PROPERTY_UPDATEDATE, value);
@@ -329,8 +321,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-修改时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateTime(Short value) {
 		this.setProperty(PROPERTY_UPDATETIME, value);
@@ -361,8 +352,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-创建动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateActionId(String value) {
 		this.setProperty(PROPERTY_CREATEACTIONID, value);
@@ -393,8 +383,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-更新动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateActionId(String value) {
 		this.setProperty(PROPERTY_UPDATEACTIONID, value);
@@ -425,8 +414,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-创建用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateUserSign(Integer value) {
 		this.setProperty(PROPERTY_CREATEUSERSIGN, value);
@@ -457,75 +445,41 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-修改用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateUserSign(Integer value) {
 		this.setProperty(PROPERTY_UPDATEUSERSIGN, value);
 	}
 
 	/**
-	 * 属性名称-参考1
+	 * 属性名称-备注
 	 */
-	private static final String PROPERTY_REFERENCE1_NAME = "Reference1";
+	private static final String PROPERTY_REMARKS_NAME = "Remarks";
 
 	/**
-	 * 参考1 属性
+	 * 备注 属性
 	 */
-	@DbField(name = "Ref1", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_REFERENCE1 = registerProperty(PROPERTY_REFERENCE1_NAME,
-			String.class, MY_CLASS);
+	@DbField(name = "Remarks", type = DbFieldType.MEMO, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_REMARKS = registerProperty(PROPERTY_REMARKS_NAME, String.class,
+			MY_CLASS);
 
 	/**
-	 * 获取-参考1
+	 * 获取-备注
 	 * 
 	 * @return 值
 	 */
-	@XmlElement(name = PROPERTY_REFERENCE1_NAME)
-	public final String getReference1() {
-		return this.getProperty(PROPERTY_REFERENCE1);
+	@XmlElement(name = PROPERTY_REMARKS_NAME)
+	public final String getRemarks() {
+		return this.getProperty(PROPERTY_REMARKS);
 	}
 
 	/**
-	 * 设置-参考1
+	 * 设置-备注
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	public final void setReference1(String value) {
-		this.setProperty(PROPERTY_REFERENCE1, value);
-	}
-
-	/**
-	 * 属性名称-参考2
-	 */
-	private static final String PROPERTY_REFERENCE2_NAME = "Reference2";
-
-	/**
-	 * 参考2 属性
-	 */
-	@DbField(name = "Ref2", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_REFERENCE2 = registerProperty(PROPERTY_REFERENCE2_NAME,
-			String.class, MY_CLASS);
-
-	/**
-	 * 获取-参考2
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_REFERENCE2_NAME)
-	public final String getReference2() {
-		return this.getProperty(PROPERTY_REFERENCE2);
-	}
-
-	/**
-	 * 设置-参考2
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setReference2(String value) {
-		this.setProperty(PROPERTY_REFERENCE2, value);
+	public final void setRemarks(String value) {
+		this.setProperty(PROPERTY_REMARKS, value);
 	}
 
 	/**
@@ -553,8 +507,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-步骤名称
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setStepName(String value) {
 		this.setProperty(PROPERTY_STEPNAME, value);
@@ -585,8 +538,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-步骤所有者类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setStepOwnerType(emApprovalStepOwnerType value) {
 		this.setProperty(PROPERTY_STEPOWNERTYPE, value);
@@ -617,8 +569,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-步骤所有者
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setStepOwner(Integer value) {
 		this.setProperty(PROPERTY_STEPOWNER, value);
@@ -649,8 +600,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-步骤执行顺序
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setStepOrder(Integer value) {
 		this.setProperty(PROPERTY_STEPORDER, value);
@@ -681,8 +631,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-步骤所有者可修改
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setStepCanModify(emYesNo value) {
 		this.setProperty(PROPERTY_STEPCANMODIFY, value);
@@ -714,8 +663,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 设置-审批模板步骤条件集合
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setApprovalTemplateStepConditions(IApprovalTemplateStepConditions value) {
 		this.setProperty(PROPERTY_APPROVALTEMPLATESTEPCONDITIONS, value);

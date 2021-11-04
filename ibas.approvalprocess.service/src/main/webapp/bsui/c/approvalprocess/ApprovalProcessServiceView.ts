@@ -92,7 +92,23 @@ namespace approvalprocess {
                     let tabFilter: sap.m.IconTabFilter = new sap.m.IconTabFilter("", {
                         icon: "sap-icon://workflow-tasks",
                         design: sap.m.IconTabFilterDesign.Horizontal,
-                        iconColor: sap.ui.core.IconColor.Default,
+                        iconColor: {
+                            path: "approvalStatus",
+                            formatter(status: ibas.emApprovalStatus): sap.ui.core.IconColor {
+                                if (status === ibas.emApprovalStatus.APPROVED) {
+                                    return sap.ui.core.IconColor.Positive;
+                                } else if (status === ibas.emApprovalStatus.RETURNED) {
+                                    return sap.ui.core.IconColor.Neutral;
+                                } else if (status === ibas.emApprovalStatus.PROCESSING) {
+                                    return sap.ui.core.IconColor.Critical;
+                                } else if (status === ibas.emApprovalStatus.REJECTED) {
+                                    return sap.ui.core.IconColor.Negative;
+                                } else if (status === ibas.emApprovalStatus.CANCELLED) {
+                                    return sap.ui.core.IconColor.Default;
+                                }
+                                return sap.ui.core.IconColor.Default;
+                            }
+                        },
                         count: data.name,
                         text: ibas.enums.describe(ibas.emApprovalStatus, data.approvalStatus),
                         content: [
@@ -116,6 +132,7 @@ namespace approvalprocess {
                                     }),
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_approvalstatus") }),
                                     new sap.extension.m.EnumSelect("", {
+                                        editable: false,
                                         enumType: ibas.emApprovalStatus,
                                     }).bindProperty("bindingValue", {
                                         path: "approvalStatus",
@@ -205,7 +222,7 @@ namespace approvalprocess {
                                         }),
                                         new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_stepstatus") }),
                                         new sap.extension.m.EnumSelect("", {
-                                            enabled: false,
+                                            editable: false,
                                             enumType: ibas.emApprovalStepStatus,
                                             visible: PLANTFORM !== ibas.emPlantform.PHONE ? true : false,
                                         }).bindProperty("bindingValue", {

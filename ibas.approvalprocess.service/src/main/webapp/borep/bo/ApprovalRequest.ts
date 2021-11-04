@@ -170,28 +170,6 @@ namespace approvalprocess {
                 this.setProperty(ApprovalRequest.PROPERTY_DATAOWNER_NAME, value);
             }
 
-            /** 映射的属性名称-参考1 */
-            static PROPERTY_REFERENCE1_NAME: string = "Reference1";
-            /** 获取-参考1 */
-            get reference1(): string {
-                return this.getProperty<string>(ApprovalRequest.PROPERTY_REFERENCE1_NAME);
-            }
-            /** 设置-参考1 */
-            set reference1(value: string) {
-                this.setProperty(ApprovalRequest.PROPERTY_REFERENCE1_NAME, value);
-            }
-
-            /** 映射的属性名称-参考2 */
-            static PROPERTY_REFERENCE2_NAME: string = "Reference2";
-            /** 获取-参考2 */
-            get reference2(): string {
-                return this.getProperty<string>(ApprovalRequest.PROPERTY_REFERENCE2_NAME);
-            }
-            /** 设置-参考2 */
-            set reference2(value: string) {
-                this.setProperty(ApprovalRequest.PROPERTY_REFERENCE2_NAME, value);
-            }
-
             /** 映射的属性名称-备注 */
             static PROPERTY_REMARKS_NAME: string = "Remarks";
             /** 获取-备注 */
@@ -505,28 +483,16 @@ namespace approvalprocess {
                 this.setProperty(ApprovalRequestStep.PROPERTY_UPDATEACTIONID_NAME, value);
             }
 
-            /** 映射的属性名称-参考1 */
-            static PROPERTY_REFERENCE1_NAME: string = "Reference1";
-            /** 获取-参考1 */
-            get reference1(): string {
-                return this.getProperty<string>(ApprovalRequestStep.PROPERTY_REFERENCE1_NAME);
+            /** 映射的属性名称-备注 */
+            static PROPERTY_REMARKS_NAME: string = "Remarks";
+            /** 获取-备注 */
+            get remarks(): string {
+                return this.getProperty<string>(ApprovalRequest.PROPERTY_REMARKS_NAME);
             }
-            /** 设置-参考1 */
-            set reference1(value: string) {
-                this.setProperty(ApprovalRequestStep.PROPERTY_REFERENCE1_NAME, value);
+            /** 设置-备注 */
+            set remarks(value: string) {
+                this.setProperty(ApprovalRequest.PROPERTY_REMARKS_NAME, value);
             }
-
-            /** 映射的属性名称-参考2 */
-            static PROPERTY_REFERENCE2_NAME: string = "Reference2";
-            /** 获取-参考2 */
-            get reference2(): string {
-                return this.getProperty<string>(ApprovalRequestStep.PROPERTY_REFERENCE2_NAME);
-            }
-            /** 设置-参考2 */
-            set reference2(value: string) {
-                this.setProperty(ApprovalRequestStep.PROPERTY_REFERENCE2_NAME, value);
-            }
-
             /** 映射的属性名称-步骤名称 */
             static PROPERTY_STEPNAME_NAME: string = "StepName";
             /** 获取-步骤名称 */

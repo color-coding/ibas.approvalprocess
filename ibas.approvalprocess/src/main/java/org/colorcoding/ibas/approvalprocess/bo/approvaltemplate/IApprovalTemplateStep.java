@@ -21,8 +21,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-编号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setObjectKey(Integer value);
 
@@ -36,8 +35,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setObjectCode(String value);
 
@@ -51,8 +49,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-行号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLineId(Integer value);
 
@@ -66,8 +63,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-实例号（版本）
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLogInst(Integer value);
 
@@ -81,8 +77,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-数据源
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDataSource(String value);
 
@@ -96,8 +91,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-创建日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateDate(DateTime value);
 
@@ -111,8 +105,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-创建时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateTime(Short value);
 
@@ -126,8 +119,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-修改日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateDate(DateTime value);
 
@@ -141,8 +133,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-修改时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateTime(Short value);
 
@@ -156,8 +147,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-创建动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateActionId(String value);
 
@@ -171,8 +161,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-更新动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateActionId(String value);
 
@@ -186,8 +175,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-创建用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateUserSign(Integer value);
 
@@ -201,40 +189,23 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-修改用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateUserSign(Integer value);
 
 	/**
-	 * 获取-参考1
+	 * 获取-备注
 	 * 
 	 * @return 值
 	 */
-	String getReference1();
+	String getRemarks();
 
 	/**
-	 * 设置-参考1
+	 * 设置-备注
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	void setReference1(String value);
-
-	/**
-	 * 获取-参考2
-	 * 
-	 * @return 值
-	 */
-	String getReference2();
-
-	/**
-	 * 设置-参考2
-	 * 
-	 * @param value
-	 *            值
-	 */
-	void setReference2(String value);
+	void setRemarks(String value);
 
 	/**
 	 * 获取-步骤名称
@@ -246,8 +217,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-步骤名称
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setStepName(String value);
 
@@ -261,8 +231,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-步骤所有者类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setStepOwnerType(emApprovalStepOwnerType value);
 
@@ -276,8 +245,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-步骤所有者
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setStepOwner(Integer value);
 
@@ -291,8 +259,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-步骤执行顺序
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setStepOrder(Integer value);
 
@@ -306,8 +273,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-步骤所有者可修改
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setStepCanModify(emYesNo value);
 
@@ -321,8 +287,7 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	/**
 	 * 设置-审批模板步骤条件集合
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setApprovalTemplateStepConditions(IApprovalTemplateStepConditions value);
 

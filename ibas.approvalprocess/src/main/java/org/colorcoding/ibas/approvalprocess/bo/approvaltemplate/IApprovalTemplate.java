@@ -221,34 +221,6 @@ public interface IApprovalTemplate extends IBOSimple {
 	void setOrganization(String value);
 
 	/**
-	 * 获取-参考1
-	 * 
-	 * @return 值
-	 */
-	String getReference1();
-
-	/**
-	 * 设置-参考1
-	 * 
-	 * @param value 值
-	 */
-	void setReference1(String value);
-
-	/**
-	 * 获取-参考2
-	 * 
-	 * @return 值
-	 */
-	String getReference2();
-
-	/**
-	 * 设置-参考2
-	 * 
-	 * @param value 值
-	 */
-	void setReference2(String value);
-
-	/**
 	 * 获取-备注
 	 * 
 	 * @return 值

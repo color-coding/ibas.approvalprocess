@@ -213,6 +213,15 @@ namespace approvalprocess {
                                     type: new sap.extension.data.YesNo()
                                 }),
                             }),
+                            new sap.extension.table.DataColumn("", {
+                                label: ibas.i18n.prop("bo_approvaltemplatestep_remarks"),
+                                template: new sap.extension.m.Text("", {
+                                }).bindProperty("bindingValue", {
+                                    path: "remarks",
+                                    type: new sap.extension.data.Alphanumeric()
+                                }),
+                                width: "100%",
+                            }),
                         ]
                     });
                     this.tableApprovalTemplateStepCondition = new sap.extension.table.DataTable("", {
@@ -319,6 +328,15 @@ namespace approvalprocess {
                                     type: "sap.ui.model.type.Integer"
                                 })
                             }),
+                            new sap.extension.table.DataColumn("", {
+                                label: ibas.i18n.prop("bo_approvaltemplatestepcondition_remarks"),
+                                template: new sap.extension.m.Text("", {
+                                }).bindProperty("bindingValue", {
+                                    path: "remarks",
+                                    type: new sap.extension.data.Alphanumeric()
+                                }),
+                                width: "100%",
+                            }),
                         ]
                     });
                     let formMiddle: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
@@ -332,6 +350,20 @@ namespace approvalprocess {
                                     this.tableApprovalTemplateStepCondition
                                 ]
                             }),
+                        ]
+                    });
+                    let formBottom: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
+                        editable: true,
+                        content: [
+                            new sap.ui.core.Title("", { text: ibas.i18n.prop("approvalprocess_title_others") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_remarks") }),
+                            new sap.extension.m.TextArea("", {
+                                rows: 3,
+                            }).bindProperty("bindingValue", {
+                                path: "remarks",
+                                type: new sap.extension.data.Alphanumeric()
+                            }),
+                            new sap.ui.core.Title("", {}),
                         ]
                     });
                     return this.page = new sap.extension.m.DataPage("", {
@@ -389,6 +421,7 @@ namespace approvalprocess {
                         content: [
                             formTop,
                             formMiddle,
+                            formBottom,
                         ]
                     });
                 }

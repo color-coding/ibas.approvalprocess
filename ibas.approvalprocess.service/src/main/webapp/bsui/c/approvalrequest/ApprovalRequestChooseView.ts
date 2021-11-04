@@ -94,6 +94,15 @@ namespace approvalprocess {
                                     type: new sap.extension.data.Date()
                                 }),
                             }),
+                            new sap.extension.table.DataColumn("", {
+                                label: ibas.i18n.prop("bo_approvalrequest_remarks"),
+                                template: new sap.extension.m.Text("", {
+                                }).bindProperty("bindingValue", {
+                                    path: "remarks",
+                                    type: new sap.extension.data.Alphanumeric()
+                                }),
+                                width: "20rem",
+                            }),
                         ],
                         nextDataSet(event: sap.ui.base.Event): void {
                             // 查询下一个数据集

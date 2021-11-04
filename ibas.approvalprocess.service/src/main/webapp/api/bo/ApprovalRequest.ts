@@ -52,12 +52,6 @@ namespace approvalprocess {
             /** 数据所有者 */
             dataOwner: number;
 
-            /** 参考1 */
-            reference1: string;
-
-            /** 参考2 */
-            reference2: string;
-
             /** 备注 */
             remarks: string;
 
@@ -150,11 +144,8 @@ namespace approvalprocess {
             /** 更新动作标识 */
             updateActionId: string;
 
-            /** 参考1 */
-            reference1: string;
-
-            /** 参考2 */
-            reference2: string;
+            /** 备注 */
+            remarks: string;
 
             /** 步骤名称 */
             stepName: string;
