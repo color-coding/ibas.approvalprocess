@@ -75,11 +75,11 @@ namespace approvalprocess {
                 } else {
                     let criteria: ibas.ICriteria = new ibas.Criteria();
                     let condition: ibas.ICondition = criteria.conditions.create();
-                    condition.alias = approvalprocess.bo.ApprovalRequest.PROPERTY_ACTIVATED_NAME;
-                    condition.value = ibas.emYesNo.YES.toString();
-                    condition = criteria.conditions.create();
                     condition.alias = approvalprocess.bo.ApprovalRequest.PROPERTY_BOKEYS_NAME;
                     condition.value = bo.toString();
+                    let sort: ibas.ISort = criteria.sorts.create();
+                    sort.alias = approvalprocess.bo.ApprovalRequest.PROPERTY_OBJECTKEY_NAME;
+                    sort.sortType = ibas.emSortType.DESCENDING;
                     this.fetchData(criteria);
                 }
             }

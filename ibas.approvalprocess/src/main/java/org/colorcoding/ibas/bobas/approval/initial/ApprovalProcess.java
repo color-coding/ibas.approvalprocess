@@ -350,10 +350,6 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 					}
 				}
 			}
-		} else if (this.approvalRequest.isNew()
-				&& Integer.compare(this.getApprovalData().getDataOwner(), user.getId()) == 0) {
-			// 新的审批请求时，仅数据所有者可修改
-			return;
 		}
 		super.checkToSave(user);
 	}

@@ -40,6 +40,14 @@ namespace approvalprocess {
             }
             /** 查询数据 */
             protected fetchData(criteria: ibas.ICriteria): void {
+                if (ibas.objects.isNull(criteria)) {
+                    criteria = new ibas.Criteria();
+                }
+                if (!(ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_SUPER) === true) && criteria.conditions.length === 0) {
+                    let condition: ibas.ICondition = criteria.conditions.create();
+                    condition.alias = bo.ApprovalRequest.PROPERTY_APPROVALOWNER_NAME;
+                    condition.value = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID);
+                }
                 this.busy(true);
                 let that: this = this;
                 let boRepository: bo.BORepositoryApprovalProcess = new bo.BORepositoryApprovalProcess();

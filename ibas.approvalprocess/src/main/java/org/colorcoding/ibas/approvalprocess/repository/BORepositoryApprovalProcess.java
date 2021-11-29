@@ -6,6 +6,7 @@ import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.ApprovalTemplate;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplate;
 import org.colorcoding.ibas.bobas.approval.IApprovalProcess;
+import org.colorcoding.ibas.bobas.approval.IApprovalProcessStep;
 import org.colorcoding.ibas.bobas.approval.initial.ApprovalProcess;
 import org.colorcoding.ibas.bobas.approval.initial.ApprovalProcessManager;
 import org.colorcoding.ibas.bobas.common.Criteria;
@@ -165,7 +166,7 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 	@Override
 	public OperationMessage approval(int apRequestId, int apStepId, emApprovalResult apResult, String judgment,
 			String token) {
-		OperationMessage OperationMessage = new OperationMessage();
+		OperationMessage operationMessage = new OperationMessage();
 		try {
 			this.setUserToken(token);
 			ApprovalProcessManager apManager = new ApprovalProcessManager();
@@ -175,8 +176,7 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 			}
 			if (ap instanceof ApprovalProcess) {
 				// 提前加载涉及的业务对象类型
-				ApprovalProcess myAP = (ApprovalProcess) ap;
-				myAP.loadClasses();
+				((ApprovalProcess) ap).loadClasses();
 			}
 			IBORepository repository = this.getRepository();
 			if (repository instanceof BORepositoryBase) {
@@ -185,12 +185,29 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 			}
 			ap.setRepository(repository);
 			ap.approval(apStepId, apResult, token, judgment);
+			if (ap.getStatus() == emApprovalStatus.PROCESSING && apResult == emApprovalResult.APPROVED) {
+				// 下个步骤，如果还是当前用户，则自动批准
+				IApprovalProcessStep preStep;
+				IApprovalProcessStep step = ap.currentStep();
+				do {
+					if (step.getOwner() != this.getCurrentUser()) {
+						break;
+					}
+					try {
+						preStep = step;
+						ap.approval(step.getId(), apResult, token, judgment);
+						step = ap.currentStep();
+					} catch (Exception e) {
+						break;
+					}
+				} while (preStep != step && step != null);
+			}
 			ap.save();
 		} catch (Exception e) {
 			Logger.log(e);
-			OperationMessage.setError(e);
+			operationMessage.setError(e);
 		}
-		return OperationMessage;
+		return operationMessage;
 	}
 
 }

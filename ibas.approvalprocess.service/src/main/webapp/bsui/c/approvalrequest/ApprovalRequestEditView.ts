@@ -230,6 +230,38 @@ namespace approvalprocess {
                                         that.fireViewEvents(that.saveDataEvent);
                                     }
                                 }),
+                                new sap.m.ToolbarSpacer(""),
+                                new sap.m.Button("", {
+                                    text: ibas.i18n.prop("approvalprocess_view_data"),
+                                    type: sap.m.ButtonType.Transparent,
+                                    icon: "sap-icon://detail-view",
+                                    press: function (): void {
+                                        let model: any = that.page.getModel();
+                                        if (model instanceof sap.extension.model.JSONModel) {
+                                            let data: any = model.getData();
+                                            if (data instanceof bo.ApprovalRequest) {
+                                                let boKeys: string = data.boKeys;
+                                                if (!ibas.strings.isEmpty(boKeys)) {
+                                                    let criteria: ibas.ICriteria = ibas.criterias.valueOf(boKeys);
+                                                    if (!ibas.objects.isNull(criteria)) {
+                                                        let done: boolean = ibas.servicesManager.runLinkService({
+                                                            boCode: criteria.businessObject,
+                                                            linkValue: criteria
+                                                        });
+                                                        if (!done) {
+                                                            that.application.viewShower.proceeding(
+                                                                that,
+                                                                ibas.emMessageType.WARNING,
+                                                                ibas.i18n.prop("approvalprocess_not_found_businessojbect_link_service",
+                                                                    ibas.businessobjects.describe(criteria.businessObject))
+                                                            );
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                })
                             ]
                         }),
                         content: [
