@@ -24,6 +24,7 @@
     <Property Name="ApprovalStatus" Description="审批状态" DataType="Alphanumeric" DataSubType="Default" EditSize="1" DeclaredType="emApprovalStatus" Mapped="ApvlStatus"/>
     <Property Name="ApprovalOwner" Description="审批所有者" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="ApvlOwner"/>
     <Property Name="BOKeys" Description="业务对象标识" DataType="Alphanumeric" DataSubType="Default" EditSize="200" Mapped="BOKeys"/>
+    <Property Name="BOInst" Description="业务对象实例号" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="BOInst"/>
     <Property Name="Summary" Description="审批摘要" DataType="Alphanumeric" DataSubType="Default" EditSize="200" Mapped="Summary"/>
     <Property Name="StartedTime" Description="开始时间" DataType="Date" DataSubType="Default" EditSize="8" Mapped="StartTime"/>
     <Property Name="FinishedTime" Description="结束时间" DataType="Date" DataSubType="Default" EditSize="8" Mapped="FinishTime"/>

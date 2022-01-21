@@ -236,6 +236,17 @@ namespace approvalprocess {
                 this.setProperty(ApprovalRequest.PROPERTY_BOKEYS_NAME, value);
             }
 
+            /** 映射的属性名称-业务对象实例号 */
+            static PROPERTY_BOINST_NAME: string = "BOInst";
+            /** 获取-业务对象实例号 */
+            get boInst(): number {
+                return this.getProperty<number>(ApprovalRequest.PROPERTY_BOINST_NAME);
+            }
+            /** 设置-业务对象实例号 */
+            set boInst(value: number) {
+                this.setProperty(ApprovalRequest.PROPERTY_BOINST_NAME, value);
+            }
+
             /** 映射的属性名称-审批摘要 */
             static PROPERTY_SUMMARY_NAME: string = "Summary";
             /** 获取-审批摘要 */

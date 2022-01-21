@@ -70,6 +70,9 @@ namespace approvalprocess {
             /** 业务对象标识 */
             boKeys: string;
 
+            /** 业务对象实例号 */
+            boInst: number;
+
             /** 审批摘要 */
             summary: string;
 

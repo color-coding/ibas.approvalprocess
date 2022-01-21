@@ -21,6 +21,7 @@
         "bo_approvalrequest_activated": "激活的",
         "bo_approvalrequest_approvaltemplate": "审批模板",
         "bo_approvalrequest_bokeys": "待审批数据",
+        "bo_approvalrequest_boinst": "待审批数据实例号",
         "bo_approvalrequest_summary": "审批摘要",
         "bo_approvalrequest_approvalstatus": "审批状态",
         "bo_approvalrequest_approvalowner": "审批所有者",

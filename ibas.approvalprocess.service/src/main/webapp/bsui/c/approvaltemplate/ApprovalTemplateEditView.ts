@@ -215,7 +215,7 @@ namespace approvalprocess {
                             }),
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestep_remarks"),
-                                template: new sap.extension.m.Text("", {
+                                template: new sap.extension.m.Input("", {
                                 }).bindProperty("bindingValue", {
                                     path: "remarks",
                                     type: new sap.extension.data.Alphanumeric()
@@ -330,7 +330,7 @@ namespace approvalprocess {
                             }),
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestepcondition_remarks"),
-                                template: new sap.extension.m.Text("", {
+                                template: new sap.extension.m.Input("", {
                                 }).bindProperty("bindingValue", {
                                     path: "remarks",
                                     type: new sap.extension.data.Alphanumeric()

@@ -735,6 +735,37 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	}
 
 	/**
+	 * 属性名称-业务对象实例号
+	 */
+	private static final String PROPERTY_BOINST_NAME = "BOInst";
+
+	/**
+	 * 业务对象实例号 属性
+	 */
+	@DbField(name = "BOInst", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<Integer> PROPERTY_BOINST = registerProperty(PROPERTY_BOINST_NAME, Integer.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-业务对象实例号
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_BOINST_NAME)
+	public final Integer getBOInst() {
+		return this.getProperty(PROPERTY_BOINST);
+	}
+
+	/**
+	 * 设置-业务对象实例号
+	 * 
+	 * @param value 值
+	 */
+	public final void setBOInst(Integer value) {
+		this.setProperty(PROPERTY_BOINST, value);
+	}
+
+	/**
 	 * 属性名称-审批摘要
 	 */
 	private static final String PROPERTY_SUMMARY_NAME = "Summary";

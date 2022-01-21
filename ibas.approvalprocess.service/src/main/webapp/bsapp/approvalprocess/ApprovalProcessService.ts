@@ -71,7 +71,7 @@ namespace approvalprocess {
                 if (ibas.objects.isNull(bo)) {
                     // 输入数据无效，服务不运行
                     this.proceeding(ibas.emMessageType.WARNING,
-                        ibas.i18n.prop("approvalprocess_bo_approval_service") + ibas.i18n.prop("sys_invalid_parameter", "data"));
+                        ibas.i18n.prop("approvalprocess_app_approvalprocess") + ibas.i18n.prop("sys_invalid_parameter", "data"));
                 } else {
                     let criteria: ibas.ICriteria = new ibas.Criteria();
                     let condition: ibas.ICondition = criteria.conditions.create();

@@ -12,6 +12,7 @@ import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequestStep;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequestStep;
+import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.ApprovalTemplate;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplate;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplateStep;
 import org.colorcoding.ibas.approvalprocess.data.DataConvert;
@@ -21,6 +22,7 @@ import org.colorcoding.ibas.bobas.approval.ApprovalDataProxy;
 import org.colorcoding.ibas.bobas.approval.ApprovalProcessException;
 import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.approval.IApprovalProcessStep;
+import org.colorcoding.ibas.bobas.bo.IBOStorageTag;
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
 import org.colorcoding.ibas.bobas.common.ICriteria;
@@ -213,24 +215,43 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 				this.getApprovalRequest().setClassName(this.getApprovalData().getClass().getName());
 				// 保存审批所有者
 				this.getApprovalRequest().setApprovalOwner(this.getApprovalData().getDataOwner());
-				// 替换摘要中的变量
-				if (this.getApprovalData() instanceof IManagedFields) {
-					IManagedFields boFields = (IManagedFields) this.getApprovalData();
-					if (this.getApprovalRequest().getSummary() != null) {
-						String summary = this.getApprovalRequest().getSummary();
-						Matcher matcher = Pattern.compile(MyConfiguration.VARIABLE_PATTERN).matcher(summary);
-						while (matcher.find()) {
-							// 带格式名称${}
-							String pName = matcher.group(0);
-							IFieldData field = boFields.getField(pName.substring(2, pName.length() - 1));
-							if (field != null) {
-								summary = summary.replace(pName,
-										String.valueOf(field.getValue() == null ? "" : field.getValue()));
+			}
+			if (!this.getApprovalData().isDeleted() && this.getApprovalData() instanceof IBOStorageTag) {
+				IBOStorageTag boTag = (IBOStorageTag) this.getApprovalData();
+				// 新版业务对象，更新摘要
+				if (this.getApprovalData().isNew() || boTag.getLogInst() > this.getApprovalRequest().getBOInst()) {
+					ICriteria criteria = new Criteria();
+					criteria.setResultCount(1);
+					criteria.setNoChilds(true);
+					ICondition condition = criteria.getConditions().create();
+					condition.setAlias(ApprovalTemplate.PROPERTY_OBJECTKEY.getName());
+					condition.setValue(this.getApprovalRequest().getApprovalTemplate());
+					BORepositoryApprovalProcess apRepository = new BORepositoryApprovalProcess();
+					apRepository.setRepository(this.getRepository());
+					IOperationResult<IApprovalTemplate> opRslt = apRepository.fetchApprovalTemplate(criteria);
+					if (!opRslt.getResultObjects().isEmpty()) {
+						String summary = opRslt.getResultObjects().firstOrDefault().getSummary();
+						if (!DataConvert.isNullOrEmpty(summary)) {
+							// 替换摘要中的变量
+							if (this.getApprovalData() instanceof IManagedFields) {
+								IManagedFields boFields = (IManagedFields) this.getApprovalData();
+								Matcher matcher = Pattern.compile(MyConfiguration.VARIABLE_PATTERN).matcher(summary);
+								while (matcher.find()) {
+									// 带格式名称${}
+									String pName = matcher.group(0);
+									IFieldData field = boFields.getField(pName.substring(2, pName.length() - 1));
+									if (field != null) {
+										summary = summary.replace(pName,
+												String.valueOf(field.getValue() == null ? "" : field.getValue()));
+									}
+								}
+								this.getApprovalRequest().setSummary(summary);
 							}
 						}
-						this.getApprovalRequest().setSummary(summary);
 					}
 				}
+				// 设置版本号
+				this.getApprovalRequest().setBOInst(boTag.getLogInst());
 			}
 			// 修正步骤所有者
 			for (IApprovalRequestStep step : this.getApprovalRequest().getApprovalRequestSteps()) {

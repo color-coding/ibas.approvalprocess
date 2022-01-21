@@ -320,6 +320,20 @@ public interface IApprovalRequest extends IBOSimple {
 	void setBOKeys(String value);
 
 	/**
+	 * 获取-业务对象实例号
+	 * 
+	 * @return 值
+	 */
+	Integer getBOInst();
+
+	/**
+	 * 设置-业务对象实例号
+	 * 
+	 * @param value 值
+	 */
+	void setBOInst(Integer value);
+
+	/**
 	 * 获取-审批摘要
 	 * 
 	 * @return 值
