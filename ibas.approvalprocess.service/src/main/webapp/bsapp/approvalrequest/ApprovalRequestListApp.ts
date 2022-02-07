@@ -43,7 +43,11 @@ namespace approvalprocess {
                 if (ibas.objects.isNull(criteria)) {
                     criteria = new ibas.Criteria();
                 }
-                if (!(ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_SUPER) === true) && criteria.conditions.length === 0) {
+                if (!(ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_SUPER) === true)) {
+                    if (criteria.conditions.length > 1) {
+                        criteria.conditions.firstOrDefault().bracketOpen++;
+                        criteria.conditions.lastOrDefault().bracketClose++;
+                    }
                     let condition: ibas.ICondition = criteria.conditions.create();
                     condition.alias = bo.ApprovalRequest.PROPERTY_APPROVALOWNER_NAME;
                     condition.value = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID);

@@ -69,6 +69,11 @@ public class OwnershipJudger extends org.colorcoding.ibas.bobas.ownership.initia
 						condition.setAlias(ApprovalRequestStep.PROPERTY_STEPSTATUS.getName());
 						condition.setValue(emApprovalStepStatus.PROCESSING);
 						condition.setBracketOpen(1);
+						// 退回的
+						condition = childCriteria.getConditions().create();
+						condition.setAlias(ApprovalRequestStep.PROPERTY_STEPSTATUS.getName());
+						condition.setValue(emApprovalStepStatus.RETURNED);
+						condition.setRelationship(ConditionRelationship.OR);
 						// 批准的
 						condition = childCriteria.getConditions().create();
 						condition.setAlias(ApprovalRequestStep.PROPERTY_STEPSTATUS.getName());

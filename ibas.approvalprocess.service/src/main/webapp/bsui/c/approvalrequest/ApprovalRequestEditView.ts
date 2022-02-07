@@ -57,13 +57,20 @@ namespace approvalprocess {
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_summary") }),
                             new sap.extension.m.TextArea("", {
-                                editable: false,
                                 rows: 3,
+                                editable: false,
                             }).bindProperty("bindingValue", {
                                 path: "summary",
                                 type: new sap.extension.data.Alphanumeric()
                             }),
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("approvalprocess_title_others") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_objectkey") }),
+                            new sap.extension.m.Input("", {
+                                editable: false,
+                            }).bindProperty("bindingValue", {
+                                path: "objectKey",
+                                type: new sap.extension.data.Numeric()
+                            }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_approvalstatus") }),
                             new sap.extension.m.EnumSelect("", {
                                 enabled: false,
@@ -192,7 +199,7 @@ namespace approvalprocess {
                                         }).bindProperty("bindingValue", {
                                             path: "judgment",
                                             type: new sap.extension.data.Alphanumeric({
-                                                maxLength: 50
+                                                maxLength: 200
                                             })
                                         }),
                                         width: "100%",

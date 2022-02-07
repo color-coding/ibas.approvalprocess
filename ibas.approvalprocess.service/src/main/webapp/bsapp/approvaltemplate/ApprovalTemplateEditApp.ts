@@ -272,6 +272,7 @@ namespace approvalprocess {
                 condition.alias = initialfantasy.bo.BOInformation.PROPERTY_CODE_NAME;
                 condition.value = ".";
                 condition.operation = ibas.emConditionOperation.NOT_CONTAIN;
+
                 ibas.servicesManager.runChooseService<initialfantasy.bo.IBOInformation>({
                     boCode: initialfantasy.bo.BO_CODE_BOINFORMATION,
                     criteria: criteria,

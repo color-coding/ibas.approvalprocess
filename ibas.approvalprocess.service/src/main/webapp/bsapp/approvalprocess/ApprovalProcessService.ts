@@ -74,6 +74,7 @@ namespace approvalprocess {
                         ibas.i18n.prop("approvalprocess_app_approvalprocess") + ibas.i18n.prop("sys_invalid_parameter", "data"));
                 } else {
                     let criteria: ibas.ICriteria = new ibas.Criteria();
+                    criteria.result = 1;
                     let condition: ibas.ICondition = criteria.conditions.create();
                     condition.alias = approvalprocess.bo.ApprovalRequest.PROPERTY_BOKEYS_NAME;
                     condition.value = bo.toString();

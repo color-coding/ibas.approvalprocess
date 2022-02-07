@@ -127,6 +127,25 @@ namespace approvalprocess {
                     }
                     return sap.ui.core.Priority.High;
                 }
+                private getPicture(ap: bo.ApprovalRequest): string {
+                    let diffDay: number = ibas.dates.difference(ibas.dates.emDifferenceType.DAY, ibas.dates.today(), ap.startedTime);
+                    if (diffDay <= 3) {
+                        return "sap-icon://pending";
+                    } else if (diffDay <= 7) {
+                        return "sap-icon://future";
+                    }
+                    return "sap-icon://past";
+                }
+                private getColor(ap: bo.ApprovalRequest): sap.m.AvatarColor {
+                    let diffDay: number = ibas.dates.difference(ibas.dates.emDifferenceType.DAY, ibas.dates.today(), ap.startedTime);
+                    if (diffDay <= 3) {
+                        return sap.m.AvatarColor.Accent8;
+                    } else if (diffDay <= 7) {
+                        return sap.m.AvatarColor.Accent1;
+                    }
+                    return sap.m.AvatarColor.Accent2;
+
+                }
 
                 showData(datas: bo.ApprovalRequest[]): void {
                     if (sap.m.BadgeCustomData) {
@@ -143,16 +162,23 @@ namespace approvalprocess {
                     }
                     this.form.destroyContent();
                     let that: this = this;
+                    let criteria: ibas.ICriteria = new ibas.Criteria();
                     for (let apItem of datas) {
+                        let condition: ibas.ICondition = criteria.conditions.create();
+                        condition.alias = initialfantasy.bo.User.PROPERTY_DOCENTRY_NAME;
+                        condition.value = String(apItem.approvalOwner);
+                        condition.relationship = ibas.emConditionRelationship.OR;
                         let nlItem: sap.m.NotificationListItem = new sap.m.NotificationListItem("", {
                             title: ibas.strings.format("#{1} · {0}", apItem.name, apItem.objectKey),
-                            priority: this.getPriority(apItem),
+                            // priority: this.getPriority(apItem),
                             showCloseButton: false,
+                            unread: true,
                             datetime: ibas.strings.format("{0}{1}",
                                 ibas.dates.difference(ibas.dates.emDifferenceType.DAY, ibas.dates.today(), apItem.startedTime),
                                 ibas.i18n.prop("approvalprocess_day")),
                             authorName: apItem.approvalOwner,
-                            authorPicture: "sap-icon://customer-history",
+                            authorPicture: this.getPicture(apItem),
+                            authorAvatarColor: this.getColor(apItem),
                             press: function (): void {
                                 // 详情
                                 that.fireViewEvents(that.viewDataEvent, apItem);
@@ -188,33 +214,26 @@ namespace approvalprocess {
                                 ibas.businessobjects.describe(apItem.boKeys),
                                 ibas.strings.isEmpty(apItem.summary) ? "" : apItem.summary)
                         ));
-                        // 增强描述内容
-                        this.descript(nlItem);
                     }
-                }
-
-                private descript(nlItem: sap.m.NotificationListItem): void {
-                    try {
-                        if (nlItem.getAuthorName() === ibas.SYSTEM_USER_ID.toString()) {
-                            nlItem.setAuthorName(ibas.i18n.prop("shell_user_system"));
-                        } else if (nlItem.getAuthorName() === ibas.UNKNOWN_USER_ID.toString()) {
-                            nlItem.setAuthorName(ibas.i18n.prop("shell_user_unknown"));
-                        } else {
-                            let boRepository: initialfantasy.bo.IBORepositoryInitialFantasy = ibas.boFactory.create(initialfantasy.bo.BO_REPOSITORY_INITIALFANTASY);
-                            boRepository.fetchUser({
-                                criteria: [
-                                    new ibas.Condition("DocEntry", ibas.emConditionOperation.EQUAL, nlItem.getAuthorName()),
-                                ],
-                                onCompleted(opRslt: ibas.IOperationResult<initialfantasy.bo.IUser>): void {
-                                    let user: initialfantasy.bo.IUser = opRslt.resultObjects.firstOrDefault();
-                                    if (!ibas.objects.isNull(user)) {
-                                        nlItem.setAuthorName(user.name);
+                    if (criteria.conditions.length > 0) {
+                        let boRepository: initialfantasy.bo.IBORepositoryInitialFantasy = ibas.boFactory.create(initialfantasy.bo.BO_REPOSITORY_INITIALFANTASY);
+                        boRepository.fetchUser({
+                            criteria: criteria,
+                            onCompleted(opRslt: ibas.IOperationResult<initialfantasy.bo.IUser>): void {
+                                for (let item of that.form.getContent()) {
+                                    if (item instanceof sap.m.NotificationListItem) {
+                                        let user: initialfantasy.bo.IUser = opRslt.resultObjects.firstOrDefault(c => c.docEntry.toString() === (<any>item).getAuthorName());
+                                        if (item.getAuthorName() === ibas.SYSTEM_USER_ID.toString()) {
+                                            item.setAuthorName(ibas.i18n.prop("shell_user_system"));
+                                        } else if (!ibas.objects.isNull(user)) {
+                                            item.setAuthorName(user.name);
+                                        } else {
+                                            item.setAuthorName(ibas.i18n.prop("shell_user_unknown"));
+                                        }
                                     }
                                 }
-                            });
-                        }
-                    } catch (error) {
-                        ibas.logger.log(error);
+                            }
+                        });
                     }
                 }
             }
