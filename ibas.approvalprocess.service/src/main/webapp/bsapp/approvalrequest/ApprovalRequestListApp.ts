@@ -37,20 +37,59 @@ namespace approvalprocess {
             protected viewShowed(): void {
                 // 视图加载完成
                 super.viewShowed();
+                this.view.smartMode(this.smart);
             }
+            run(criteria?: ibas.ICriteria): void {
+                if (!ibas.objects.isNull(criteria)) {
+                    this.smart = false;
+                }
+                if (ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_SUPER) === true) {
+                    this.smart = false;
+                }
+                super.run.apply(this, arguments);
+            }
+            private smart: boolean = true;
             /** 查询数据 */
-            protected fetchData(criteria: ibas.ICriteria): void {
+            protected fetchData(criteria: ibas.ICriteria, type?: string): void {
                 if (ibas.objects.isNull(criteria)) {
                     criteria = new ibas.Criteria();
                 }
-                if (!(ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_SUPER) === true)) {
+                if (this.smart === true) {
+                    let condition: ibas.ICondition = null;
                     if (criteria.conditions.length > 1) {
                         criteria.conditions.firstOrDefault().bracketOpen++;
                         criteria.conditions.lastOrDefault().bracketClose++;
                     }
-                    let condition: ibas.ICondition = criteria.conditions.create();
-                    condition.alias = bo.ApprovalRequest.PROPERTY_APPROVALOWNER_NAME;
-                    condition.value = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID);
+                    // 有效的审批请求
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.ApprovalRequest.PROPERTY_ACTIVATED_NAME;
+                    condition.value = ibas.emYesNo.YES.toString();
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.ApprovalRequest.PROPERTY_APPROVALSTATUS_NAME;
+                    condition.value = ibas.emApprovalStatus.CANCELLED.toString();
+                    condition.operation = ibas.emConditionOperation.NOT_EQUAL;
+                    if (ibas.strings.equalsIgnoreCase(type, "initiated")) {
+                        // 我发起的审批请求
+                        condition = criteria.conditions.create();
+                        condition.alias = bo.ApprovalRequest.PROPERTY_APPROVALOWNER_NAME;
+                        condition.value = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID);
+                    } else {
+                        // 我参与的审批请求
+                        let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
+                        cCriteria.propertyPath = bo.ApprovalRequest.PROPERTY_APPROVALREQUESTSTEPS_NAME;
+                        cCriteria.onlyHasChilds = true;
+                        condition = cCriteria.conditions.create();
+                        condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPOWNER_NAME;
+                        condition.value = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID);
+                        condition = cCriteria.conditions.create();
+                        condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPSTATUS_NAME;
+                        condition.value = ibas.emApprovalStepStatus.SKIPPED.toString();
+                        condition.operation = ibas.emConditionOperation.NOT_EQUAL;
+                        condition = cCriteria.conditions.create();
+                        condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPSTATUS_NAME;
+                        condition.value = ibas.emApprovalStepStatus.PENDING.toString();
+                        condition.operation = ibas.emConditionOperation.NOT_EQUAL;
+                    }
                 }
                 this.busy(true);
                 let that: this = this;
@@ -173,6 +212,8 @@ namespace approvalprocess {
             deleteDataEvent: Function;
             /** 显示数据 */
             showData(datas: bo.ApprovalRequest[]): void;
+
+            smartMode(smart: boolean): void;
         }
     }
 }

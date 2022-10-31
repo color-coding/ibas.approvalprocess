@@ -181,6 +181,21 @@ namespace approvalprocess {
                                         that.fireViewEvents(that.editDataEvent, that.table.getSelecteds().firstOrDefault());
                                     }
                                 }),
+                                new sap.m.ToolbarSpacer(),
+                                this.segmentedButton = new sap.m.SegmentedButton("", {
+                                    width: "auto",
+                                    visible: ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_SUPER) === true ? false : true,
+                                    items: [
+                                        new sap.m.SegmentedButtonItem("", {
+                                            key: "participated",
+                                            text: ibas.i18n.prop("approvalprocess_my_participated"),
+                                        }),
+                                        new sap.m.SegmentedButtonItem("", {
+                                            key: "initiated",
+                                            text: ibas.i18n.prop("approvalprocess_my_initiated"),
+                                        }),
+                                    ],
+                                }).addStyleClass("sapUiTinyMarginEnd")
                             ]
                         }),
                         content: [
@@ -189,6 +204,7 @@ namespace approvalprocess {
                     });
                 }
                 private table: sap.extension.table.Table;
+                private segmentedButton: sap.m.SegmentedButton;
                 /** 显示数据 */
                 showData(datas: bo.ApprovalRequest[]): void {
                     let model: sap.ui.model.Model = this.table.getModel();
@@ -202,15 +218,20 @@ namespace approvalprocess {
                     this.table.setBusy(false);
                 }
 
-                /** 记录上次查询条件，表格滚动时自动触发 */
+                /** 查询数据 */
                 query(criteria: ibas.ICriteria): void {
-                    super.query(criteria);
+                    this.lastCriteria = criteria;
+                    this.fireViewEvents(this.fetchDataEvent, criteria, this.segmentedButton?.getSelectedKey());
                     // 清除历史数据
                     if (this.isDisplayed) {
                         this.table.setBusy(true);
                         this.table.setFirstVisibleRow(0);
                         this.table.setModel(null);
                     }
+                }
+
+                smartMode(smart: boolean): void {
+                    this.segmentedButton?.setVisible(smart);
                 }
             }
         }

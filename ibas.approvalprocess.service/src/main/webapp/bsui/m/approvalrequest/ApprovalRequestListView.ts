@@ -106,7 +106,6 @@ namespace approvalprocess {
                                             path: "remarks",
                                             type: new sap.extension.data.Alphanumeric(),
                                         },
-                                        width: "16rem",
                                     }),
                                 ],
                                 type: sap.m.ListType.Active,
@@ -132,7 +131,7 @@ namespace approvalprocess {
                             that.fireViewEvents(that.fetchDataEvent, criteria);
                         }
                     });
-                    return new sap.m.Page("", {
+                    return this.page = new sap.m.Page("", {
                         showHeader: false,
                         showSubHeader: false,
                         floatingFooter: true,
@@ -141,9 +140,13 @@ namespace approvalprocess {
                         ],
                     });
                 }
+                private page: sap.m.Page;
                 private list: sap.extension.m.List;
                 /** 显示数据 */
                 showData(datas: bo.ApprovalRequest[]): void {
+                    if (!ibas.objects.isNull(this.pullToRefresh)) {
+                        this.pullToRefresh.hide();
+                    }
                     let model: sap.ui.model.Model = this.list.getModel();
                     if (model instanceof sap.extension.model.JSONModel) {
                         // 已绑定过数据
@@ -154,8 +157,7 @@ namespace approvalprocess {
                     }
                     this.list.setBusy(false);
                 }
-
-                /** 记录上次查询条件，表格滚动时自动触发 */
+                /** 查询数据 */
                 query(criteria: ibas.ICriteria): void {
                     super.query(criteria);
                     // 清除历史数据
@@ -163,6 +165,18 @@ namespace approvalprocess {
                         this.list.setBusy(true);
                         this.list.setModel(null);
                     }
+                }
+                private pullToRefresh: sap.m.PullToRefresh;
+                /** 嵌入下拉条 */
+                embeddedPuller(view: any): void {
+                    if (view instanceof sap.m.PullToRefresh) {
+                        if (!ibas.objects.isNull(this.page)) {
+                            this.page.insertContent(view, 0);
+                            this.pullToRefresh = view;
+                        }
+                    }
+                }
+                smartMode(smart: boolean): void {
                 }
             }
         }

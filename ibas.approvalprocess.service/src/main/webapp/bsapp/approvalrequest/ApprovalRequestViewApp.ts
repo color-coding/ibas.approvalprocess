@@ -59,11 +59,13 @@ namespace approvalprocess {
                 this.busy(true);
                 let that: this = this;
                 if (typeof criteria === "string") {
+                    let condition: ibas.ICondition;
                     let value: string = criteria;
                     criteria = new ibas.Criteria();
                     criteria.result = 1;
-                    // 添加查询条件
-
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.ApprovalRequest.PROPERTY_OBJECTKEY_NAME;
+                    condition.value = value;
                 }
                 let boRepository: bo.BORepositoryApprovalProcess = new bo.BORepositoryApprovalProcess();
                 boRepository.fetchApprovalRequest({

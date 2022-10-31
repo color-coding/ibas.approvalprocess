@@ -22,6 +22,8 @@
   "approvalprocess_reject": "拒绝",
   "approvalprocess_reset": "撤销",
   "approvalprocess_return": "退回",
+  "approvalprocess_my_initiated": "我发起的",
+  "approvalprocess_my_participated": "我参与的",
   "approvalprocess_approvaltemplate_name": "{0}的审批",
   "approvalprocess_view_data": "查看数据",
   "approvalprocess_not_found_businessojbect_link_service": "没有查看[{0}]的服务",
