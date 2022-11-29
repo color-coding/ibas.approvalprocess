@@ -73,7 +73,7 @@ namespace approvalprocess {
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_approvalstatus") }),
                             new sap.extension.m.EnumSelect("", {
-                                enabled: false,
+                                editable: false,
                                 enumType: ibas.emApprovalStatus
                             }).bindProperty("bindingValue", {
                                 path: "approvalStatus",
@@ -186,7 +186,7 @@ namespace approvalprocess {
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_approvalrequeststep_stepstatus"),
                                         template: new sap.extension.m.EnumSelect("", {
-                                            enabled: false,
+                                            editable: false,
                                             enumType: ibas.emApprovalStepStatus
                                         }).bindProperty("bindingValue", {
                                             path: "stepStatus",
@@ -198,11 +198,9 @@ namespace approvalprocess {
                                         template: new sap.extension.m.Input("", {
                                         }).bindProperty("bindingValue", {
                                             path: "judgment",
-                                            type: new sap.extension.data.Alphanumeric({
-                                                maxLength: 200
-                                            })
+                                            type: new sap.extension.data.Alphanumeric()
                                         }),
-                                        width: "100%",
+                                        width: "24rem",
                                     }),
                                 ]
                             }),
