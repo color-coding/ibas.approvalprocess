@@ -626,6 +626,17 @@ namespace approvalprocess {
                 this.setProperty(ApprovalTemplateStepCondition.PROPERTY_LINEID_NAME, value);
             }
 
+            /** 映射的属性名称-显示顺序 */
+            static PROPERTY_VISORDER_NAME: string = "VisOrder";
+            /** 获取-显示顺序 */
+            get visOrder(): number {
+                return this.getProperty<number>(ApprovalTemplateStepCondition.PROPERTY_VISORDER_NAME);
+            }
+            /** 设置-显示顺序 */
+            set visOrder(value: number) {
+                this.setProperty(ApprovalTemplateStepCondition.PROPERTY_VISORDER_NAME, value);
+            }
+
             /** 映射的属性名称-步骤行号 */
             static PROPERTY_STEPLINEID_NAME: string = "StepLineId";
             /** 获取-步骤行号 */

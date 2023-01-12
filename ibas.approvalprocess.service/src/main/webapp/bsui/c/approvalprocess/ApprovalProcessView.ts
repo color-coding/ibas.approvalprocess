@@ -33,7 +33,7 @@ namespace approvalprocess {
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
-                    return this.form = new sap.m.ResponsivePopover("", {
+                    return new sap.m.ResponsivePopover("", {
                         contentWidth: "auto",
                         showCloseButton: true,
                         title: ibas.i18n.prop("approvalprocess_app_approvalprocess_title"),
@@ -44,31 +44,31 @@ namespace approvalprocess {
                                     search(event: sap.ui.base.Event): void {
                                         let source: any = event.getSource();
                                         if (source instanceof sap.m.SearchField) {
-                                            that.form.setBusy(true);
+                                            that.list.setBusy(true);
                                             let search: string = source.getValue();
-                                            let content: string;
                                             if (search) {
                                                 search = search.trim().toLowerCase();
                                             }
-                                            for (let item of that.form.getContent()) {
-                                                if (item instanceof sap.m.NotificationListItem) {
+                                            let done: boolean;
+                                            for (let item of that.list.getItems()) {
+                                                if (item instanceof sap.m.CustomListItem) {
                                                     item.setVisible(true);
                                                     if (ibas.strings.isEmpty(search)) {
                                                         continue;
                                                     }
-                                                    content = item.getTitle(); if (content && content.toLowerCase().indexOf(search) >= 0) {
-                                                        continue;
+                                                    done = false;
+                                                    for (let text of that.getTextData(item)) {
+                                                        if (text && text.toLowerCase().indexOf(search) >= 0) {
+                                                            done = true;
+                                                            break;
+                                                        }
                                                     }
-                                                    content = item.getAuthorName(); if (content && content.toLowerCase().indexOf(search) >= 0) {
-                                                        continue;
+                                                    if (!done) {
+                                                        item.setVisible(false);
                                                     }
-                                                    content = item.getDescription(); if (content && content.toLowerCase().indexOf(search) >= 0) {
-                                                        continue;
-                                                    }
-                                                    item.setVisible(false);
                                                 }
                                             }
-                                            that.form.setBusy(false);
+                                            that.list.setBusy(false);
                                         }
                                     }
                                 }),
@@ -77,27 +77,32 @@ namespace approvalprocess {
                                     press(event: sap.ui.base.Event): void {
                                         let source: any = event.getSource();
                                         if (source instanceof sap.m.Button) {
-                                            let items: sap.ui.core.Control[] = that.form.getContent();
+                                            let aData: any, bData: any;
+                                            let items: sap.m.ListItemBase[] = that.list.getItems();
                                             if (source.getIcon() === "sap-icon://sort-ascending") {
                                                 source.setIcon("sap-icon://sort-descending");
                                                 items = items.sort((a, b) => {
-                                                    if (a instanceof sap.m.NotificationListItem && b instanceof sap.m.NotificationListItem) {
-                                                        return a.getDatetime().localeCompare(b.getDatetime());
+                                                    aData = a.getBindingContext()?.getObject();
+                                                    bData = b.getBindingContext()?.getObject();
+                                                    if (aData instanceof bo.ApprovalRequest && bData instanceof bo.ApprovalRequest) {
+                                                        return ibas.dates.compare(aData.startedTime, bData.startedTime);
                                                     }
                                                     return 0;
                                                 });
                                             } else if (source.getIcon() === "sap-icon://sort-descending") {
                                                 source.setIcon("sap-icon://sort-ascending");
                                                 items = items.sort((a, b) => {
-                                                    if (a instanceof sap.m.NotificationListItem && b instanceof sap.m.NotificationListItem) {
-                                                        return b.getDatetime().localeCompare(a.getDatetime());
+                                                    aData = a.getBindingContext()?.getObject();
+                                                    bData = b.getBindingContext()?.getObject();
+                                                    if (aData instanceof bo.ApprovalRequest && bData instanceof bo.ApprovalRequest) {
+                                                        return ibas.dates.compare(bData.startedTime, aData.startedTime);
                                                     }
                                                     return 0;
                                                 });
                                             }
-                                            that.form.removeAllContent();
+                                            that.list.removeAllItems();
                                             for (let item of items) {
-                                                that.form.addContent(item);
+                                                that.list.addItem(item);
                                             }
                                         }
                                     }
@@ -112,39 +117,182 @@ namespace approvalprocess {
                             }
                         }),
                         content: [
+                            this.list = new sap.m.List("", {
+                                mode: sap.m.ListMode.None,
+                                items: {
+                                    path: "/",
+                                    template: new sap.m.CustomListItem("", {
+                                        content: [
+                                            new sap.m.HBox("", {
+                                                width: "100%",
+                                                alignContent: sap.m.FlexAlignContent.Center,
+                                                alignItems: sap.m.FlexAlignItems.Start,
+                                                items: [
+                                                    new sap.m.VBox("", {
+                                                        width: "100%",
+                                                        alignContent: sap.m.FlexAlignContent.Center,
+                                                        alignItems: sap.m.FlexAlignItems.Start,
+                                                        items: [
+                                                            new sap.m.Title("", {
+                                                                width: "100%",
+                                                                text: {
+                                                                    parts: [
+                                                                        {
+                                                                            path: "objectKey",
+                                                                        },
+                                                                        {
+                                                                            path: "name",
+                                                                        }
+                                                                    ],
+                                                                    formatter(objectKey: number, name: string): string {
+                                                                        return ibas.strings.format("#{1} · {0}", name, objectKey);
+                                                                    }
+                                                                }
+                                                            }),
+                                                            new sap.m.Link("", {
+                                                                width: "100%",
+                                                                text: {
+                                                                    path: "boKeys",
+                                                                    formatter(boKeys: string): string {
+                                                                        return ibas.businessobjects.describe(boKeys);
+                                                                    }
+                                                                },
+                                                                press(this: sap.m.Link, event: sap.ui.base.Event): void {
+                                                                    let data: any = this.getBindingContext().getObject();
+                                                                    if (data instanceof bo.ApprovalRequest) {
+                                                                        if (!ibas.strings.isEmpty(data.boKeys)) {
+                                                                            let criteria: ibas.ICriteria = ibas.criterias.valueOf(data.boKeys);
+                                                                            if (!ibas.objects.isNull(criteria)) {
+                                                                                let done: boolean = ibas.servicesManager.runLinkService({
+                                                                                    boCode: criteria.businessObject,
+                                                                                    linkValue: criteria
+                                                                                });
+                                                                                if (!done) {
+                                                                                    that.application.viewShower.proceeding(
+                                                                                        that,
+                                                                                        ibas.emMessageType.WARNING,
+                                                                                        ibas.i18n.prop("approvalprocess_not_found_businessojbect_link_service",
+                                                                                            ibas.businessobjects.describe(criteria.businessObject))
+                                                                                    );
+                                                                                } else {
+                                                                                    setTimeout(() => {
+                                                                                        that.fireViewEvents(that.closeEvent);
+                                                                                    }, 300);
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }),
+                                                            new sap.m.Text("", {
+                                                                width: "100%",
+                                                                text: {
+                                                                    path: "summary",
+                                                                },
+                                                                visible: {
+                                                                    path: "summary",
+                                                                    formatter(summary: string): boolean {
+                                                                        return summary ? true : false;
+                                                                    }
+                                                                }
+                                                            }),
+                                                            new sap.m.HBox("", {
+                                                                width: "100%",
+                                                                alignItems: sap.m.FlexAlignItems.Center,
+                                                                justifyContent: sap.m.FlexJustifyContent.Start,
+                                                                items: [
+                                                                    new sap.extension.m.UserText("", {
+                                                                        bindingValue: {
+                                                                            path: "approvalOwner"
+                                                                        }
+                                                                    }).addStyleClass("sapUiTinyMarginEnd"),
+                                                                    new sap.extension.m.Text("", {
+                                                                        bindingValue: "-",
+                                                                    }).addStyleClass("sapUiTinyMarginEnd"),
+                                                                    new sap.extension.m.Text("", {
+                                                                        bindingValue: {
+                                                                            path: "startedTime",
+                                                                            formatter(startedTime: Date): string {
+                                                                                return ibas.strings.format("{0}{1}",
+                                                                                    ibas.dates.difference(ibas.dates.emDifferenceType.DAY, ibas.dates.today(), startedTime),
+                                                                                    ibas.i18n.prop("approvalprocess_day"));
+                                                                            }
+                                                                        }
+                                                                    })
+                                                                ]
+                                                            })
+                                                        ]
+                                                    }),
+                                                    new sap.m.VBox("", {
+                                                        width: "auto",
+                                                        alignContent: sap.m.FlexAlignContent.Center,
+                                                        alignItems: sap.m.FlexAlignItems.End,
+                                                        items: [
+                                                            new sap.m.Button("", {
+                                                                tooltip: ibas.i18n.prop("approvalprocess_approve"),
+                                                                type: sap.m.ButtonType.Accept,
+                                                                icon: "sap-icon://accept",
+                                                                press(this: sap.m.Button): void {
+                                                                    that.fireViewEvents(that.approvalEvent, this.getBindingContext().getObject(), ibas.emApprovalResult.APPROVED);
+                                                                }
+                                                            }),
+                                                            new sap.m.Button("", {
+                                                                tooltip: ibas.i18n.prop("approvalprocess_reject"),
+                                                                type: sap.m.ButtonType.Reject,
+                                                                icon: "sap-icon://decline",
+                                                                press(this: sap.m.Button): void {
+                                                                    that.fireViewEvents(that.approvalEvent, this.getBindingContext().getObject(), ibas.emApprovalResult.REJECTED);
+                                                                }
+                                                            }),
+                                                        ]
+                                                    }).addStyleClass("sapUiTinyMarginBegin"),
+                                                ]
+                                            }).addStyleClass("sapUiForceWidthAuto sapUiTinyMargin"),
+                                        ],
+                                        highlight: {
+                                            path: "startedTime",
+                                            formatter(startedTime: Date): sap.ui.core.MessageType {
+                                                let diffDay: number = ibas.dates.difference(ibas.dates.emDifferenceType.DAY, ibas.dates.today(), startedTime);
+                                                if (diffDay <= 7) {
+                                                    return sap.ui.core.MessageType.Success;
+                                                } else if (diffDay <= 14) {
+                                                    return sap.ui.core.MessageType.Warning;
+                                                }
+                                                return sap.ui.core.MessageType.Error;
+                                            }
+                                        },
+                                        type: sap.m.ListType.Active,
+                                        press(this: sap.m.CustomListItem, event: sap.ui.base.Event): void {
+                                            that.fireViewEvents(that.viewDataEvent, this.getBindingContext().getObject());
+                                        },
+                                    })
+                                },
+                            })
                         ],
-                    });
+                    }).addStyleClass("sapUiNoContentPadding");
                 }
                 private bar: sap.m.Button;
-                private form: sap.m.ResponsivePopover;
+                private list: sap.m.List;
 
-                private getPriority(ap: bo.ApprovalRequest): sap.ui.core.Priority {
-                    let diffDay: number = ibas.dates.difference(ibas.dates.emDifferenceType.DAY, ibas.dates.today(), ap.startedTime);
-                    if (diffDay <= 3) {
-                        return sap.ui.core.Priority.Low;
-                    } else if (diffDay <= 7) {
-                        return sap.ui.core.Priority.Medium;
-                    }
-                    return sap.ui.core.Priority.High;
-                }
-                private getPicture(ap: bo.ApprovalRequest): string {
-                    let diffDay: number = ibas.dates.difference(ibas.dates.emDifferenceType.DAY, ibas.dates.today(), ap.startedTime);
-                    if (diffDay <= 3) {
-                        return "sap-icon://pending";
-                    } else if (diffDay <= 7) {
-                        return "sap-icon://future";
-                    }
-                    return "sap-icon://past";
-                }
-                private getColor(ap: bo.ApprovalRequest): sap.m.AvatarColor {
-                    let diffDay: number = ibas.dates.difference(ibas.dates.emDifferenceType.DAY, ibas.dates.today(), ap.startedTime);
-                    if (diffDay <= 3) {
-                        return sap.m.AvatarColor.Accent8;
-                    } else if (diffDay <= 7) {
-                        return sap.m.AvatarColor.Accent1;
-                    }
-                    return sap.m.AvatarColor.Accent2;
-
+                private getTextData(control: any): Array<string> {
+                    let texts: Array<string> = new Array<string>();
+                    let func: Function = function (control: any) {
+                        if (control instanceof sap.m.FlexBox) {
+                            for (let item of control.getItems()) {
+                                func(item);
+                            }
+                        } else if (control instanceof sap.m.Text) {
+                            texts.push(control.getText(true));
+                        } else if (control instanceof sap.m.Title) {
+                            texts.push(control.getText());
+                        } else if (control instanceof sap.m.CustomListItem) {
+                            for (let item of control.getContent()) {
+                                func(item);
+                            }
+                        }
+                    };
+                    func(control);
+                    return texts;
                 }
 
                 showData(datas: bo.ApprovalRequest[]): void {
@@ -160,81 +308,7 @@ namespace approvalprocess {
                         // 没有显示，退出。
                         return;
                     }
-                    this.form.destroyContent();
-                    let that: this = this;
-                    let criteria: ibas.ICriteria = new ibas.Criteria();
-                    for (let apItem of datas) {
-                        let condition: ibas.ICondition = criteria.conditions.create();
-                        condition.alias = initialfantasy.bo.User.PROPERTY_DOCENTRY_NAME;
-                        condition.value = String(apItem.approvalOwner);
-                        condition.relationship = ibas.emConditionRelationship.OR;
-                        let nlItem: sap.m.NotificationListItem = new sap.m.NotificationListItem("", {
-                            title: ibas.strings.format("#{1} · {0}", apItem.name, apItem.objectKey),
-                            // priority: this.getPriority(apItem),
-                            showCloseButton: false,
-                            unread: true,
-                            datetime: ibas.strings.format("{0}{1}",
-                                ibas.dates.difference(ibas.dates.emDifferenceType.DAY, ibas.dates.today(), apItem.startedTime),
-                                ibas.i18n.prop("approvalprocess_day")),
-                            authorName: apItem.approvalOwner,
-                            authorPicture: this.getPicture(apItem),
-                            authorAvatarColor: this.getColor(apItem),
-                            press: function (): void {
-                                // 详情
-                                that.fireViewEvents(that.viewDataEvent, apItem);
-                            },
-                            buttons: [
-                                new sap.m.Button("", {
-                                    text: ibas.i18n.prop("approvalprocess_approve"),
-                                    type: sap.m.ButtonType.Accept,
-                                    press(): void {
-                                        that.fireViewEvents(that.approvalEvent, apItem, ibas.emApprovalResult.APPROVED);
-                                    }
-                                }),
-                                new sap.m.Button("", {
-                                    text: ibas.i18n.prop("approvalprocess_reject"),
-                                    type: sap.m.ButtonType.Reject,
-                                    press(): void {
-                                        that.fireViewEvents(that.approvalEvent, apItem, ibas.emApprovalResult.REJECTED);
-                                    }
-                                }),
-                                /*
-                                new sap.m.Button("", {
-                                    text: ibas.i18n.prop("approvalprocess_reset"),
-                                    type: sap.m.ButtonType.Default,
-                                    press(): void {
-                                        that.fireViewEvents(that.approvalEvent, apItem, ibas.emApprovalResult.PROCESSING);
-                                    }
-                                }),
-                                */
-                            ]
-                        });
-                        this.form.addContent(nlItem.setDescription(
-                            ibas.strings.format("{0}\n {1}",
-                                ibas.businessobjects.describe(apItem.boKeys),
-                                ibas.strings.isEmpty(apItem.summary) ? "" : apItem.summary)
-                        ));
-                    }
-                    if (criteria.conditions.length > 0) {
-                        let boRepository: initialfantasy.bo.IBORepositoryInitialFantasy = ibas.boFactory.create(initialfantasy.bo.BO_REPOSITORY_INITIALFANTASY);
-                        boRepository.fetchUser({
-                            criteria: criteria,
-                            onCompleted(opRslt: ibas.IOperationResult<initialfantasy.bo.IUser>): void {
-                                for (let item of that.form.getContent()) {
-                                    if (item instanceof sap.m.NotificationListItem) {
-                                        let user: initialfantasy.bo.IUser = opRslt.resultObjects.firstOrDefault(c => c.docEntry.toString() === (<any>item).getAuthorName());
-                                        if (item.getAuthorName() === ibas.SYSTEM_USER_ID.toString()) {
-                                            item.setAuthorName(ibas.i18n.prop("shell_user_system"));
-                                        } else if (!ibas.objects.isNull(user)) {
-                                            item.setAuthorName(user.name);
-                                        } else {
-                                            item.setAuthorName(ibas.i18n.prop("shell_user_unknown"));
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                    }
+                    this.list.setModel(new sap.extension.model.JSONModel(datas));
                 }
             }
         }

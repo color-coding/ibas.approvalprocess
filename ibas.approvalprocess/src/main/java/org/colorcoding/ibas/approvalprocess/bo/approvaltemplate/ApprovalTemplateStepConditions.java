@@ -43,8 +43,7 @@ public class ApprovalTemplateStepConditions
 	/**
 	 * 构造方法
 	 * 
-	 * @param parent
-	 *            父项对象
+	 * @param parent 父项对象
 	 */
 	public ApprovalTemplateStepConditions(IApprovalTemplateStep parent) {
 		super(parent);
@@ -80,13 +79,16 @@ public class ApprovalTemplateStepConditions
 	public ICriteria getElementCriteria() {
 		ICriteria criteria = new Criteria();
 		ICondition condition = criteria.getConditions().create();
-		condition.setAlias(ApprovalTemplateStepCondition.PROPERTY_STEPLINEID.getName());
-		condition.setValue(this.getParent().getLineId());
-		condition = criteria.getConditions().create();
 		condition.setAlias(ApprovalTemplateStepCondition.PROPERTY_OBJECTKEY.getName());
 		condition.setValue(this.getParent().getObjectKey());
+		condition = criteria.getConditions().create();
+		condition.setAlias(ApprovalTemplateStepCondition.PROPERTY_STEPLINEID.getName());
+		condition.setValue(this.getParent().getLineId());
 		ISort sort = criteria.getSorts().create();
 		sort.setAlias(ApprovalTemplateStepCondition.PROPERTY_OBJECTKEY.getName());
+		sort.setSortType(SortType.ASCENDING);
+		sort = criteria.getSorts().create();
+		sort.setAlias(ApprovalTemplateStepCondition.PROPERTY_VISORDER.getName());
 		sort.setSortType(SortType.ASCENDING);
 		sort = criteria.getSorts().create();
 		sort.setAlias(ApprovalTemplateStepCondition.PROPERTY_LINEID.getName());

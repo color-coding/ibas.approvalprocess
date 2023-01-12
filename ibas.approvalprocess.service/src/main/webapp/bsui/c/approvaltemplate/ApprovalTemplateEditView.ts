@@ -145,12 +145,12 @@ namespace approvalprocess {
                         columns: [
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestep_steporder"),
-                                template: new sap.extension.m.Input("", {
-                                    type: sap.m.InputType.Number
+                                template: new sap.extension.m.Text("", {
                                 }).bindProperty("bindingValue", {
                                     path: "stepOrder",
                                     type: new sap.extension.data.Numeric()
                                 }),
+                                width: "8rem",
                             }),
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestep_stepownertype"),
@@ -192,6 +192,7 @@ namespace approvalprocess {
                                     path: "stepOwner",
                                     type: new sap.extension.data.Numeric()
                                 }),
+                                width: "14rem",
                             }),
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvaltemplatestep_stepname"),
@@ -222,7 +223,9 @@ namespace approvalprocess {
                                 }),
                                 width: "100%",
                             }),
-                        ]
+                        ],
+                        sortProperty: "stepOrder",
+                        sortIntervalStep: 10,
                     });
                     this.tableApprovalTemplateStepCondition = new sap.extension.table.DataTable("", {
                         enableSelectAll: false,
@@ -337,7 +340,8 @@ namespace approvalprocess {
                                 }),
                                 width: "100%",
                             }),
-                        ]
+                        ],
+                        sortProperty: "visOrder",
                     });
                     let formMiddle: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
                         editable: true,

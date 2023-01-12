@@ -96,6 +96,9 @@ public class ApprovalTemplateSteps extends BusinessObjects<IApprovalTemplateStep
 		sort = criteria.getSorts().create();
 		sort.setAlias(ApprovalTemplateStep.PROPERTY_STEPORDER.getName());
 		sort.setSortType(SortType.ASCENDING);
+		sort = criteria.getSorts().create();
+		sort.setAlias(ApprovalTemplateStep.PROPERTY_LINEID.getName());
+		sort.setSortType(SortType.ASCENDING);
 		return criteria;
 	}
 }

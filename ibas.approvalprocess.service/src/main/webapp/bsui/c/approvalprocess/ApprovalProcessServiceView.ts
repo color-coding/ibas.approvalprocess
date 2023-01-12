@@ -8,7 +8,6 @@
 namespace approvalprocess {
     export namespace ui {
         export namespace c {
-            const PLANTFORM: ibas.emPlantform = ibas.config.get(ibas.CONFIG_ITEM_PLANTFORM);
             /**
              * 视图-审批流程
              */
@@ -55,7 +54,7 @@ namespace approvalprocess {
                                 }),
                                 new sap.m.ToolbarSpacer(""),
                                 new sap.m.Button("", {
-                                    text: PLANTFORM !== ibas.emPlantform.PHONE ? ibas.i18n.prop("approvalprocess_view_data") : "",
+                                    text: ibas.i18n.prop("approvalprocess_view_data"),
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://detail-view",
                                     press(this: sap.m.Button): void {
@@ -276,7 +275,6 @@ namespace approvalprocess {
                                         new sap.extension.m.Input("", {
                                             editable: false,
                                             type: sap.m.InputType.Text,
-                                            visible: PLANTFORM !== ibas.emPlantform.PHONE ? true : false,
                                         }).bindProperty("bindingValue", {
                                             path: "/stepName",
                                             type: new sap.extension.data.Alphanumeric()
@@ -292,7 +290,6 @@ namespace approvalprocess {
                                         new sap.extension.m.EnumSelect("", {
                                             editable: false,
                                             enumType: ibas.emApprovalStepStatus,
-                                            visible: PLANTFORM !== ibas.emPlantform.PHONE ? true : false,
                                         }).bindProperty("bindingValue", {
                                             path: "/stepStatus",
                                             type: new sap.extension.data.ApprovalStepStatus()
@@ -331,9 +328,6 @@ namespace approvalprocess {
                                                 new sap.m.Toolbar("", {
                                                     style: sap.m.ToolbarStyle.Clear,
                                                     content: [
-                                                        new sap.m.ToolbarSpacer("", {
-                                                            visible: PLANTFORM === ibas.emPlantform.PHONE ? true : false,
-                                                        }),
                                                         new sap.m.Button("", {
                                                             enabled: {
                                                                 path: "/stepStatus",
@@ -399,9 +393,6 @@ namespace approvalprocess {
                                                 new sap.m.Toolbar("", {
                                                     style: sap.m.ToolbarStyle.Clear,
                                                     content: [
-                                                        new sap.m.ToolbarSpacer("", {
-                                                            visible: PLANTFORM === ibas.emPlantform.PHONE ? true : false,
-                                                        }),
                                                         new sap.m.Button("", {
                                                             width: "10.5rem",
                                                             enabled: {

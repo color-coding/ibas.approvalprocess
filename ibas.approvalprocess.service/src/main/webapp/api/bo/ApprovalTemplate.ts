@@ -174,6 +174,9 @@ namespace approvalprocess {
             /** 行号 */
             lineId: number;
 
+            /** 显示顺序 */
+            visOrder: number;
+
             /** 步骤行号 */
             stepLineId: number;
 

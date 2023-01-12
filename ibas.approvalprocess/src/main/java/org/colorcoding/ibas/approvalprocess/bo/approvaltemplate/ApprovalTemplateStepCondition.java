@@ -147,6 +147,37 @@ public class ApprovalTemplateStepCondition extends BusinessObject<ApprovalTempla
 	}
 
 	/**
+	 * 属性名称-显示顺序
+	 */
+	private static final String PROPERTY_VISORDER_NAME = "VisOrder";
+
+	/**
+	 * 显示顺序 属性
+	 */
+	@DbField(name = "VisOrder", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<Integer> PROPERTY_VISORDER = registerProperty(PROPERTY_VISORDER_NAME,
+			Integer.class, MY_CLASS);
+
+	/**
+	 * 获取-显示顺序
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_VISORDER_NAME)
+	public final Integer getVisOrder() {
+		return this.getProperty(PROPERTY_VISORDER);
+	}
+
+	/**
+	 * 设置-显示顺序
+	 * 
+	 * @param value 值
+	 */
+	public final void setVisOrder(Integer value) {
+		this.setProperty(PROPERTY_VISORDER, value);
+	}
+
+	/**
 	 * 属性名称-步骤行号
 	 */
 	private static final String PROPERTY_STEPLINEID_NAME = "StepLineId";

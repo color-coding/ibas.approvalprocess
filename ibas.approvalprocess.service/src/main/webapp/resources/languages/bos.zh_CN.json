@@ -105,6 +105,7 @@
         "bo_approvaltemplatestepcondition_objectkey": "编号",
         "bo_approvaltemplatestepcondition_objectcode": "类型",
         "bo_approvaltemplatestepcondition_lineid": "行号",
+        "bo_approvaltemplatestepcondition_visorder": "显示顺序",
         "bo_approvaltemplatestepcondition_steplineid": "步骤行号",
         "bo_approvaltemplatestepcondition_loginst": "实例号（版本）",
         "bo_approvaltemplatestepcondition_datasource": "数据源",
