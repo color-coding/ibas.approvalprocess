@@ -14,6 +14,8 @@ namespace approvalprocess {
             export class ApprovalProcessView extends ibas.ResidentView implements app.IApprovalProcessView {
                 // 显示列表
                 showListEvent: Function;
+                // 查询请求
+                fetchDataEvent: Function;
                 // 审批操作，参数1，审批请求；参数2，操作
                 approvalEvent: Function;
                 // 查看详情
@@ -26,7 +28,11 @@ namespace approvalprocess {
                         icon: "sap-icon://ui-notifications",
                         type: sap.m.ButtonType.Transparent,
                         press: function (): void {
-                            that.fireViewEvents(that.showFullViewEvent);
+                            if (that.isDisplayed) {
+                                that.fireViewEvents(that.fetchDataEvent);
+                            } else {
+                                that.fireViewEvents(that.showFullViewEvent);
+                            }
                         }
                     });
                 }
@@ -261,6 +267,12 @@ namespace approvalprocess {
                                                 return sap.ui.core.MessageType.Error;
                                             }
                                         },
+                                        visible: {
+                                            path: "isDirty",
+                                            formatter(data: boolean): boolean {
+                                                return data === false ? true : false;
+                                            }
+                                        },
                                         type: sap.m.ListType.Active,
                                         press(this: sap.m.CustomListItem, event: sap.ui.base.Event): void {
                                             that.fireViewEvents(that.viewDataEvent, this.getBindingContext().getObject());
@@ -276,7 +288,7 @@ namespace approvalprocess {
 
                 private getTextData(control: any): Array<string> {
                     let texts: Array<string> = new Array<string>();
-                    let func: Function = function (control: any) {
+                    let func: Function = function (control: any): void {
                         if (control instanceof sap.m.FlexBox) {
                             for (let item of control.getItems()) {
                                 func(item);

@@ -30,6 +30,7 @@ namespace approvalprocess {
                 this.view.showListEvent = this.showList;
                 this.view.approvalEvent = this.approval;
                 this.view.viewDataEvent = this.viewData;
+                this.view.fetchDataEvent = this.fetchApprovalRequest;
             }
             /** 运行,覆盖原方法 */
             run(): void {
@@ -88,22 +89,17 @@ namespace approvalprocess {
                 app.run(criteria);
             }
             protected fetchApprovalRequest(): void {
-                this.busy(true);
                 let that: this = this;
                 let boRepository: bo.BORepositoryApprovalProcess = new bo.BORepositoryApprovalProcess();
                 boRepository.fetchUserApprovalRequest({
                     user: ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID),
                     onCompleted(opRslt: ibas.IOperationResult<bo.ApprovalRequest>): void {
                         try {
-                            that.busy(false);
                             if (opRslt.resultCode !== 0) {
-                                throw new Error(ibas.i18n.prop("approvalprocess_msg_not_found_approvalrequest")
-                                    + ", " + opRslt.message);
+                                throw new Error(opRslt.message);
                             }
+                            that.refresh = true;
                             that.view.showData(opRslt.resultObjects);
-                            if (!that.refresh) {
-                                that.refresh = true;
-                            }
                         } catch (error) {
                             that.refresh = false;
                             that.proceeding(error);
@@ -113,6 +109,7 @@ namespace approvalprocess {
             }
             protected approval(ap: bo.ApprovalRequest, result: number): void {
                 let that: this = this;
+                that.busy(true);
                 let caller: ibas.IMessgesCaller = {
                     type: ibas.emMessageType.QUESTION,
                     title: ibas.i18n.prop(this.name),
@@ -120,9 +117,9 @@ namespace approvalprocess {
                     actions: [ibas.emMessageAction.YES, ibas.emMessageAction.NO],
                     onCompleted(action: ibas.emMessageAction): void {
                         if (action !== ibas.emMessageAction.YES) {
+                            that.busy(false);
                             return;
                         }
-                        that.busy(true);
                         let boRepository: bo.BORepositoryApprovalProcess = new bo.BORepositoryApprovalProcess();
                         boRepository.approval({
                             apRequestId: ap.objectKey,
@@ -131,12 +128,20 @@ namespace approvalprocess {
                             judgment: "",
                             onCompleted(opRslt: ibas.IOperationMessage): void {
                                 try {
-                                    that.busy(false);
                                     if (opRslt.resultCode !== 0) {
                                         throw new Error(opRslt.message);
                                     }
-                                    that.messages(ibas.emMessageType.SUCCESS, ibas.i18n.prop("shell_sucessful"));
+                                    ap.logInst += 1;
+                                    that.messages({
+                                        type: ibas.emMessageType.SUCCESS,
+                                        message: result === ibas.emApprovalResult.APPROVED ? ibas.i18n.prop(["approvalprocess_approve", "shell_sucessful"])
+                                            : result === ibas.emApprovalResult.REJECTED ? ibas.i18n.prop(["approvalprocess_reject", "shell_sucessful"]) : ibas.i18n.prop("shell_sucessful"),
+                                        onCompleted: () => {
+                                            that.busy(false);
+                                        },
+                                    });
                                 } catch (error) {
+                                    that.busy(false);
                                     that.messages(error);
                                 }
                             }
@@ -171,6 +176,8 @@ namespace approvalprocess {
         export interface IApprovalProcessView extends ibas.IResidentView {
             // 显示列表
             showListEvent: Function;
+            // 查询请求
+            fetchDataEvent: Function;
             // 显示数据
             showData(datas: bo.ApprovalRequest[]): void;
             // 审批操作，参数1，审批请求；参数2，操作

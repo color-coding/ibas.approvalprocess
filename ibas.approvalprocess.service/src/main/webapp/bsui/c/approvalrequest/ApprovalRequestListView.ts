@@ -195,6 +195,19 @@ namespace approvalprocess {
                                             text: ibas.i18n.prop("approvalprocess_my_initiated"),
                                         }),
                                     ],
+                                    selectionChange(this: sap.m.SearchField): void {
+                                        let page: any = sap.ui.getCore().byId(that.id);
+                                        if (page instanceof sap.m.Page) {
+                                            if (page.getSubHeader() instanceof sap.m.Toolbar) {
+                                                for (let item of (<sap.m.Toolbar>page.getSubHeader()).getContent()) {
+                                                    if (item instanceof sap.m.SearchField) {
+                                                        item.fireSearch({ query: item.getValue() });
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    }
                                 }).addStyleClass("sapUiTinyMarginEnd")
                             ]
                         }),
