@@ -45,6 +45,7 @@
     <Property Name="CreateActionId" Description="创建动作标识" DataType="Alphanumeric" DataSubType="Default" EditSize="36" Mapped="CreateActId"/>
     <Property Name="UpdateActionId" Description="更新动作标识" DataType="Alphanumeric" DataSubType="Default" EditSize="36" Mapped="UpdateActId"/>
     <Property Name="Remarks" Description="备注" DataType="Memo" DataSubType="Default" EditSize="8" Mapped="Remarks"/>
+    <Property Name="ParentId" Description="父项" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="ParentId"/>
     <Property Name="StepName" Description="步骤名称" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="StepName"/>
     <Property Name="StepOwner" Description="步骤所有者" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="StepOwner"/>
     <Property Name="StepOrder" Description="步骤执行顺序" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="StepOrder"/>
@@ -54,6 +55,8 @@
     <Property Name="FinishedTime" Description="结束时间" DataType="Date" DataSubType="Default" EditSize="8" Mapped="FinishTime"/>
     <Property Name="Judgment" Description="审批意见" DataType="Memo" DataSubType="Default" EditSize="8" Mapped="Judgment"/>
     <Property Name="StepCanModify" Description="步骤所有者可修改" DataType="Alphanumeric" DataSubType="Default" EditSize="1" DeclaredType="emYesNo" Mapped="StepModify"/>
+    <Property Name="StepOwners" Description="步骤所有者" DataType="Alphanumeric" DataSubType="Default" EditSize="200" Mapped="StepOwners"/>
+    <Property Name="ApproversRequired" Description="所需批准者" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="AprversReq"/>
   </Model>
   <BusinessObject MappedModel="ApprovalRequest" ShortName="${Company}_AP_APPROVALREQU">
     <RelatedBO Relation="OneToMany" MappedModel="ApprovalRequestStep"/>

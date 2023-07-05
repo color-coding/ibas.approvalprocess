@@ -150,6 +150,9 @@ namespace approvalprocess {
             /** 备注 */
             remarks: string;
 
+            /** 父项 */
+            parentId: number;
+
             /** 步骤名称 */
             stepName: string;
 
@@ -177,8 +180,17 @@ namespace approvalprocess {
             /** 步骤所有者可修改 */
             stepCanModify: ibas.emYesNo;
 
+            /** 步骤所有者 */
+            stepOwners: string;
+
+            /** 所需批准者 */
+            approversRequired: number;
+
+            /** 审批请求步骤明细项集合 */
+            approvalRequestSubSteps: IApprovalRequestSteps;
 
         }
+
     }
 }
 

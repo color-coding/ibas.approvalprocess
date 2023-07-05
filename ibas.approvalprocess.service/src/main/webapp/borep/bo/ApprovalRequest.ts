@@ -334,7 +334,7 @@ namespace approvalprocess {
         }
 
         /** 审批请求步骤 集合 */
-        export class ApprovalRequestSteps extends ibas.BusinessObjects<ApprovalRequestStep, ApprovalRequest> implements IApprovalRequestSteps {
+        export class ApprovalRequestSteps extends ibas.BusinessObjects<ApprovalRequestStep, ApprovalRequest | ApprovalRequestStep> implements IApprovalRequestSteps {
 
             /** 创建并添加子项 */
             create(): ApprovalRequestStep {
@@ -504,6 +504,18 @@ namespace approvalprocess {
             set remarks(value: string) {
                 this.setProperty(ApprovalRequest.PROPERTY_REMARKS_NAME, value);
             }
+
+            /** 映射的属性名称-父项 */
+            static PROPERTY_PARENTID_NAME: string = "ParentId";
+            /** 获取-父项 */
+            get parentId(): number {
+                return this.getProperty<number>(ApprovalRequestStep.PROPERTY_PARENTID_NAME);
+            }
+            /** 设置-父项 */
+            set parentId(value: number) {
+                this.setProperty(ApprovalRequestStep.PROPERTY_PARENTID_NAME, value);
+            }
+
             /** 映射的属性名称-步骤名称 */
             static PROPERTY_STEPNAME_NAME: string = "StepName";
             /** 获取-步骤名称 */
@@ -604,9 +616,42 @@ namespace approvalprocess {
             }
 
 
+            /** 映射的属性名称-步骤所有者 */
+            static PROPERTY_STEPOWNERS_NAME: string = "StepOwners";
+            /** 获取-步骤所有者 */
+            get stepOwners(): string {
+                return this.getProperty<string>(ApprovalRequestStep.PROPERTY_STEPOWNERS_NAME);
+            }
+            /** 设置-步骤所有者 */
+            set stepOwners(value: string) {
+                this.setProperty(ApprovalRequestStep.PROPERTY_STEPOWNERS_NAME, value);
+            }
+
+            /** 映射的属性名称-所需批准者 */
+            static PROPERTY_APPROVERSREQUIRED_NAME: string = "ApproversRequired";
+            /** 获取-所需批准者 */
+            get approversRequired(): number {
+                return this.getProperty<number>(ApprovalRequestStep.PROPERTY_APPROVERSREQUIRED_NAME);
+            }
+            /** 设置-所需批准者 */
+            set approversRequired(value: number) {
+                this.setProperty(ApprovalRequestStep.PROPERTY_APPROVERSREQUIRED_NAME, value);
+            }
+
+            /** 映射的属性名称-审批请求步骤明细项集合 */
+            static PROPERTY_APPROVALREQUESTSUBSTEPS_NAME: string = "ApprovalRequestSubSteps";
+            /** 获取-审批请求步骤明细项集合 */
+            get approvalRequestSubSteps(): ApprovalRequestSteps {
+                return this.getProperty<ApprovalRequestSteps>(ApprovalRequestStep.PROPERTY_APPROVALREQUESTSUBSTEPS_NAME);
+            }
+            /** 设置-审批请求步骤明细项集合 */
+            set approvalRequestSubSteps(value: ApprovalRequestSteps) {
+                this.setProperty(ApprovalRequestStep.PROPERTY_APPROVALREQUESTSUBSTEPS_NAME, value);
+            }
 
             /** 初始化数据 */
             protected init(): void {
+                this.approvalRequestSubSteps = new ApprovalRequestSteps(this);
             }
         }
 

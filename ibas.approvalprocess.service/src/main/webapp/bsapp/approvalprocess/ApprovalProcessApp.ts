@@ -80,8 +80,15 @@ namespace approvalprocess {
                 childCriteria.onlyHasChilds = true;
                 // 当前用户
                 condition = childCriteria.conditions.create();
+                condition.bracketOpen = 1;
                 condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPOWNER_NAME;
                 condition.value = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID);
+                condition = childCriteria.conditions.create();
+                condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPOWNERS_NAME;
+                condition.value = ibas.strings.format("!{0},", ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID));
+                condition.operation = ibas.emConditionOperation.CONTAIN;
+                condition.relationship = ibas.emConditionRelationship.OR;
+                condition.bracketClose = 1;
                 // 审批中
                 condition = childCriteria.conditions.create();
                 condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPSTATUS_NAME;
@@ -109,6 +116,19 @@ namespace approvalprocess {
             }
             protected approval(ap: bo.ApprovalRequest, result: number): void {
                 let that: this = this;
+                let step: bo.ApprovalRequestStep = ap.approvalRequestSteps.firstOrDefault();
+                if (step.approvalRequestSubSteps.length > 0) {
+                    let user: number = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID);
+                    let subStep: bo.ApprovalRequestStep = step.approvalRequestSubSteps.firstOrDefault(c =>
+                        c.stepOwner === user
+                        && c.stepStatus === ibas.emApprovalStepStatus.PROCESSING
+                    );
+                    if (ibas.objects.isNull(subStep)) {
+                        this.messages(ibas.emMessageType.ERROR, ibas.i18n.prop("approvalprocess_msg_not_found_approvalrequest"));
+                        return;
+                    }
+                    step = subStep;
+                }
                 that.busy(true);
                 let caller: ibas.IMessgesCaller = {
                     type: ibas.emMessageType.QUESTION,
@@ -122,8 +142,8 @@ namespace approvalprocess {
                         }
                         let boRepository: bo.BORepositoryApprovalProcess = new bo.BORepositoryApprovalProcess();
                         boRepository.approval({
-                            apRequestId: ap.objectKey,
-                            apStepId: ap.approvalRequestSteps.firstOrDefault().lineId,
+                            apRequestId: step.objectKey,
+                            apStepId: step.lineId,
                             apResult: result,
                             judgment: "",
                             onCompleted(opRslt: ibas.IOperationMessage): void {

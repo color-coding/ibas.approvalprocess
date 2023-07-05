@@ -244,179 +244,435 @@ namespace approvalprocess {
                                 icon: "sap-icon://step",
                             }));
                         }
-                        this.stepBar.addItem(new sap.m.IconTabFilter("", {
-                            key: String(data.lineId),
-                            count: data.stepName,
-                            icon: "sap-icon://customer-history",
-                            design: sap.m.IconTabFilterDesign.Horizontal,
-                            text: ibas.enums.describe(ibas.emApprovalStepStatus, data.stepStatus),
-                            iconColor: {
-                                path: "/stepStatus",
-                                formatter(status: ibas.emApprovalStepStatus): sap.ui.core.IconColor {
-                                    if (status === ibas.emApprovalStepStatus.APPROVED) {
-                                        return sap.ui.core.IconColor.Positive;
-                                    } else if (status === ibas.emApprovalStepStatus.PENDING) {
-                                        return sap.ui.core.IconColor.Neutral;
-                                    } else if (status === ibas.emApprovalStepStatus.PROCESSING) {
-                                        return sap.ui.core.IconColor.Critical;
-                                    } else if (status === ibas.emApprovalStepStatus.REJECTED) {
-                                        return sap.ui.core.IconColor.Negative;
-                                    } else if (status === ibas.emApprovalStepStatus.SKIPPED) {
+                        if (data?.approvalRequestSubSteps?.length > 0) {
+                            // 多人审批
+                            this.stepBar.addItem(new sap.m.IconTabFilter("", {
+                                key: String(data.lineId),
+                                count: data.stepName,
+                                icon: "sap-icon://group",
+                                design: sap.m.IconTabFilterDesign.Horizontal,
+                                text: ibas.enums.describe(ibas.emApprovalStepStatus, data.stepStatus),
+                                iconColor: {
+                                    path: "/stepStatus",
+                                    formatter(status: ibas.emApprovalStepStatus): sap.ui.core.IconColor {
+                                        if (status === ibas.emApprovalStepStatus.APPROVED) {
+                                            return sap.ui.core.IconColor.Positive;
+                                        } else if (status === ibas.emApprovalStepStatus.PENDING) {
+                                            return sap.ui.core.IconColor.Neutral;
+                                        } else if (status === ibas.emApprovalStepStatus.PROCESSING) {
+                                            return sap.ui.core.IconColor.Critical;
+                                        } else if (status === ibas.emApprovalStepStatus.REJECTED) {
+                                            return sap.ui.core.IconColor.Negative;
+                                        } else if (status === ibas.emApprovalStepStatus.SKIPPED) {
+                                            return sap.ui.core.IconColor.Default;
+                                        }
                                         return sap.ui.core.IconColor.Default;
                                     }
-                                    return sap.ui.core.IconColor.Default;
-                                }
-                            },
-                            content: [
-                                new sap.ui.layout.form.SimpleForm("", {
-                                    editable: true,
-                                    content: [
-                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_stepname") }),
-                                        new sap.extension.m.Input("", {
-                                            editable: false,
-                                            type: sap.m.InputType.Text,
-                                        }).bindProperty("bindingValue", {
-                                            path: "/stepName",
-                                            type: new sap.extension.data.Alphanumeric()
-                                        }),
-                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_stepowner") }),
-                                        new sap.extension.m.UserInput("", {
-                                            editable: false,
-                                        }).bindProperty("bindingValue", {
-                                            path: "/stepOwner",
-                                            type: new sap.extension.data.Numeric()
-                                        }),
-                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_stepstatus") }),
-                                        new sap.extension.m.EnumSelect("", {
-                                            editable: false,
-                                            enumType: ibas.emApprovalStepStatus,
-                                        }).bindProperty("bindingValue", {
-                                            path: "/stepStatus",
-                                            type: new sap.extension.data.ApprovalStepStatus()
-                                        }),
-                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_startedtime") }),
-                                        new sap.extension.m.DatePicker("", {
-                                            editable: false,
-                                        }).bindProperty("bindingValue", {
-                                            path: "/startedTime",
-                                            type: new sap.extension.data.Date()
-                                        }),
-                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_finishedtime") }),
-                                        new sap.extension.m.DatePicker("", {
-                                            editable: false,
-                                        }).bindProperty("bindingValue", {
-                                            path: "/finishedTime",
-                                            type: new sap.extension.data.Date()
-                                        }),
-                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_judgment") }),
-                                        new sap.extension.m.TextArea("", {
-                                            editable: {
+                                },
+                                content: [
+                                    new sap.ui.layout.form.SimpleForm("", {
+                                        editable: true,
+                                        content: [
+                                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_stepname") }),
+                                            new sap.extension.m.Input("", {
+                                                editable: false,
+                                                type: sap.m.InputType.Text,
+                                            }).bindProperty("bindingValue", {
+                                                path: "/stepName",
+                                                type: new sap.extension.data.Alphanumeric()
+                                            }),
+                                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_stepstatus") }),
+                                            new sap.extension.m.EnumSelect("", {
+                                                editable: false,
+                                                enumType: ibas.emApprovalStepStatus,
+                                            }).bindProperty("bindingValue", {
                                                 path: "/stepStatus",
-                                                formatter(data: any): boolean {
-                                                    return data === ibas.emApprovalStepStatus.PROCESSING ? true : false;
-                                                }
-                                            },
-                                            rows: 3,
-                                        }).bindProperty("bindingValue", {
-                                            path: "/judgment",
-                                            type: new sap.extension.data.Alphanumeric()
-                                        }),
-                                        new sap.m.Label("", {}),
-                                        new sap.m.VBox("", {
-                                            fitContainer: true,
-                                            items: [
-                                                new sap.m.Toolbar("", {
-                                                    style: sap.m.ToolbarStyle.Clear,
-                                                    content: [
-                                                        new sap.m.Button("", {
-                                                            enabled: {
-                                                                path: "/stepStatus",
-                                                                formatter(data: any): boolean {
-                                                                    return data === ibas.emApprovalStepStatus.PROCESSING
-                                                                        || data === ibas.emApprovalStepStatus.APPROVED ? true : false;
-                                                                }
-                                                            },
-                                                            width: "5rem",
-                                                            type: sap.m.ButtonType.Accept,
-                                                            text: {
-                                                                path: "/stepStatus",
-                                                                formatter(data: any): string {
-                                                                    if (data === ibas.emApprovalStepStatus.APPROVED) {
-                                                                        return ibas.i18n.prop("approvalprocess_reset");
+                                                type: new sap.extension.data.ApprovalStepStatus()
+                                            }),
+                                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_time") }),
+                                            new sap.extension.m.DatePicker("", {
+                                                editable: false,
+                                            }).bindProperty("bindingValue", {
+                                                path: "/startedTime",
+                                                type: new sap.extension.data.Date()
+                                            }),
+                                            new sap.extension.m.DatePicker("", {
+                                                editable: false,
+                                            }).bindProperty("bindingValue", {
+                                                path: "/finishedTime",
+                                                type: new sap.extension.data.Date()
+                                            }),
+                                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_approversrequired") }),
+                                            new sap.extension.m.Input("", {
+                                                editable: false,
+                                                type: sap.m.InputType.Text,
+                                            }).bindProperty("bindingValue", {
+                                                path: "/approversRequired",
+                                                type: new sap.extension.data.Numeric()
+                                            }),
+                                        ]
+                                    }),
+                                    new sap.m.VBox("", {
+                                        items: {
+                                            path: "/approvalRequestSubSteps",
+                                            template: new sap.ui.layout.form.SimpleForm("", {
+                                                editable: true,
+                                                backgroundDesign: sap.ui.layout.BackgroundDesign.Translucent,
+                                                content: [
+                                                    new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_stepowner") }),
+                                                    new sap.extension.m.RepositoryInput("", {
+                                                        editable: false,
+                                                        showValueLink: false,
+                                                        repository: initialfantasy.bo.BORepositoryInitialFantasy,
+                                                        dataInfo: {
+                                                            type: initialfantasy.bo.User,
+                                                            key: initialfantasy.bo.User.PROPERTY_DOCENTRY_NAME,
+                                                            text: initialfantasy.bo.User.PROPERTY_NAME_NAME
+                                                        },
+                                                    }).bindProperty("bindingValue", {
+                                                        path: "stepOwner",
+                                                        type: new sap.extension.data.Alphanumeric()
+                                                    }),
+                                                    new sap.extension.m.EnumSelect("", {
+                                                        editable: false,
+                                                        enumType: ibas.emApprovalStepStatus,
+                                                    }).bindProperty("bindingValue", {
+                                                        path: "stepStatus",
+                                                        type: new sap.extension.data.ApprovalStepStatus()
+                                                    }),
+                                                    new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_time") }),
+                                                    new sap.extension.m.DatePicker("", {
+                                                        editable: false,
+                                                    }).bindProperty("bindingValue", {
+                                                        path: "startedTime",
+                                                        type: new sap.extension.data.Date()
+                                                    }),
+                                                    new sap.extension.m.DatePicker("", {
+                                                        editable: false,
+                                                    }).bindProperty("bindingValue", {
+                                                        path: "finishedTime",
+                                                        type: new sap.extension.data.Date()
+                                                    }),
+                                                    new sap.m.Label("", {
+                                                        text: ibas.i18n.prop("bo_approvalrequeststep_judgment"),
+                                                        visible: {
+                                                            path: "judgment",
+                                                            formatter(data: any): boolean {
+                                                                return !ibas.strings.isEmpty(data) ? true : false;
+                                                            }
+                                                        }
+                                                    }),
+                                                    new sap.extension.m.Input("", {
+                                                        editable: false,
+                                                        visible: {
+                                                            path: "judgment",
+                                                            formatter(data: any): boolean {
+                                                                return !ibas.strings.isEmpty(data) ? true : false;
+                                                            }
+                                                        }
+                                                    }).bindProperty("bindingValue", {
+                                                        path: "judgment",
+                                                        type: new sap.extension.data.Alphanumeric()
+                                                    }),
+                                                ]
+                                            }).addStyleClass("sapUiNoMarginTop sapUiNoMarginBottom"),
+                                        }
+                                    }).addStyleClass("sapUiContentPadding"),
+                                    new sap.ui.layout.form.SimpleForm("", {
+                                        editable: true,
+                                        content: [
+                                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_judgment") }),
+                                            new sap.extension.m.TextArea("", {
+                                                editable: {
+                                                    path: "/stepStatus",
+                                                    formatter(data: any): boolean {
+                                                        return data === ibas.emApprovalStepStatus.PROCESSING ? true : false;
+                                                    }
+                                                },
+                                                rows: 3,
+                                            }).bindProperty("bindingValue", {
+                                                path: "/judgment",
+                                                type: new sap.extension.data.Alphanumeric()
+                                            }),
+                                            new sap.m.Label("", {}),
+                                            new sap.m.VBox("", {
+                                                fitContainer: true,
+                                                items: [
+                                                    new sap.m.Toolbar("", {
+                                                        style: sap.m.ToolbarStyle.Clear,
+                                                        content: [
+                                                            new sap.m.Button("", {
+                                                                enabled: {
+                                                                    path: "/stepStatus",
+                                                                    formatter(data: any): boolean {
+                                                                        return data === ibas.emApprovalStepStatus.PROCESSING
+                                                                            || data === ibas.emApprovalStepStatus.APPROVED ? true : false;
                                                                     }
-                                                                    return ibas.i18n.prop("approvalprocess_approve");
-                                                                }
-                                                            },
-                                                            press(this: sap.m.Button): void {
-                                                                let data: any = (<any>this.getModel()).getData();
-                                                                if (data instanceof bo.ApprovalRequestStep) {
-                                                                    if (data.stepStatus === ibas.emApprovalStepStatus.APPROVED) {
-                                                                        that.fireViewEvents(that.approvalEvent, data, ibas.emApprovalResult.PROCESSING);
-                                                                    } else {
-                                                                        that.fireViewEvents(that.approvalEvent, data, ibas.emApprovalResult.APPROVED);
+                                                                },
+                                                                width: "5rem",
+                                                                type: sap.m.ButtonType.Accept,
+                                                                text: {
+                                                                    path: "/stepStatus",
+                                                                    formatter(data: any): string {
+                                                                        if (data === ibas.emApprovalStepStatus.APPROVED) {
+                                                                            return ibas.i18n.prop("approvalprocess_reset");
+                                                                        }
+                                                                        return ibas.i18n.prop("approvalprocess_approve");
                                                                     }
-                                                                }
-                                                            },
-                                                        }),
-                                                        new sap.m.Button("", {
-                                                            enabled: {
-                                                                path: "/stepStatus",
-                                                                formatter(data: any): boolean {
-                                                                    return data === ibas.emApprovalStepStatus.PROCESSING
-                                                                        || data === ibas.emApprovalStepStatus.REJECTED ? true : false;
-                                                                }
-                                                            },
-                                                            width: "5rem",
-                                                            type: sap.m.ButtonType.Reject,
-                                                            text: {
-                                                                path: "/stepStatus",
-                                                                formatter(data: any): string {
-                                                                    if (data === ibas.emApprovalStepStatus.REJECTED) {
-                                                                        return ibas.i18n.prop("approvalprocess_reset");
+                                                                },
+                                                                press(this: sap.m.Button): void {
+                                                                    let data: any = (<any>this.getModel()).getData();
+                                                                    if (data instanceof bo.ApprovalRequestStep) {
+                                                                        if (data.stepStatus === ibas.emApprovalStepStatus.APPROVED) {
+                                                                            that.fireViewEvents(that.approvalEvent, data, ibas.emApprovalResult.PROCESSING);
+                                                                        } else {
+                                                                            that.fireViewEvents(that.approvalEvent, data, ibas.emApprovalResult.APPROVED);
+                                                                        }
                                                                     }
-                                                                    return ibas.i18n.prop("approvalprocess_reject");
-                                                                }
-                                                            },
-                                                            press(this: sap.m.Button): void {
-                                                                let data: any = (<any>this.getModel()).getData();
-                                                                if (data instanceof bo.ApprovalRequestStep) {
-                                                                    if (data.stepStatus === ibas.emApprovalStepStatus.REJECTED) {
-                                                                        that.fireViewEvents(that.approvalEvent, data, ibas.emApprovalResult.PROCESSING);
-                                                                    } else {
-                                                                        that.fireViewEvents(that.approvalEvent, data, ibas.emApprovalResult.REJECTED);
+                                                                },
+                                                            }),
+                                                            new sap.m.Button("", {
+                                                                enabled: {
+                                                                    path: "/stepStatus",
+                                                                    formatter(data: any): boolean {
+                                                                        return data === ibas.emApprovalStepStatus.PROCESSING
+                                                                            || data === ibas.emApprovalStepStatus.REJECTED ? true : false;
                                                                     }
-                                                                }
-                                                            },
-                                                        }),
-                                                    ]
-                                                }),
-                                                new sap.m.Toolbar("", {
-                                                    style: sap.m.ToolbarStyle.Clear,
-                                                    content: [
-                                                        new sap.m.Button("", {
-                                                            width: "10.5rem",
-                                                            enabled: {
-                                                                path: "/stepStatus",
-                                                                formatter(data: any): boolean {
-                                                                    return data === ibas.emApprovalStepStatus.PROCESSING ? true : false;
-                                                                }
-                                                            },
-                                                            type: sap.m.ButtonType.Attention,
-                                                            text: ibas.i18n.prop("approvalprocess_return"),
-                                                            press: function (): void {
-                                                                that.fireViewEvents(that.approvalEvent,
-                                                                    (<any>this.getModel()).getData(), ibas.emApprovalResult.RETURNED
-                                                                );
-                                                            },
-                                                        }),
-                                                    ]
-                                                })
-                                            ]
-                                        }),
-                                    ]
-                                })
-                            ]
-                        }).setModel(new sap.extension.model.JSONModel(data)));
+                                                                },
+                                                                width: "5rem",
+                                                                type: sap.m.ButtonType.Reject,
+                                                                text: {
+                                                                    path: "/stepStatus",
+                                                                    formatter(data: any): string {
+                                                                        if (data === ibas.emApprovalStepStatus.REJECTED) {
+                                                                            return ibas.i18n.prop("approvalprocess_reset");
+                                                                        }
+                                                                        return ibas.i18n.prop("approvalprocess_reject");
+                                                                    }
+                                                                },
+                                                                press(this: sap.m.Button): void {
+                                                                    let data: any = (<any>this.getModel()).getData();
+                                                                    if (data instanceof bo.ApprovalRequestStep) {
+                                                                        if (data.stepStatus === ibas.emApprovalStepStatus.REJECTED) {
+                                                                            that.fireViewEvents(that.approvalEvent, data, ibas.emApprovalResult.PROCESSING);
+                                                                        } else {
+                                                                            that.fireViewEvents(that.approvalEvent, data, ibas.emApprovalResult.REJECTED);
+                                                                        }
+                                                                    }
+                                                                },
+                                                            }),
+                                                        ]
+                                                    }),
+                                                    new sap.m.Toolbar("", {
+                                                        style: sap.m.ToolbarStyle.Clear,
+                                                        content: [
+                                                            new sap.m.Button("", {
+                                                                width: "10.5rem",
+                                                                enabled: {
+                                                                    path: "/stepStatus",
+                                                                    formatter(data: any): boolean {
+                                                                        return data === ibas.emApprovalStepStatus.PROCESSING ? true : false;
+                                                                    }
+                                                                },
+                                                                type: sap.m.ButtonType.Attention,
+                                                                text: ibas.i18n.prop("approvalprocess_return"),
+                                                                press: function (): void {
+                                                                    that.fireViewEvents(that.approvalEvent,
+                                                                        (<any>this.getModel()).getData(), ibas.emApprovalResult.RETURNED
+                                                                    );
+                                                                },
+                                                            }),
+                                                        ]
+                                                    })
+                                                ]
+                                            }),
+                                        ]
+                                    }),
+                                ]
+                            }).setModel(new sap.extension.model.JSONModel(data)));
+                        } else {
+                            // 单人审批
+                            this.stepBar.addItem(new sap.m.IconTabFilter("", {
+                                key: String(data.lineId),
+                                count: data.stepName,
+                                icon: "sap-icon://customer-history",
+                                design: sap.m.IconTabFilterDesign.Horizontal,
+                                text: ibas.enums.describe(ibas.emApprovalStepStatus, data.stepStatus),
+                                iconColor: {
+                                    path: "/stepStatus",
+                                    formatter(status: ibas.emApprovalStepStatus): sap.ui.core.IconColor {
+                                        if (status === ibas.emApprovalStepStatus.APPROVED) {
+                                            return sap.ui.core.IconColor.Positive;
+                                        } else if (status === ibas.emApprovalStepStatus.PENDING) {
+                                            return sap.ui.core.IconColor.Neutral;
+                                        } else if (status === ibas.emApprovalStepStatus.PROCESSING) {
+                                            return sap.ui.core.IconColor.Critical;
+                                        } else if (status === ibas.emApprovalStepStatus.REJECTED) {
+                                            return sap.ui.core.IconColor.Negative;
+                                        } else if (status === ibas.emApprovalStepStatus.SKIPPED) {
+                                            return sap.ui.core.IconColor.Default;
+                                        }
+                                        return sap.ui.core.IconColor.Default;
+                                    }
+                                },
+                                content: [
+                                    new sap.ui.layout.form.SimpleForm("", {
+                                        editable: true,
+                                        content: [
+                                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_stepname") }),
+                                            new sap.extension.m.Input("", {
+                                                editable: false,
+                                                type: sap.m.InputType.Text,
+                                            }).bindProperty("bindingValue", {
+                                                path: "/stepName",
+                                                type: new sap.extension.data.Alphanumeric()
+                                            }),
+                                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_stepowner") }),
+                                            new sap.extension.m.RepositoryInput("", {
+                                                editable: false,
+                                                showValueLink: false,
+                                                repository: initialfantasy.bo.BORepositoryInitialFantasy,
+                                                dataInfo: {
+                                                    type: initialfantasy.bo.User,
+                                                    key: initialfantasy.bo.User.PROPERTY_DOCENTRY_NAME,
+                                                    text: initialfantasy.bo.User.PROPERTY_NAME_NAME
+                                                },
+                                            }).bindProperty("bindingValue", {
+                                                path: "/stepOwner",
+                                                type: new sap.extension.data.Numeric()
+                                            }),
+                                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_stepstatus") }),
+                                            new sap.extension.m.EnumSelect("", {
+                                                editable: false,
+                                                enumType: ibas.emApprovalStepStatus,
+                                            }).bindProperty("bindingValue", {
+                                                path: "/stepStatus",
+                                                type: new sap.extension.data.ApprovalStepStatus()
+                                            }),
+                                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_startedtime") }),
+                                            new sap.extension.m.DatePicker("", {
+                                                editable: false,
+                                            }).bindProperty("bindingValue", {
+                                                path: "/startedTime",
+                                                type: new sap.extension.data.Date()
+                                            }),
+                                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_finishedtime") }),
+                                            new sap.extension.m.DatePicker("", {
+                                                editable: false,
+                                            }).bindProperty("bindingValue", {
+                                                path: "/finishedTime",
+                                                type: new sap.extension.data.Date()
+                                            }),
+                                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequeststep_judgment") }),
+                                            new sap.extension.m.TextArea("", {
+                                                editable: {
+                                                    path: "/stepStatus",
+                                                    formatter(data: any): boolean {
+                                                        return data === ibas.emApprovalStepStatus.PROCESSING ? true : false;
+                                                    }
+                                                },
+                                                rows: 3,
+                                            }).bindProperty("bindingValue", {
+                                                path: "/judgment",
+                                                type: new sap.extension.data.Alphanumeric()
+                                            }),
+                                            new sap.m.Label("", {}),
+                                            new sap.m.VBox("", {
+                                                fitContainer: true,
+                                                items: [
+                                                    new sap.m.Toolbar("", {
+                                                        style: sap.m.ToolbarStyle.Clear,
+                                                        content: [
+                                                            new sap.m.Button("", {
+                                                                enabled: {
+                                                                    path: "/stepStatus",
+                                                                    formatter(data: any): boolean {
+                                                                        return data === ibas.emApprovalStepStatus.PROCESSING
+                                                                            || data === ibas.emApprovalStepStatus.APPROVED ? true : false;
+                                                                    }
+                                                                },
+                                                                width: "5rem",
+                                                                type: sap.m.ButtonType.Accept,
+                                                                text: {
+                                                                    path: "/stepStatus",
+                                                                    formatter(data: any): string {
+                                                                        if (data === ibas.emApprovalStepStatus.APPROVED) {
+                                                                            return ibas.i18n.prop("approvalprocess_reset");
+                                                                        }
+                                                                        return ibas.i18n.prop("approvalprocess_approve");
+                                                                    }
+                                                                },
+                                                                press(this: sap.m.Button): void {
+                                                                    let data: any = (<any>this.getModel()).getData();
+                                                                    if (data instanceof bo.ApprovalRequestStep) {
+                                                                        if (data.stepStatus === ibas.emApprovalStepStatus.APPROVED) {
+                                                                            that.fireViewEvents(that.approvalEvent, data, ibas.emApprovalResult.PROCESSING);
+                                                                        } else {
+                                                                            that.fireViewEvents(that.approvalEvent, data, ibas.emApprovalResult.APPROVED);
+                                                                        }
+                                                                    }
+                                                                },
+                                                            }),
+                                                            new sap.m.Button("", {
+                                                                enabled: {
+                                                                    path: "/stepStatus",
+                                                                    formatter(data: any): boolean {
+                                                                        return data === ibas.emApprovalStepStatus.PROCESSING
+                                                                            || data === ibas.emApprovalStepStatus.REJECTED ? true : false;
+                                                                    }
+                                                                },
+                                                                width: "5rem",
+                                                                type: sap.m.ButtonType.Reject,
+                                                                text: {
+                                                                    path: "/stepStatus",
+                                                                    formatter(data: any): string {
+                                                                        if (data === ibas.emApprovalStepStatus.REJECTED) {
+                                                                            return ibas.i18n.prop("approvalprocess_reset");
+                                                                        }
+                                                                        return ibas.i18n.prop("approvalprocess_reject");
+                                                                    }
+                                                                },
+                                                                press(this: sap.m.Button): void {
+                                                                    let data: any = (<any>this.getModel()).getData();
+                                                                    if (data instanceof bo.ApprovalRequestStep) {
+                                                                        if (data.stepStatus === ibas.emApprovalStepStatus.REJECTED) {
+                                                                            that.fireViewEvents(that.approvalEvent, data, ibas.emApprovalResult.PROCESSING);
+                                                                        } else {
+                                                                            that.fireViewEvents(that.approvalEvent, data, ibas.emApprovalResult.REJECTED);
+                                                                        }
+                                                                    }
+                                                                },
+                                                            }),
+                                                        ]
+                                                    }),
+                                                    new sap.m.Toolbar("", {
+                                                        style: sap.m.ToolbarStyle.Clear,
+                                                        content: [
+                                                            new sap.m.Button("", {
+                                                                width: "10.5rem",
+                                                                enabled: {
+                                                                    path: "/stepStatus",
+                                                                    formatter(data: any): boolean {
+                                                                        return data === ibas.emApprovalStepStatus.PROCESSING ? true : false;
+                                                                    }
+                                                                },
+                                                                type: sap.m.ButtonType.Attention,
+                                                                text: ibas.i18n.prop("approvalprocess_return"),
+                                                                press: function (): void {
+                                                                    that.fireViewEvents(that.approvalEvent,
+                                                                        (<any>this.getModel()).getData(), ibas.emApprovalResult.RETURNED
+                                                                    );
+                                                                },
+                                                            }),
+                                                        ]
+                                                    })
+                                                ]
+                                            }),
+                                        ]
+                                    })
+                                ]
+                            }).setModel(new sap.extension.model.JSONModel(data)));
+                        }
                         if (data.stepStatus === ibas.emApprovalStepStatus.PROCESSING && ibas.strings.isEmpty(this.stepBar.getSelectedKey())) {
                             this.stepBar.setSelectedKey(String(data.lineId));
                         }

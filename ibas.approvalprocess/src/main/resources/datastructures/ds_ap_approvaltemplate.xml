@@ -41,10 +41,29 @@
     <Property Name="UpdateUserSign" Description="修改用户" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="Updator"/>
     <Property Name="Remarks" Description="备注" DataType="Memo" DataSubType="Default" EditSize="8" Mapped="Remarks"/>
     <Property Name="StepName" Description="步骤名称" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="StepName"/>
-    <Property Name="StepOwnerType" Description="步骤所有者类型" DataType="Alphanumeric" DataSubType="Default" EditSize="5" DeclaredType="emApprovalStepOwnerType" Mapped="StepOwnerType"/>
-    <Property Name="StepOwner" Description="步骤所有者" DataType="Numeric" DataSubType="Default" EditSize="30" Mapped="StepOwner"/>
     <Property Name="StepOrder" Description="步骤执行顺序" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="StepOrder"/>
     <Property Name="StepCanModify" Description="步骤所有者可修改" DataType="Alphanumeric" DataSubType="Default" EditSize="1" DeclaredType="emYesNo" Mapped="StepModify"/>
+    <Property Name="ApproversRequired" Description="所需批准者" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="AprversReq"/>
+  </Model>
+  <Model Name="ApprovalTemplateStepOwner" Description="审批模板步骤所有者" ModelType="SimpleLine" Mapped="${Company}_AP_APT11">
+    <Property Name="ObjectKey" Description="编号" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="ObjectKey" PrimaryKey="Yes"/>
+    <Property Name="ObjectCode" Description="类型" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="Object"/>
+    <Property Name="LineId" Description="行号" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="LineId" PrimaryKey="Yes"/>
+    <Property Name="VisOrder" Description="显示顺序" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="VisOrder"/>
+    <Property Name="StepLineId" Description="步骤行号" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="StepLineId"/>
+    <Property Name="LogInst" Description="实例号（版本）" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="LogInst"/>
+    <Property Name="DataSource" Description="数据源" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="DataSource"/>
+    <Property Name="CreateDate" Description="创建日期" DataType="Date" DataSubType="Default" EditSize="8" Mapped="CreateDate"/>
+    <Property Name="CreateTime" Description="创建时间" DataType="Date" DataSubType="Time" EditSize="8" Mapped="CreateTime"/>
+    <Property Name="UpdateDate" Description="修改日期" DataType="Date" DataSubType="Default" EditSize="8" Mapped="UpdateDate"/>
+    <Property Name="UpdateTime" Description="修改时间" DataType="Date" DataSubType="Time" EditSize="8" Mapped="UpdateTime"/>
+    <Property Name="CreateActionId" Description="创建动作标识" DataType="Alphanumeric" DataSubType="Default" EditSize="36" Mapped="CreateActId"/>
+    <Property Name="UpdateActionId" Description="更新动作标识" DataType="Alphanumeric" DataSubType="Default" EditSize="36" Mapped="UpdateActId"/>
+    <Property Name="CreateUserSign" Description="创建用户" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="Creator"/>
+    <Property Name="UpdateUserSign" Description="修改用户" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="Updator"/>
+    <Property Name="Remarks" Description="备注" DataType="Memo" DataSubType="Default" EditSize="8" Mapped="Remarks"/>
+    <Property Name="StepOwnerType" Description="步骤所有者类型" DataType="Alphanumeric" DataSubType="Default" EditSize="5" DeclaredType="emApprovalStepOwnerType" Mapped="StepOwnerType"/>
+    <Property Name="StepOwner" Description="步骤所有者" DataType="Numeric" DataSubType="Default" EditSize="30" Mapped="StepOwner"/>
   </Model>
   <Model Name="ApprovalTemplateStepCondition" Description="审批模板步骤条件" ModelType="SimpleLine" Mapped="${Company}_AP_APT2">
     <Property Name="ObjectKey" Description="编号" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="ObjectKey" PrimaryKey="Yes"/>
@@ -73,6 +92,7 @@
   </Model>
   <BusinessObject MappedModel="ApprovalTemplate" ShortName="${Company}_AP_APPROVALTPLT">
     <RelatedBO Relation="OneToMany" MappedModel="ApprovalTemplateStep">
+      <RelatedBO Relation="OneToMany" MappedModel="ApprovalTemplateStepOwner"/>
       <RelatedBO Relation="OneToMany" MappedModel="ApprovalTemplateStepCondition"/>
     </RelatedBO>
   </BusinessObject>

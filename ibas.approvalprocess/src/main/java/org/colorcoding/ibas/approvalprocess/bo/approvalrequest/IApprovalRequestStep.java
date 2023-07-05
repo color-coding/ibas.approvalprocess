@@ -208,6 +208,20 @@ public interface IApprovalRequestStep extends IBOSimpleLine {
 	void setRemarks(String value);
 
 	/**
+	 * 获取-父项
+	 * 
+	 * @return 值
+	 */
+	Integer getParentId();
+
+	/**
+	 * 设置-父项
+	 * 
+	 * @param value 值
+	 */
+	void setParentId(Integer value);
+
+	/**
 	 * 获取-步骤名称
 	 * 
 	 * @return 值
@@ -333,4 +347,45 @@ public interface IApprovalRequestStep extends IBOSimpleLine {
 	 */
 	void setStepCanModify(emYesNo value);
 
+	/**
+	 * 获取-步骤所有者
+	 * 
+	 * @return 值
+	 */
+	String getStepOwners();
+
+	/**
+	 * 设置-步骤所有者
+	 * 
+	 * @param value 值
+	 */
+	void setStepOwners(String value);
+
+	/**
+	 * 获取-所需批准者
+	 * 
+	 * @return 值
+	 */
+	Integer getApproversRequired();
+
+	/**
+	 * 设置-所需批准者
+	 * 
+	 * @param value 值
+	 */
+	void setApproversRequired(Integer value);
+
+	/**
+	 * 获取-审批请求步骤明细项集合
+	 * 
+	 * @return 值
+	 */
+	IApprovalRequestSubSteps getApprovalRequestSubSteps();
+
+	/**
+	 * 设置-审批请求步骤明细项集合
+	 * 
+	 * @param value 值
+	 */
+	void setApprovalRequestSubSteps(IApprovalRequestSubSteps value);
 }

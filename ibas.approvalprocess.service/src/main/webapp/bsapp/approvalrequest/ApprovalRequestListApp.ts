@@ -53,6 +53,7 @@ namespace approvalprocess {
             protected fetchData(criteria: ibas.ICriteria, type?: string): void {
                 if (ibas.objects.isNull(criteria)) {
                     criteria = new ibas.Criteria();
+                    criteria.noChilds = true;
                 }
                 if (this.smart === true) {
                     let condition: ibas.ICondition = null;
@@ -79,8 +80,15 @@ namespace approvalprocess {
                         cCriteria.propertyPath = bo.ApprovalRequest.PROPERTY_APPROVALREQUESTSTEPS_NAME;
                         cCriteria.onlyHasChilds = true;
                         condition = cCriteria.conditions.create();
+                        condition.bracketOpen = 1;
                         condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPOWNER_NAME;
                         condition.value = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID);
+                        condition = cCriteria.conditions.create();
+                        condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPOWNERS_NAME;
+                        condition.value = ibas.strings.format("!{0},", ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID));
+                        condition.operation = ibas.emConditionOperation.CONTAIN;
+                        condition.relationship = ibas.emConditionRelationship.OR;
+                        condition.bracketClose = 1;
                         condition = cCriteria.conditions.create();
                         condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPSTATUS_NAME;
                         condition.value = ibas.emApprovalStepStatus.SKIPPED.toString();

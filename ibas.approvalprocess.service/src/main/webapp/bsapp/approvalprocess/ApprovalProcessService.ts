@@ -143,6 +143,18 @@ namespace approvalprocess {
              */
             protected approval(step: bo.ApprovalRequestStep, result: number): void {
                 let that: this = this;
+                if (step.approvalRequestSubSteps.length > 0) {
+                    let user: number = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID);
+                    let subStep: bo.ApprovalRequestStep = step.approvalRequestSubSteps.firstOrDefault(c =>
+                        c.stepOwner === user
+                        && c.stepStatus === ibas.emApprovalStepStatus.PROCESSING
+                    );
+                    if (ibas.objects.isNull(subStep)) {
+                        this.messages(ibas.emMessageType.ERROR, ibas.i18n.prop("approvalprocess_msg_not_found_approvalrequest"));
+                        return;
+                    }
+                    step = subStep;
+                }
                 let caller: ibas.IMessgesCaller = {
                     type: ibas.emMessageType.QUESTION,
                     title: ibas.i18n.prop(this.name),

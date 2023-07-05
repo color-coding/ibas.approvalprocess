@@ -7,6 +7,7 @@ import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.ApprovalTemplate
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplate;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplateStep;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplateStepCondition;
+import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplateStepOwner;
 import org.colorcoding.ibas.approvalprocess.data.emApprovalStepOwnerType;
 import org.colorcoding.ibas.approvalprocess.repository.BORepositoryApprovalProcess;
 import org.colorcoding.ibas.approvalprocess.repository.IBORepositoryApprovalProcessApp;
@@ -58,7 +59,9 @@ public class TestApprovalProcess extends TestCase {
 		IApprovalTemplateStep atStep01 = at.getApprovalTemplateSteps().create();
 		atStep01.setStepOrder(1);
 		atStep01.setStepName("manager审批");
-		atStep01.setStepOwner(apManager.getDocEntry());
+		IApprovalTemplateStepOwner atStep01owner = atStep01.getApprovalTemplateStepOwners().create();
+		atStep01owner.setStepOwnerType(emApprovalStepOwnerType.USER);
+		atStep01owner.setStepOwner(apManager.getDocEntry());
 		IApprovalTemplateStepCondition atStepCondition = atStep01.getApprovalTemplateStepConditions().create();
 		atStepCondition.setRelationship(emConditionRelationship.NONE);
 		atStepCondition.setPropertyName(User.PROPERTY_SUPER);// 注意此处应为数据库字段
@@ -72,8 +75,9 @@ public class TestApprovalProcess extends TestCase {
 		IApprovalTemplateStep atStep02 = at.getApprovalTemplateSteps().create();
 		atStep02.setStepOrder(2);
 		atStep02.setStepName("boss审批");
-		atStep02.setStepOwnerType(emApprovalStepOwnerType.USER);
-		atStep02.setStepOwner(apBoss.getDocEntry());
+		IApprovalTemplateStepOwner atStep02owner = atStep02.getApprovalTemplateStepOwners().create();
+		atStep02owner.setStepOwnerType(emApprovalStepOwnerType.USER);
+		atStep02owner.setStepOwner(apBoss.getDocEntry());
 		// 步骤2的审批条件与步骤1相同
 		atStepCondition = atStep02.getApprovalTemplateStepConditions().create();
 		atStepCondition.setRelationship(emConditionRelationship.NONE);

@@ -3,6 +3,7 @@ package org.colorcoding.ibas.approvalprocess.bo.approvalrequest;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.approvalprocess.MyConfiguration;
@@ -13,6 +14,8 @@ import org.colorcoding.ibas.bobas.data.emApprovalStepStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.bobas.rule.BusinessRuleException;
+import org.colorcoding.ibas.bobas.rule.ICheckRules;
 
 /**
  * 获取-审批请求步骤
@@ -20,7 +23,8 @@ import org.colorcoding.ibas.bobas.mapping.DbFieldType;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = ApprovalRequestStep.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
-public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep> implements IApprovalRequestStep {
+public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
+		implements IApprovalRequestStep, ICheckRules {
 
 	/**
 	 * 序列化版本标记
@@ -482,6 +486,37 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep> imp
 	}
 
 	/**
+	 * 属性名称-父项
+	 */
+	private static final String PROPERTY_PARENTID_NAME = "ParentId";
+
+	/**
+	 * 父项 属性
+	 */
+	@DbField(name = "ParentId", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<Integer> PROPERTY_PARENTID = registerProperty(PROPERTY_PARENTID_NAME,
+			Integer.class, MY_CLASS);
+
+	/**
+	 * 获取-父项
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_PARENTID_NAME)
+	public final Integer getParentId() {
+		return this.getProperty(PROPERTY_PARENTID);
+	}
+
+	/**
+	 * 设置-父项
+	 * 
+	 * @param value 值
+	 */
+	public final void setParentId(Integer value) {
+		this.setProperty(PROPERTY_PARENTID, value);
+	}
+
+	/**
 	 * 属性名称-步骤名称
 	 */
 	private static final String PROPERTY_STEPNAME_NAME = "StepName";
@@ -761,13 +796,117 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep> imp
 	}
 
 	/**
+	 * 属性名称-步骤所有者
+	 */
+	private static final String PROPERTY_STEPOWNERS_NAME = "StepOwners";
+
+	/**
+	 * 步骤所有者 属性
+	 */
+	@DbField(name = "StepOwners", type = DbFieldType.MEMO, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<String> PROPERTY_STEPOWNERS = registerProperty(PROPERTY_STEPOWNERS_NAME,
+			String.class, MY_CLASS);
+
+	/**
+	 * 获取-步骤所有者
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_STEPOWNERS_NAME)
+	public final String getStepOwners() {
+		return this.getProperty(PROPERTY_STEPOWNERS);
+	}
+
+	/**
+	 * 设置-步骤所有者
+	 * 
+	 * @param value 值
+	 */
+	public final void setStepOwners(String value) {
+		this.setProperty(PROPERTY_STEPOWNERS, value);
+	}
+
+	/**
+	 * 属性名称-所需批准者
+	 */
+	private static final String PROPERTY_APPROVERSREQUIRED_NAME = "ApproversRequired";
+
+	/**
+	 * 所需批准者 属性
+	 */
+	@DbField(name = "AprversReq", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<Integer> PROPERTY_APPROVERSREQUIRED = registerProperty(
+			PROPERTY_APPROVERSREQUIRED_NAME, Integer.class, MY_CLASS);
+
+	/**
+	 * 获取-所需批准者
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_APPROVERSREQUIRED_NAME)
+	public final Integer getApproversRequired() {
+		return this.getProperty(PROPERTY_APPROVERSREQUIRED);
+	}
+
+	/**
+	 * 设置-所需批准者
+	 * 
+	 * @param value 值
+	 */
+	public final void setApproversRequired(Integer value) {
+		this.setProperty(PROPERTY_APPROVERSREQUIRED, value);
+	}
+
+	/**
+	 * 属性名称-审批请求步骤
+	 */
+	private static final String PROPERTY_APPROVALREQUESTSUBSTEPS_NAME = "ApprovalRequestSubSteps";
+
+	/**
+	 * 审批请求步骤的集合属性
+	 * 
+	 */
+	public static final IPropertyInfo<IApprovalRequestSubSteps> PROPERTY_APPROVALREQUESTSUBSTEPS = registerProperty(
+			PROPERTY_APPROVALREQUESTSUBSTEPS_NAME, IApprovalRequestSubSteps.class, MY_CLASS);
+
+	/**
+	 * 获取-审批请求步骤集合
+	 * 
+	 * @return 值
+	 */
+	@XmlElementWrapper(name = PROPERTY_APPROVALREQUESTSUBSTEPS_NAME)
+	@XmlElement(name = ApprovalRequestStep.BUSINESS_OBJECT_NAME, type = ApprovalRequestStep.class)
+	public final IApprovalRequestSubSteps getApprovalRequestSubSteps() {
+		return this.getProperty(PROPERTY_APPROVALREQUESTSUBSTEPS);
+	}
+
+	/**
+	 * 设置-审批请求步骤集合
+	 * 
+	 * @param value 值
+	 */
+	public final void setApprovalRequestSubSteps(IApprovalRequestSubSteps value) {
+		this.setProperty(PROPERTY_APPROVALREQUESTSUBSTEPS, value);
+	}
+
+	/**
 	 * 初始化数据
 	 */
 	@Override
 	protected void initialize() {
 		super.initialize();// 基类初始化，不可去除
+		this.setApprovalRequestSubSteps(new ApprovalRequestSubSteps(this));
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
-
 	}
 
+	@Override
+	public void check() throws BusinessRuleException {
+		StringBuilder builder = new StringBuilder();
+		for (IApprovalRequestStep item : this.getApprovalRequestSubSteps()) {
+			builder.append("!");
+			builder.append(item.getStepOwner());
+			builder.append(",");
+		}
+		this.setStepOwners(builder.toString());
+	}
 }

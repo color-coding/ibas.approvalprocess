@@ -113,7 +113,7 @@ namespace approvalprocess {
                         editable: true,
                         content: [
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_approvalrequeststep") }),
-                            this.tableApprovalRequestStep = new sap.extension.table.DataTable("", {
+                            this.tableApprovalRequestStep = new sap.extension.table.DataTreeTable("", {
                                 enableSelectAll: false,
                                 visibleRowCount: sap.extension.table.visibleRowCount(8),
                                 dataInfo: {
@@ -140,7 +140,14 @@ namespace approvalprocess {
                                         })
                                     ]
                                 }),
-                                rows: "{/rows}",
+                                rows: {
+                                    path: "/rows",
+                                    parameters: {
+                                        arrayNames: [
+                                            "approvalRequestSubSteps"
+                                        ]
+                                    }
+                                },
                                 columns: [
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_approvalrequeststep_lineid"),
@@ -149,28 +156,6 @@ namespace approvalprocess {
                                             path: "lineId",
                                             type: new sap.extension.data.Numeric()
                                         }),
-                                    }),
-                                    new sap.extension.table.DataColumn("", {
-                                        label: ibas.i18n.prop("bo_approvalrequeststep_stepowner"),
-                                        template: new sap.extension.m.RepositoryInput("", {
-                                            showValueHelp: true,
-                                            repository: initialfantasy.bo.BORepositoryInitialFantasy,
-                                            dataInfo: {
-                                                type: initialfantasy.bo.User,
-                                                key: initialfantasy.bo.User.PROPERTY_DOCENTRY_NAME,
-                                                text: initialfantasy.bo.User.PROPERTY_NAME_NAME
-                                            },
-                                            valueHelpRequest: function (): void {
-                                                that.fireViewEvents(that.chooseApprovalRequestStepOwnerEvent,
-                                                    // 获取当前对象
-                                                    this.getBindingContext().getObject()
-                                                );
-                                            },
-                                        }).bindProperty("bindingValue", {
-                                            path: "stepOwner",
-                                            type: new sap.extension.data.Numeric()
-                                        }),
-                                        width: "14rem",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_approvalrequeststep_stepname"),
@@ -186,12 +171,40 @@ namespace approvalprocess {
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_approvalrequeststep_stepstatus"),
                                         template: new sap.extension.m.EnumSelect("", {
-                                            editable: false,
-                                            enumType: ibas.emApprovalStepStatus
+                                            enumType: ibas.emApprovalStepStatus,
                                         }).bindProperty("bindingValue", {
                                             path: "stepStatus",
-                                            type: new sap.extension.data.ApprovalStepStatus()
+                                            type: new sap.extension.data.ApprovalStepStatus(),
                                         }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_approvalrequeststep_stepowner"),
+                                        template: new sap.extension.m.RepositoryInput("", {
+                                            showValueHelp: true,
+                                            showValueLink: false,
+                                            repository: initialfantasy.bo.BORepositoryInitialFantasy,
+                                            dataInfo: {
+                                                type: initialfantasy.bo.User,
+                                                key: initialfantasy.bo.User.PROPERTY_DOCENTRY_NAME,
+                                                text: initialfantasy.bo.User.PROPERTY_NAME_NAME
+                                            },
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.chooseApprovalRequestStepOwnerEvent,
+                                                    // 获取当前对象
+                                                    this.getBindingContext().getObject()
+                                                );
+                                            },
+                                            editable: {
+                                                path: "approvalRequestSubSteps",
+                                                formatter(stepItems: bo.IApprovalRequestSteps): boolean {
+                                                    return stepItems?.length > 0 ? false : true;
+                                                }
+                                            }
+                                        }).bindProperty("bindingValue", {
+                                            path: "stepOwner",
+                                            type: new sap.extension.data.Numeric(),
+                                        }),
+                                        width: "100%",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_approvalrequeststep_judgment"),
@@ -200,7 +213,7 @@ namespace approvalprocess {
                                             path: "judgment",
                                             type: new sap.extension.data.Alphanumeric()
                                         }),
-                                        width: "24rem",
+                                        width: "16rem",
                                     }),
                                 ]
                             }),
@@ -277,7 +290,7 @@ namespace approvalprocess {
                     });
                 }
                 private page: sap.extension.m.Page;
-                private tableApprovalRequestStep: sap.extension.table.Table;
+                private tableApprovalRequestStep: sap.extension.table.DataTreeTable;
 
                 /** 显示数据 */
                 showApprovalRequest(data: bo.ApprovalRequest): void {

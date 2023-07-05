@@ -68,20 +68,6 @@ public class ApprovalTemplateSteps extends BusinessObjects<IApprovalTemplateStep
 	@Override
 	protected void afterAddItem(IApprovalTemplateStep item) {
 		super.afterAddItem(item);
-		int max = 0;
-		for (IApprovalTemplateStep element : this) {
-			if (item == element) {
-				continue;
-			}
-			if (element.getStepOrder() > max) {
-				max = element.getStepOrder();
-			}
-		}
-		// 步长为10的进位
-		item.setStepOrder(((max / 10) + 1) * 10);
-		if (item.getStepOrder() <= 0) {
-			item.setStepOrder(10);
-		}
 	}
 
 	@Override

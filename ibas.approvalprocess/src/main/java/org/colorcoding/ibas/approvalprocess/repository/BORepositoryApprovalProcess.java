@@ -3,12 +3,18 @@ package org.colorcoding.ibas.approvalprocess.repository;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequestStep;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequest;
+import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequestStep;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.ApprovalTemplate;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplate;
+import org.colorcoding.ibas.approvalprocess.data.DataConvert;
 import org.colorcoding.ibas.bobas.approval.IApprovalProcess;
 import org.colorcoding.ibas.bobas.approval.IApprovalProcessStep;
+import org.colorcoding.ibas.bobas.approval.IApprovalProcessStepMultiOwner;
+import org.colorcoding.ibas.bobas.approval.IApprovalProcessStepSingleOwner;
 import org.colorcoding.ibas.bobas.approval.initial.ApprovalProcess;
 import org.colorcoding.ibas.bobas.approval.initial.ApprovalProcessManager;
+import org.colorcoding.ibas.bobas.common.ConditionOperation;
+import org.colorcoding.ibas.bobas.common.ConditionRelationship;
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.IChildCriteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
@@ -144,15 +150,55 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 			childCriteria.setOnlyHasChilds(true);
 			childCriteria.setNoChilds(false);
 			childCriteria.setPropertyPath(ApprovalRequest.PROPERTY_APPROVALREQUESTSTEPS.getName());
-			// 此人的
-			condition = childCriteria.getConditions().create();
-			condition.setAlias(ApprovalRequestStep.PROPERTY_STEPOWNER.getName());
-			condition.setValue(user);
 			// 审批中的
 			condition = childCriteria.getConditions().create();
 			condition.setAlias(ApprovalRequestStep.PROPERTY_STEPSTATUS.getName());
 			condition.setValue(emApprovalStepStatus.PROCESSING);
-			return new OperationResult<ApprovalRequest>(this.fetchApprovalRequest(criteria));
+			// 此人的
+			condition = childCriteria.getConditions().create();
+			condition.setAlias(ApprovalRequestStep.PROPERTY_STEPOWNER.getName());
+			condition.setValue(user);
+			condition.setBracketOpen(1);
+			condition = childCriteria.getConditions().create();
+			condition.setAlias(ApprovalRequestStep.PROPERTY_STEPOWNERS.getName());
+			condition.setValue(String.format("!%s,", user));
+			condition.setOperation(ConditionOperation.CONTAIN);
+			condition.setRelationship(ConditionRelationship.OR);
+			condition.setBracketClose(1);
+			if (DataConvert.isNumeric(user)) {
+				IApprovalRequestStep step;
+				IApprovalRequestStep subStep;
+				Integer userId = Integer.parseInt(user);
+				OperationResult<ApprovalRequest> operationResult = new OperationResult<ApprovalRequest>();
+				for (ApprovalRequest apItem : this.fetchApprovalRequest(criteria, token).getResultObjects()) {
+					// 判断子步骤是否需要此用户审批
+					for (int j = apItem.getApprovalRequestSteps().size() - 1; j >= 0; j--) {
+						step = apItem.getApprovalRequestSteps().get(j);
+						if (userId.compareTo(step.getStepOwner()) != 0) {
+							for (int i = step.getApprovalRequestSubSteps().size() - 1; i >= 0; i--) {
+								subStep = step.getApprovalRequestSubSteps().get(i);
+								if (subStep.getStepStatus() != emApprovalStepStatus.PROCESSING) {
+									step.getApprovalRequestSubSteps().remove(i);
+								} else if (userId.compareTo(subStep.getStepOwner()) != 0) {
+									step.getApprovalRequestSubSteps().remove(i);
+								}
+							}
+							if (step.getApprovalRequestSubSteps().size() == 0) {
+								apItem.getApprovalRequestSteps().remove(j);
+							}
+						}
+					}
+					if (apItem.getApprovalRequestSteps().size() > 0) {
+						if (apItem.isDirty()) {
+							apItem.markOld();
+						}
+						operationResult.addResultObjects(apItem);
+					}
+				}
+				return operationResult;
+			} else {
+				return new OperationResult<ApprovalRequest>(this.fetchApprovalRequest(criteria));
+			}
 		} catch (Exception e) {
 			return new OperationResult<ApprovalRequest>(e);
 		}
@@ -187,17 +233,24 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 			ap.approval(apStepId, apResult, token, judgment);
 			if (ap.getStatus() == emApprovalStatus.PROCESSING && apResult == emApprovalResult.APPROVED) {
 				// 下个步骤，如果还是当前用户，则自动批准
-				IApprovalProcessStep preStep;
+				IApprovalProcessStep preStep = null;
 				IApprovalProcessStep step = ap.currentStep();
 				do {
-					if (step.getOwner() != this.getCurrentUser()) {
-						break;
-					}
-					try {
-						preStep = step;
-						ap.approval(step.getId(), apResult, token, judgment);
-						step = ap.currentStep();
-					} catch (Exception e) {
+					if (step instanceof IApprovalProcessStepSingleOwner) {
+						// 单用户审批步骤
+						IApprovalProcessStepSingleOwner sngSetp = (IApprovalProcessStepSingleOwner) step;
+						if (sngSetp.getOwner() != this.getCurrentUser()) {
+							break;
+						}
+						try {
+							preStep = step;
+							ap.approval(step.getId(), apResult, token, judgment);
+							step = ap.currentStep();
+						} catch (Exception e) {
+							break;
+						}
+					} else if (step instanceof IApprovalProcessStepMultiOwner) {
+						// 多用户审批步骤
 						break;
 					}
 				} while (preStep != step && step != null);

@@ -177,8 +177,8 @@ namespace approvalprocess {
             }
             /** 添加审批请求步骤事件 */
             private addApprovalRequestStep(): void {
-                this.editData.approvalRequestSteps.create();
-                // 仅显示没有标记删除的
+                let step: bo.ApprovalRequestStep = this.editData.approvalRequestSteps.create();
+                step.stepStatus = ibas.emApprovalStepStatus.PENDING;
                 this.view.showApprovalRequestSteps(this.editData.approvalRequestSteps.filterDeleted());
             }
             /** 删除审批请求步骤事件 */
@@ -210,14 +210,25 @@ namespace approvalprocess {
                 let that: this = this;
                 ibas.servicesManager.runChooseService<initialfantasy.bo.IUser>({
                     boCode: initialfantasy.bo.BO_CODE_USER,
-                    chooseType: ibas.emChooseType.SINGLE,
+                    chooseType: ibas.emChooseType.MULTIPLE,
                     criteria: [
                         new ibas.Condition("Activated", ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
                     ],
                     onCompleted(selecteds: ibas.IList<initialfantasy.bo.IUser>): void {
-                        let selected: initialfantasy.bo.IUser = selecteds.firstOrDefault();
-                        caller.stepOwner = selected.docEntry;
-                        caller.stepName = ibas.i18n.prop("approvalprocess_approvaltemplate_name", selected.name);
+                        for (let selected of selecteds) {
+                            caller.stepOwner = selected.docEntry;
+                            if (ibas.strings.isEmpty(caller.stepName) && !(caller.parentId > 0)) {
+                                caller.stepName = ibas.i18n.prop("approvalprocess_approvaltemplate_name", selected.name);
+                            }
+                        }
+                        if (caller.parentId > 0) {
+                            // 子项修改，触发父项更新界面
+                            for (let item of that.editData.approvalRequestSteps) {
+                                if (item.lineId === caller.parentId) {
+                                    item.logInst++;
+                                }
+                            }
+                        }
                     }
                 });
 

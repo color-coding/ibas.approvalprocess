@@ -80,6 +80,8 @@ namespace approvalprocess {
         /** 模块控制台，手机端 */
         export class ConsolePhone extends Console {
             protected registers(): void {
+                // 注册服务应用
+                this.register(new ApprovalProcessServiceMapping());
                 // 注册常驻应用
                 this.register(new ApprovalProcessApplicationMapping());
             }

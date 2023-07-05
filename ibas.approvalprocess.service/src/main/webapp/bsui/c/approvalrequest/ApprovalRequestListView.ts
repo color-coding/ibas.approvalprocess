@@ -32,7 +32,13 @@ namespace approvalprocess {
                         columns: [
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvalrequest_objectkey"),
-                                template: new sap.extension.m.Text("", {
+                                template: new sap.extension.m.Link("", {
+                                    press(this: sap.extension.m.Link): void {
+                                        let data: any = this.getBindingContext().getObject();
+                                        if (data instanceof bo.ApprovalRequest) {
+                                            that.fireViewEvents(that.viewDataEvent, data);
+                                        }
+                                    }
                                 }).bindProperty("bindingValue", {
                                     path: "objectKey",
                                     type: new sap.extension.data.Numeric()
@@ -57,7 +63,27 @@ namespace approvalprocess {
                             }),
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_approvalrequest_bokeys"),
-                                template: new sap.extension.m.Text("", {
+                                template: new sap.extension.m.Link("", {
+                                    press(this: sap.extension.m.Link): void {
+                                        let data: any = this.getBindingContext().getObject();
+                                        if (data instanceof bo.ApprovalRequest) {
+                                            let criteria: ibas.ICriteria = ibas.criterias.valueOf(data.boKeys);
+                                            if (!ibas.objects.isNull(criteria)) {
+                                                let done: boolean = ibas.servicesManager.runLinkService({
+                                                    boCode: criteria.businessObject,
+                                                    linkValue: criteria
+                                                });
+                                                if (!done) {
+                                                    that.application.viewShower.proceeding(
+                                                        that,
+                                                        ibas.emMessageType.WARNING,
+                                                        ibas.i18n.prop("approvalprocess_not_found_businessojbect_link_service",
+                                                            ibas.businessobjects.describe(criteria.businessObject))
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    }
                                 }).bindProperty("bindingValue", {
                                     path: "boKeys",
                                     formatter(data: any): any {

@@ -7,6 +7,7 @@ import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.repository.BORepositoryApprovalProcess;
 import org.colorcoding.ibas.approvalprocess.repository.IBORepositoryApprovalProcessApp;
 import org.colorcoding.ibas.bobas.approval.IApprovalData;
+import org.colorcoding.ibas.bobas.common.ConditionOperation;
 import org.colorcoding.ibas.bobas.common.ConditionRelationship;
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.IChildCriteria;
@@ -63,6 +64,13 @@ public class OwnershipJudger extends org.colorcoding.ibas.bobas.ownership.initia
 					condition = childCriteria.getConditions().create();
 					condition.setAlias(ApprovalRequestStep.PROPERTY_STEPOWNER.getName());
 					condition.setValue(user.getId());
+					condition.setBracketOpen(1);
+					condition = childCriteria.getConditions().create();
+					condition.setAlias(ApprovalRequestStep.PROPERTY_STEPOWNERS.getName());
+					condition.setValue(String.format("!%s,", user.getId()));
+					condition.setOperation(ConditionOperation.CONTAIN);
+					condition.setRelationship(ConditionRelationship.OR);
+					condition.setBracketClose(1);
 					if (MyConfiguration.getConfigValue(MyConfiguration.CONFIG_ITEM_DATA_APPROVED_READABLE, false)) {
 						// 审批中的
 						condition = childCriteria.getConditions().create();

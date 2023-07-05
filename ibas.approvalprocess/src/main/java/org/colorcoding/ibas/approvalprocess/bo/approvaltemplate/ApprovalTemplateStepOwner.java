@@ -3,39 +3,39 @@ package org.colorcoding.ibas.approvalprocess.bo.approvaltemplate;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.approvalprocess.MyConfiguration;
+import org.colorcoding.ibas.approvalprocess.data.emApprovalStepOwnerType;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
-import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 
 /**
- * 获取-审批模板步骤
+ * 审批模板步骤所有者
  * 
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = ApprovalTemplateStep.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
-public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> implements IApprovalTemplateStep {
+@XmlType(name = ApprovalTemplateStepOwner.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
+public class ApprovalTemplateStepOwner extends BusinessObject<ApprovalTemplateStepOwner>
+		implements IApprovalTemplateStepOwner {
 
 	/**
 	 * 序列化版本标记
 	 */
-	private static final long serialVersionUID = 3797527595674395703L;
+	private static final long serialVersionUID = -5942866146228945142L;
 
 	/**
 	 * 当前类型
 	 */
-	private static final Class<?> MY_CLASS = ApprovalTemplateStep.class;
+	private static final Class<?> MY_CLASS = ApprovalTemplateStepOwner.class;
 
 	/**
 	 * 数据库表
 	 */
-	public static final String DB_TABLE_NAME = "${Company}_AP_APT1";
+	public static final String DB_TABLE_NAME = "${Company}_AP_APT11";
 
 	/**
 	 * 业务对象编码
@@ -45,7 +45,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 业务对象名称
 	 */
-	public static final String BUSINESS_OBJECT_NAME = "ApprovalTemplateStep";
+	public static final String BUSINESS_OBJECT_NAME = "ApprovalTemplateStepOwner";
 
 	/**
 	 * 属性名称-编号
@@ -86,7 +86,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 类型 属性
 	 */
-	@DbField(name = "Object", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "Object", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_OBJECTCODE = registerProperty(PROPERTY_OBJECTCODE_NAME,
 			String.class, MY_CLASS);
 
@@ -141,6 +141,68 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	}
 
 	/**
+	 * 属性名称-显示顺序
+	 */
+	private static final String PROPERTY_VISORDER_NAME = "VisOrder";
+
+	/**
+	 * 显示顺序 属性
+	 */
+	@DbField(name = "VisOrder", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<Integer> PROPERTY_VISORDER = registerProperty(PROPERTY_VISORDER_NAME,
+			Integer.class, MY_CLASS);
+
+	/**
+	 * 获取-显示顺序
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_VISORDER_NAME)
+	public final Integer getVisOrder() {
+		return this.getProperty(PROPERTY_VISORDER);
+	}
+
+	/**
+	 * 设置-显示顺序
+	 * 
+	 * @param value 值
+	 */
+	public final void setVisOrder(Integer value) {
+		this.setProperty(PROPERTY_VISORDER, value);
+	}
+
+	/**
+	 * 属性名称-步骤行号
+	 */
+	private static final String PROPERTY_STEPLINEID_NAME = "StepLineId";
+
+	/**
+	 * 步骤行号 属性
+	 */
+	@DbField(name = "StepLineId", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<Integer> PROPERTY_STEPLINEID = registerProperty(PROPERTY_STEPLINEID_NAME,
+			Integer.class, MY_CLASS);
+
+	/**
+	 * 获取-步骤行号
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_STEPLINEID_NAME)
+	public final Integer getStepLineId() {
+		return this.getProperty(PROPERTY_STEPLINEID);
+	}
+
+	/**
+	 * 设置-步骤行号
+	 * 
+	 * @param value 值
+	 */
+	public final void setStepLineId(Integer value) {
+		this.setProperty(PROPERTY_STEPLINEID, value);
+	}
+
+	/**
 	 * 属性名称-实例号（版本）
 	 */
 	private static final String PROPERTY_LOGINST_NAME = "LogInst";
@@ -148,7 +210,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 实例号（版本） 属性
 	 */
-	@DbField(name = "LogInst", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "LogInst", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_LOGINST = registerProperty(PROPERTY_LOGINST_NAME, Integer.class,
 			MY_CLASS);
 
@@ -179,7 +241,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 数据源 属性
 	 */
-	@DbField(name = "DataSource", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "DataSource", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_DATASOURCE = registerProperty(PROPERTY_DATASOURCE_NAME,
 			String.class, MY_CLASS);
 
@@ -210,7 +272,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 创建日期 属性
 	 */
-	@DbField(name = "CreateDate", type = DbFieldType.DATE, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "CreateDate", type = DbFieldType.DATE, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<DateTime> PROPERTY_CREATEDATE = registerProperty(PROPERTY_CREATEDATE_NAME,
 			DateTime.class, MY_CLASS);
 
@@ -241,7 +303,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 创建时间 属性
 	 */
-	@DbField(name = "CreateTime", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "CreateTime", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Short> PROPERTY_CREATETIME = registerProperty(PROPERTY_CREATETIME_NAME,
 			Short.class, MY_CLASS);
 
@@ -272,7 +334,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 修改日期 属性
 	 */
-	@DbField(name = "UpdateDate", type = DbFieldType.DATE, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "UpdateDate", type = DbFieldType.DATE, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<DateTime> PROPERTY_UPDATEDATE = registerProperty(PROPERTY_UPDATEDATE_NAME,
 			DateTime.class, MY_CLASS);
 
@@ -303,7 +365,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 修改时间 属性
 	 */
-	@DbField(name = "UpdateTime", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "UpdateTime", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Short> PROPERTY_UPDATETIME = registerProperty(PROPERTY_UPDATETIME_NAME,
 			Short.class, MY_CLASS);
 
@@ -334,7 +396,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 创建动作标识 属性
 	 */
-	@DbField(name = "CreateActId", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "CreateActId", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_CREATEACTIONID = registerProperty(PROPERTY_CREATEACTIONID_NAME,
 			String.class, MY_CLASS);
 
@@ -365,7 +427,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 更新动作标识 属性
 	 */
-	@DbField(name = "UpdateActId", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "UpdateActId", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_UPDATEACTIONID = registerProperty(PROPERTY_UPDATEACTIONID_NAME,
 			String.class, MY_CLASS);
 
@@ -396,7 +458,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 创建用户 属性
 	 */
-	@DbField(name = "Creator", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "Creator", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_CREATEUSERSIGN = registerProperty(PROPERTY_CREATEUSERSIGN_NAME,
 			Integer.class, MY_CLASS);
 
@@ -427,7 +489,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 修改用户 属性
 	 */
-	@DbField(name = "Updator", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "Updator", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_UPDATEUSERSIGN = registerProperty(PROPERTY_UPDATEUSERSIGN_NAME,
 			Integer.class, MY_CLASS);
 
@@ -458,7 +520,7 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	/**
 	 * 备注 属性
 	 */
-	@DbField(name = "Remarks", type = DbFieldType.MEMO, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "Remarks", type = DbFieldType.MEMO, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_REMARKS = registerProperty(PROPERTY_REMARKS_NAME, String.class,
 			MY_CLASS);
 
@@ -482,191 +544,65 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	}
 
 	/**
-	 * 属性名称-步骤名称
+	 * 属性名称-步骤所有者类型
 	 */
-	private static final String PROPERTY_STEPNAME_NAME = "StepName";
+	private static final String PROPERTY_STEPOWNERTYPE_NAME = "StepOwnerType";
 
 	/**
-	 * 步骤名称 属性
+	 * 步骤所有者类型 属性
 	 */
-	@DbField(name = "StepName", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_STEPNAME = registerProperty(PROPERTY_STEPNAME_NAME, String.class,
-			MY_CLASS);
+	@DbField(name = "StepOwnerType", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<emApprovalStepOwnerType> PROPERTY_STEPOWNERTYPE = registerProperty(
+			PROPERTY_STEPOWNERTYPE_NAME, emApprovalStepOwnerType.class, MY_CLASS);
 
 	/**
-	 * 获取-步骤名称
+	 * 获取-步骤所有者类型
 	 * 
 	 * @return 值
 	 */
-	@XmlElement(name = PROPERTY_STEPNAME_NAME)
-	public final String getStepName() {
-		return this.getProperty(PROPERTY_STEPNAME);
+	@XmlElement(name = PROPERTY_STEPOWNERTYPE_NAME)
+	public final emApprovalStepOwnerType getStepOwnerType() {
+		return this.getProperty(PROPERTY_STEPOWNERTYPE);
 	}
 
 	/**
-	 * 设置-步骤名称
+	 * 设置-步骤所有者类型
 	 * 
 	 * @param value 值
 	 */
-	public final void setStepName(String value) {
-		this.setProperty(PROPERTY_STEPNAME, value);
+	public final void setStepOwnerType(emApprovalStepOwnerType value) {
+		this.setProperty(PROPERTY_STEPOWNERTYPE, value);
 	}
 
 	/**
-	 * 属性名称-步骤执行顺序
+	 * 属性名称-步骤所有者
 	 */
-	private static final String PROPERTY_STEPORDER_NAME = "StepOrder";
+	private static final String PROPERTY_STEPOWNER_NAME = "StepOwner";
 
 	/**
-	 * 步骤执行顺序 属性
+	 * 步骤所有者 属性
 	 */
-	@DbField(name = "StepOrder", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Integer> PROPERTY_STEPORDER = registerProperty(PROPERTY_STEPORDER_NAME,
+	@DbField(name = "StepOwner", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<Integer> PROPERTY_STEPOWNER = registerProperty(PROPERTY_STEPOWNER_NAME,
 			Integer.class, MY_CLASS);
 
 	/**
-	 * 获取-步骤执行顺序
+	 * 获取-步骤所有者
 	 * 
 	 * @return 值
 	 */
-	@XmlElement(name = PROPERTY_STEPORDER_NAME)
-	public final Integer getStepOrder() {
-		return this.getProperty(PROPERTY_STEPORDER);
+	@XmlElement(name = PROPERTY_STEPOWNER_NAME)
+	public final Integer getStepOwner() {
+		return this.getProperty(PROPERTY_STEPOWNER);
 	}
 
 	/**
-	 * 设置-步骤执行顺序
+	 * 设置-步骤所有者
 	 * 
 	 * @param value 值
 	 */
-	public final void setStepOrder(Integer value) {
-		this.setProperty(PROPERTY_STEPORDER, value);
-	}
-
-	/**
-	 * 属性名称-步骤所有者可修改
-	 */
-	private static final String PROPERTY_STEPCANMODIFY_NAME = "StepCanModify";
-
-	/**
-	 * 步骤所有者可修改 属性
-	 */
-	@DbField(name = "StepModify", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<emYesNo> PROPERTY_STEPCANMODIFY = registerProperty(PROPERTY_STEPCANMODIFY_NAME,
-			emYesNo.class, MY_CLASS);
-
-	/**
-	 * 获取-步骤所有者可修改
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_STEPCANMODIFY_NAME)
-	public final emYesNo getStepCanModify() {
-		return this.getProperty(PROPERTY_STEPCANMODIFY);
-	}
-
-	/**
-	 * 设置-步骤所有者可修改
-	 * 
-	 * @param value 值
-	 */
-	public final void setStepCanModify(emYesNo value) {
-		this.setProperty(PROPERTY_STEPCANMODIFY, value);
-	}
-
-	/**
-	 * 属性名称-所需批准者
-	 */
-	private static final String PROPERTY_APPROVERSREQUIRED_NAME = "ApproversRequired";
-
-	/**
-	 * 所需批准者 属性
-	 */
-	@DbField(name = "AprversReq", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
-	public static final IPropertyInfo<Integer> PROPERTY_APPROVERSREQUIRED = registerProperty(
-			PROPERTY_APPROVERSREQUIRED_NAME, Integer.class, MY_CLASS);
-
-	/**
-	 * 获取-所需批准者
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_APPROVERSREQUIRED_NAME)
-	public final Integer getApproversRequired() {
-		return this.getProperty(PROPERTY_APPROVERSREQUIRED);
-	}
-
-	/**
-	 * 设置-所需批准者
-	 * 
-	 * @param value 值
-	 */
-	public final void setApproversRequired(Integer value) {
-		this.setProperty(PROPERTY_APPROVERSREQUIRED, value);
-	}
-
-	/**
-	 * 属性名称-审批模板步骤所有者
-	 */
-	private static final String PROPERTY_APPROVALTEMPLATESTEPOWNERS_NAME = "ApprovalTemplateStepOwners";
-
-	/**
-	 * 审批模板步骤所有者的集合属性
-	 * 
-	 */
-	public static final IPropertyInfo<IApprovalTemplateStepOwners> PROPERTY_APPROVALTEMPLATESTEPOWNERS = registerProperty(
-			PROPERTY_APPROVALTEMPLATESTEPOWNERS_NAME, IApprovalTemplateStepOwners.class, MY_CLASS);
-
-	/**
-	 * 获取-审批模板步骤所有者集合
-	 * 
-	 * @return 值
-	 */
-	@XmlElementWrapper(name = PROPERTY_APPROVALTEMPLATESTEPOWNERS_NAME)
-	@XmlElement(name = ApprovalTemplateStepOwner.BUSINESS_OBJECT_NAME, type = ApprovalTemplateStepOwner.class)
-	public final IApprovalTemplateStepOwners getApprovalTemplateStepOwners() {
-		return this.getProperty(PROPERTY_APPROVALTEMPLATESTEPOWNERS);
-	}
-
-	/**
-	 * 设置-审批模板步骤所有者集合
-	 * 
-	 * @param value 值
-	 */
-	public final void setApprovalTemplateStepOwners(IApprovalTemplateStepOwners value) {
-		this.setProperty(PROPERTY_APPROVALTEMPLATESTEPOWNERS, value);
-	}
-
-	/**
-	 * 属性名称-审批模板步骤条件
-	 */
-	private static final String PROPERTY_APPROVALTEMPLATESTEPCONDITIONS_NAME = "ApprovalTemplateStepConditions";
-
-	/**
-	 * 审批模板步骤条件的集合属性
-	 * 
-	 */
-	public static final IPropertyInfo<IApprovalTemplateStepConditions> PROPERTY_APPROVALTEMPLATESTEPCONDITIONS = registerProperty(
-			PROPERTY_APPROVALTEMPLATESTEPCONDITIONS_NAME, IApprovalTemplateStepConditions.class, MY_CLASS);
-
-	/**
-	 * 获取-审批模板步骤条件集合
-	 * 
-	 * @return 值
-	 */
-	@XmlElementWrapper(name = PROPERTY_APPROVALTEMPLATESTEPCONDITIONS_NAME)
-	@XmlElement(name = ApprovalTemplateStepCondition.BUSINESS_OBJECT_NAME, type = ApprovalTemplateStepCondition.class)
-	public final IApprovalTemplateStepConditions getApprovalTemplateStepConditions() {
-		return this.getProperty(PROPERTY_APPROVALTEMPLATESTEPCONDITIONS);
-	}
-
-	/**
-	 * 设置-审批模板步骤条件集合
-	 * 
-	 * @param value 值
-	 */
-	public final void setApprovalTemplateStepConditions(IApprovalTemplateStepConditions value) {
-		this.setProperty(PROPERTY_APPROVALTEMPLATESTEPCONDITIONS, value);
+	public final void setStepOwner(Integer value) {
+		this.setProperty(PROPERTY_STEPOWNER, value);
 	}
 
 	/**
@@ -675,8 +611,6 @@ public class ApprovalTemplateStep extends BusinessObject<ApprovalTemplateStep> i
 	@Override
 	protected void initialize() {
 		super.initialize();// 基类初始化，不可去除
-		this.setApprovalTemplateStepOwners(new ApprovalTemplateStepOwners(this));
-		this.setApprovalTemplateStepConditions(new ApprovalTemplateStepConditions(this));
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
 
 	}

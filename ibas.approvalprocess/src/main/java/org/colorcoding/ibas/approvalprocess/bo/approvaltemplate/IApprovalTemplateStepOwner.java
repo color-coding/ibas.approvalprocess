@@ -1,14 +1,14 @@
 package org.colorcoding.ibas.approvalprocess.bo.approvaltemplate;
 
+import org.colorcoding.ibas.approvalprocess.data.emApprovalStepOwnerType;
 import org.colorcoding.ibas.bobas.bo.IBOSimpleLine;
 import org.colorcoding.ibas.bobas.data.DateTime;
-import org.colorcoding.ibas.bobas.data.emYesNo;
 
 /**
- * 审批模板步骤 接口
+ * 审批模板步骤所有者 接口
  * 
  */
-public interface IApprovalTemplateStep extends IBOSimpleLine {
+public interface IApprovalTemplateStepOwner extends IBOSimpleLine {
 
 	/**
 	 * 获取-编号
@@ -51,6 +51,34 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	 * @param value 值
 	 */
 	void setLineId(Integer value);
+
+	/**
+	 * 获取-显示顺序
+	 * 
+	 * @return 值
+	 */
+	Integer getVisOrder();
+
+	/**
+	 * 设置-显示顺序
+	 * 
+	 * @param value 值
+	 */
+	void setVisOrder(Integer value);
+
+	/**
+	 * 获取-步骤行号
+	 * 
+	 * @return 值
+	 */
+	Integer getStepLineId();
+
+	/**
+	 * 设置-步骤行号
+	 * 
+	 * @param value 值
+	 */
+	void setStepLineId(Integer value);
 
 	/**
 	 * 获取-实例号（版本）
@@ -207,87 +235,31 @@ public interface IApprovalTemplateStep extends IBOSimpleLine {
 	void setRemarks(String value);
 
 	/**
-	 * 获取-步骤名称
+	 * 获取-步骤所有者类型
 	 * 
 	 * @return 值
 	 */
-	String getStepName();
+	emApprovalStepOwnerType getStepOwnerType();
 
 	/**
-	 * 设置-步骤名称
+	 * 设置-步骤所有者类型
 	 * 
 	 * @param value 值
 	 */
-	void setStepName(String value);
+	void setStepOwnerType(emApprovalStepOwnerType value);
 
 	/**
-	 * 获取-步骤执行顺序
+	 * 获取-步骤所有者
 	 * 
 	 * @return 值
 	 */
-	Integer getStepOrder();
+	Integer getStepOwner();
 
 	/**
-	 * 设置-步骤执行顺序
+	 * 设置-步骤所有者
 	 * 
 	 * @param value 值
 	 */
-	void setStepOrder(Integer value);
-
-	/**
-	 * 获取-步骤所有者可修改
-	 * 
-	 * @return 值
-	 */
-	emYesNo getStepCanModify();
-
-	/**
-	 * 设置-步骤所有者可修改
-	 * 
-	 * @param value 值
-	 */
-	void setStepCanModify(emYesNo value);
-
-	/**
-	 * 获取-所需批准者
-	 * 
-	 * @return 值
-	 */
-	Integer getApproversRequired();
-
-	/**
-	 * 设置-所需批准者
-	 * 
-	 * @param value 值
-	 */
-	void setApproversRequired(Integer value);
-
-	/**
-	 * 获取-审批模板步骤所有者集合
-	 * 
-	 * @return 值
-	 */
-	IApprovalTemplateStepOwners getApprovalTemplateStepOwners();
-
-	/**
-	 * 设置-审批模板步骤所有者集合
-	 * 
-	 * @param value 值
-	 */
-	void setApprovalTemplateStepOwners(IApprovalTemplateStepOwners value);
-
-	/**
-	 * 获取-审批模板步骤条件集合
-	 * 
-	 * @return 值
-	 */
-	IApprovalTemplateStepConditions getApprovalTemplateStepConditions();
-
-	/**
-	 * 设置-审批模板步骤条件集合
-	 * 
-	 * @param value 值
-	 */
-	void setApprovalTemplateStepConditions(IApprovalTemplateStepConditions value);
+	void setStepOwner(Integer value);
 
 }

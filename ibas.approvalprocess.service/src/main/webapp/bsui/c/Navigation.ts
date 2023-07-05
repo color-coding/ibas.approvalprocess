@@ -40,6 +40,9 @@ namespace approvalprocess {
                     case app.ApprovalTemplateEditApp.APPLICATION_ID:
                         view = new c.ApprovalTemplateEditView();
                         break;
+                    case app.ApprovalTemplateStepOwnerEditApp.APPLICATION_ID:
+                        view = new c.ApprovalTemplateStepOwnerEditView();
+                        break;
                     case app.ApprovalProcessApp.APPLICATION_ID:
                         view = new c.ApprovalProcessView();
                         break;
