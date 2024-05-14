@@ -48,7 +48,7 @@ namespace approvalprocess {
                 boRepository.converter = this.createConverter();
                 let method: string =
                     ibas.strings.format("fetchUserApprovalRequest?user={0}&token={1}",
-                        fetcher.user, this.token);
+                        fetcher.user, ibas.tokens.content(this.token));
                 boRepository.callRemoteMethod(method, undefined, (opRslt) => {
                     fetcher.onCompleted.call(ibas.objects.isNull(fetcher.caller) ? fetcher : fetcher.caller, opRslt);
                 });
@@ -115,7 +115,7 @@ namespace approvalprocess {
                 builder.append("&");
                 builder.append("token");
                 builder.append("=");
-                builder.append(this.token);
+                builder.append(ibas.tokens.content(this.token));
                 boRepository.callRemoteMethod(builder.toString(), undefined, (opRslt) => {
                     caller.onCompleted.call(ibas.objects.isNull(caller.caller) ? caller : caller.caller, opRslt);
                 });

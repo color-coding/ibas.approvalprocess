@@ -41,17 +41,19 @@ namespace approvalprocess {
                 // 自动刷新审批消息
                 let that: this = this;
                 let time: number = ibas.config.get(CONFIG_ITEM_APPROVALPROCESS_REFRESH_INTERVAL, 180);
-                setInterval(function (): void {
-                    if (that.isViewShowed() || !that.refresh) {
-                        // 界面显示时，不刷新
-                        return;
-                    }
-                    if (!!window.document.hidden) {
-                        // 窗口为激活，不刷新
-                        return;
-                    }
-                    that.fetchApprovalRequest();
-                }, time * 1000);
+                if (time > 0) {
+                    setInterval(function (): void {
+                        if (that.isViewShowed() || !that.refresh) {
+                            // 界面显示时，不刷新
+                            return;
+                        }
+                        if (!!window.document.hidden) {
+                            // 窗口为激活，不刷新
+                            return;
+                        }
+                        that.fetchApprovalRequest();
+                    }, time * 1000);
+                }
             }
             /** 视图显示后 */
             protected viewShowed(): void {
