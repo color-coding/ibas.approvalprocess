@@ -20,6 +20,8 @@ namespace approvalprocess {
                 editDataEvent: Function;
                 /** 删除数据事件，参数：删除对象集合 */
                 deleteDataEvent: Function;
+                // 审批操作，参数1，审批请求；参数2，操作
+                approvalEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;

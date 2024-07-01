@@ -78,7 +78,11 @@ namespace approvalprocess {
                                                 }
                                             }
                                         }
-                                    }
+                                    },
+                                    visible: shell.app.privileges.canRun({
+                                        id: app.ELEMENT_APPROVAL_REQUEST_DATA_VIEW.id,
+                                        name: app.ELEMENT_APPROVAL_REQUEST_DATA_VIEW.name,
+                                    }),
                                 })
                             ]
                         }),

@@ -20,11 +20,13 @@ namespace approvalprocess {
                 editDataEvent: Function;
                 /** 删除数据事件，参数：删除对象集合 */
                 deleteDataEvent: Function;
+                // 审批操作，参数1，审批请求；参数2，操作
+                approvalEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
                     this.table = new sap.extension.table.DataTable("", {
-                        enableSelectAll: false,
+                        enableSelectAll: true,
                         visibleRowCount: sap.extension.table.visibleRowCount(15),
                         visibleRowCountMode: sap.ui.table.VisibleRowCountMode.Interactive,
                         dataInfo: this.queryTarget,
@@ -206,6 +208,38 @@ namespace approvalprocess {
                                     press: function (): void {
                                         that.fireViewEvents(that.editDataEvent, that.table.getSelecteds().firstOrDefault());
                                     }
+                                }),
+                                new sap.m.ToolbarSeparator(""),
+                                new sap.extension.m.MenuButton("", {
+                                    autoHide: true,
+                                    text: ibas.i18n.prop("shell_quick_to"),
+                                    icon: "sap-icon://generate-shortcut",
+                                    type: sap.m.ButtonType.Transparent,
+                                    menu: new sap.m.Menu("", {
+                                        items: [
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop(["shell_batch", "approvalprocess_approve"]),
+                                                icon: "sap-icon://message-success",
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.approvalEvent, that.table.getSelecteds(), ibas.emApprovalResult.APPROVED);
+                                                },
+                                            }),
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop(["shell_batch", "approvalprocess_reject"]),
+                                                icon: "sap-icon://message-error",
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.approvalEvent, that.table.getSelecteds(), ibas.emApprovalResult.REJECTED);
+                                                },
+                                            }),
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop(["shell_batch", "approvalprocess_return"]),
+                                                icon: "sap-icon://message-warning",
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.approvalEvent, that.table.getSelecteds(), ibas.emApprovalResult.RETURNED);
+                                                },
+                                            }),
+                                        ],
+                                    })
                                 }),
                                 new sap.m.ToolbarSpacer(),
                                 this.segmentedButton = new sap.m.SegmentedButton("", {

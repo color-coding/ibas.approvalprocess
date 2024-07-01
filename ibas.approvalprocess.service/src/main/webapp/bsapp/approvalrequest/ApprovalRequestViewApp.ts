@@ -108,5 +108,10 @@ namespace approvalprocess {
                 return new ApprovalRequestViewApp();
             }
         }
+        /** 权限元素-物料价格清单编辑 */
+        export const ELEMENT_APPROVAL_REQUEST_DATA_VIEW: ibas.IElement = {
+            id: "aa175b01-98cb-4f23-beef-eb8d04c5a66a",
+            name: "approvalprocess_view_approvalprocess_data",
+        };
     }
 }

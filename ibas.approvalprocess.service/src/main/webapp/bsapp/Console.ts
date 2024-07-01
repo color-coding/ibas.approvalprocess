@@ -40,6 +40,8 @@ namespace approvalprocess {
                 this.register(new ApprovalProcessServiceMapping());
                 // 注册常驻应用
                 this.register(new ApprovalProcessApplicationMapping());
+                // 注册权限元素
+                this.register(ELEMENT_APPROVAL_REQUEST_DATA_VIEW);
             }
             /** 运行 */
             run(): void {

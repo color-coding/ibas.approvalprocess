@@ -18,6 +18,7 @@
   "approvalprocess_app_approvalprocess": "审批请求",
   "approvalprocess_app_approvalprocess_title": "待审批列表",
   "approvalprocess_app_approvalprocess_seemore": "更多内容",
+  "approvalprocess_view_approvalprocess_data": "查看审批数据",
   "approvalprocess_msg_not_found_approvalrequest": "没有找到审批请求",
   "approvalprocess_approve": "批准",
   "approvalprocess_reject": "拒绝",
