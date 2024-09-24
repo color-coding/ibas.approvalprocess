@@ -49,7 +49,10 @@ namespace approvalprocess {
             run(): void {
                 if (ibas.objects.instanceOf(arguments[0], bo.ApprovalRequest)) {
                     this.viewData = arguments[0];
-                    this.show();
+                    let app: ApprovalProcessService = new ApprovalProcessService();
+                    app.navigation = this.navigation;
+                    app.viewShower = this.viewShower;
+                    app.run(this.viewData);
                 } else {
                     super.run.apply(this, arguments);
                 }
@@ -76,11 +79,10 @@ namespace approvalprocess {
                                 throw new Error(opRslt.message);
                             }
                             that.viewData = opRslt.resultObjects.firstOrDefault();
-                            if (!that.isViewShowed()) {
-                                that.show();
-                            } else {
-                                that.viewShowed();
-                            }
+                            let app: ApprovalProcessService = new ApprovalProcessService();
+                            app.navigation = that.navigation;
+                            app.viewShower = that.viewShower;
+                            app.run(that.viewData);
                         } catch (error) {
                             that.messages(error);
                         }
