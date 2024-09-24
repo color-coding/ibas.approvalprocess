@@ -245,7 +245,7 @@ namespace approvalprocess {
                                 }
                                 beApprovalDatas.push({
                                     apRequestId: step.objectKey,
-                                    apStepId: step.lineId,
+                                    apStepId: sub.lineId,
                                     apResult: result,
                                     judgment: ""
                                 });
