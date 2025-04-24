@@ -1,15 +1,16 @@
 package org.colorcoding.ibas.approvalprocess.bo.approvalrequest;
 
+import org.colorcoding.ibas.bobas.approval.IProcessData;
 import org.colorcoding.ibas.bobas.bo.IBOSimple;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 
 /**
- * 审批记录 接口
+ * 审批请求 接口
  * 
  */
-public interface IApprovalRequest extends IBOSimple {
+public interface IApprovalRequest extends IBOSimple, IProcessData {
 
 	/**
 	 * 获取-编号

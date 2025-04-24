@@ -33,7 +33,7 @@ public interface IBORepositoryApprovalProcessApp extends IBORepositoryApplicatio
 
 	// --------------------------------------------------------------------------------------------//
 	/**
-	 * 查询-审批记录
+	 * 查询-审批请求
 	 * 
 	 * @param criteria
 	 *            查询
@@ -42,7 +42,7 @@ public interface IBORepositoryApprovalProcessApp extends IBORepositoryApplicatio
 	IOperationResult<IApprovalRequest> fetchApprovalRequest(ICriteria criteria);
 
 	/**
-	 * 保存-审批记录
+	 * 保存-审批请求
 	 * 
 	 * @param bo
 	 *            对象实例

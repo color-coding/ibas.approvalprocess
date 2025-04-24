@@ -3,7 +3,7 @@ package org.colorcoding.ibas.approvalprocess.data;
 import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.approvalprocess.MyConfiguration;
-import org.colorcoding.ibas.bobas.mapping.Value;
+import org.colorcoding.ibas.bobas.common.Value;
 
 @XmlType(namespace = MyConfiguration.NAMESPACE_BO)
 public enum emApprovalStepOwnerType {

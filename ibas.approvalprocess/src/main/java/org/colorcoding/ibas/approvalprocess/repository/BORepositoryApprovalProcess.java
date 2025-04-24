@@ -6,13 +6,8 @@ import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequestStep;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.ApprovalTemplate;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplate;
-import org.colorcoding.ibas.approvalprocess.data.DataConvert;
-import org.colorcoding.ibas.bobas.approval.IApprovalProcess;
-import org.colorcoding.ibas.bobas.approval.IApprovalProcessStep;
-import org.colorcoding.ibas.bobas.approval.IApprovalProcessStepMultiOwner;
-import org.colorcoding.ibas.bobas.approval.IApprovalProcessStepSingleOwner;
-import org.colorcoding.ibas.bobas.approval.initial.ApprovalProcess;
-import org.colorcoding.ibas.bobas.approval.initial.ApprovalProcessManager;
+import org.colorcoding.ibas.bobas.approval.ApprovalFactory;
+import org.colorcoding.ibas.bobas.approval.ApprovalProcess;
 import org.colorcoding.ibas.bobas.common.ConditionOperation;
 import org.colorcoding.ibas.bobas.common.ConditionRelationship;
 import org.colorcoding.ibas.bobas.common.Criteria;
@@ -21,11 +16,10 @@ import org.colorcoding.ibas.bobas.common.ICondition;
 import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.common.ISort;
+import org.colorcoding.ibas.bobas.common.Numbers;
 import org.colorcoding.ibas.bobas.common.OperationMessage;
 import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.bobas.common.SortType;
-import org.colorcoding.ibas.bobas.core.BORepositoryBase;
-import org.colorcoding.ibas.bobas.core.IBORepository;
 import org.colorcoding.ibas.bobas.data.emApprovalResult;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emApprovalStepStatus;
@@ -49,7 +43,7 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 	 * @return 操作结果
 	 */
 	public OperationResult<ApprovalTemplate> fetchApprovalTemplate(ICriteria criteria, String token) {
-		return super.fetch(criteria, token, ApprovalTemplate.class);
+		return super.fetch(ApprovalTemplate.class, criteria, token);
 	}
 
 	/**
@@ -86,18 +80,18 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 
 	// --------------------------------------------------------------------------------------------//
 	/**
-	 * 查询-审批记录
+	 * 查询-审批请求
 	 * 
 	 * @param criteria 查询
 	 * @param token    口令
 	 * @return 操作结果
 	 */
 	public OperationResult<ApprovalRequest> fetchApprovalRequest(ICriteria criteria, String token) {
-		return super.fetch(criteria, token, ApprovalRequest.class);
+		return super.fetch(ApprovalRequest.class, criteria, token);
 	}
 
 	/**
-	 * 查询-审批记录（提前设置用户口令）
+	 * 查询-审批请求（提前设置用户口令）
 	 * 
 	 * @param criteria 查询
 	 * @return 操作结果
@@ -107,7 +101,7 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 	}
 
 	/**
-	 * 保存-审批记录
+	 * 保存-审批请求
 	 * 
 	 * @param bo    对象实例
 	 * @param token 口令
@@ -118,7 +112,7 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 	}
 
 	/**
-	 * 保存-审批记录（提前设置用户口令）
+	 * 保存-审批请求（提前设置用户口令）
 	 * 
 	 * @param bo 对象实例
 	 * @return 操作结果
@@ -165,7 +159,7 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 			condition.setOperation(ConditionOperation.CONTAIN);
 			condition.setRelationship(ConditionRelationship.OR);
 			condition.setBracketClose(1);
-			if (DataConvert.isNumeric(user)) {
+			if (Numbers.isNumeric(user)) {
 				IApprovalRequestStep step;
 				IApprovalRequestStep subStep;
 				Integer userId = Integer.parseInt(user);
@@ -212,55 +206,42 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 	@Override
 	public OperationMessage approval(int apRequestId, int apStepId, emApprovalResult apResult, String judgment,
 			String token) {
-		OperationMessage operationMessage = new OperationMessage();
 		try {
 			this.setUserToken(token);
-			ApprovalProcessManager apManager = new ApprovalProcessManager();
-			IApprovalProcess ap = apManager.loadApprovalProcess(apRequestId);
-			if (ap == null) {
-				throw new Exception(I18N.prop("msg_ap_not_exist_approval_request", apRequestId));
+			Criteria criteria = new Criteria();
+			criteria.setResultCount(1);
+			ICondition condition = criteria.getConditions().create();
+			condition.setAlias(ApprovalRequest.PROPERTY_OBJECTKEY);
+			condition.setValue(apRequestId);
+			boolean trans = this.beginTransaction();
+			try (BORepositoryApprovalProcess boRepository = new BORepositoryApprovalProcess()) {
+				boRepository.setTransaction(this.getTransaction());
+				boRepository.setUserToken(OrganizationFactory.SYSTEM_USER);
+				IOperationResult<IApprovalRequest> operationResult = boRepository.fetchApprovalRequest(criteria);
+				if (operationResult.getError() != null) {
+					throw operationResult.getError();
+				}
+				if (operationResult.getResultObjects().isEmpty()) {
+					throw new Exception(I18N.prop("msg_ap_not_found_approval_request", apRequestId));
+				}
+				ApprovalProcess<?> approvalProcess = ApprovalFactory.createManager(this.getTransaction())
+						.startProcess(operationResult.getResultObjects().firstOrDefault());
+				approvalProcess.approval(apStepId, apResult, token, judgment);
+				approvalProcess.save();
+				if (trans) {
+					this.commitTransaction();
+				}
+			} catch (Exception e) {
+				if (trans) {
+					this.rollbackTransaction();
+				}
+				throw e;
 			}
-			if (ap instanceof ApprovalProcess) {
-				// 提前加载涉及的业务对象类型
-				((ApprovalProcess) ap).loadClasses();
-			}
-			IBORepository repository = this.getRepository();
-			if (repository instanceof BORepositoryBase) {
-				repository = (IBORepository) ((BORepositoryBase) this.getRepository()).clone();
-				repository.setCurrentUser(OrganizationFactory.SYSTEM_USER);
-			}
-			ap.setRepository(repository);
-			ap.approval(apStepId, apResult, token, judgment);
-			if (ap.getStatus() == emApprovalStatus.PROCESSING && apResult == emApprovalResult.APPROVED) {
-				// 下个步骤，如果还是当前用户，则自动批准
-				IApprovalProcessStep preStep = null;
-				IApprovalProcessStep step = ap.currentStep();
-				do {
-					if (step instanceof IApprovalProcessStepSingleOwner) {
-						// 单用户审批步骤
-						IApprovalProcessStepSingleOwner sngSetp = (IApprovalProcessStepSingleOwner) step;
-						if (sngSetp.getOwner() != this.getCurrentUser()) {
-							break;
-						}
-						try {
-							preStep = step;
-							ap.approval(step.getId(), apResult, token, judgment);
-							step = ap.currentStep();
-						} catch (Exception e) {
-							break;
-						}
-					} else if (step instanceof IApprovalProcessStepMultiOwner) {
-						// 多用户审批步骤
-						break;
-					}
-				} while (preStep != step && step != null);
-			}
-			ap.save();
+			return new OperationMessage();
 		} catch (Exception e) {
 			Logger.log(e);
-			operationMessage.setError(e);
+			return new OperationMessage(e);
 		}
-		return operationMessage;
 	}
 
 }

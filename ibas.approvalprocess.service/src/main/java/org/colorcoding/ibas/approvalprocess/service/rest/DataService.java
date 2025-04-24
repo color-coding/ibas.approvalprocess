@@ -13,9 +13,9 @@ import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.ApprovalTemplate;
 import org.colorcoding.ibas.approvalprocess.repository.BORepositoryApprovalProcess;
 import org.colorcoding.ibas.bobas.common.Criteria;
+import org.colorcoding.ibas.bobas.common.Numbers;
 import org.colorcoding.ibas.bobas.common.OperationMessage;
 import org.colorcoding.ibas.bobas.common.OperationResult;
-import org.colorcoding.ibas.bobas.data.DataConvert;
 import org.colorcoding.ibas.bobas.data.emApprovalResult;
 
 /**
@@ -58,7 +58,7 @@ public class DataService extends BORepositoryApprovalProcess {
 
 	// --------------------------------------------------------------------------------------------//
 	/**
-	 * 查询-审批记录
+	 * 查询-审批请求
 	 * 
 	 * @param criteria 查询
 	 * @param token    口令
@@ -74,7 +74,7 @@ public class DataService extends BORepositoryApprovalProcess {
 	}
 
 	/**
-	 * 保存-审批记录
+	 * 保存-审批请求
 	 * 
 	 * @param bo    对象实例
 	 * @param token 口令
@@ -109,8 +109,8 @@ public class DataService extends BORepositoryApprovalProcess {
 			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
 		if (apResult != null && !apResult.isEmpty()) {
 			emApprovalResult approvalResult = null;
-			if (DataConvert.isNumeric(apResult)) {
-				approvalResult = emApprovalResult.valueOf(Integer.valueOf(apResult));
+			if (Numbers.isNumeric(apResult)) {
+				approvalResult = emApprovalResult.values()[Integer.valueOf(apResult)];
 			} else {
 				approvalResult = emApprovalResult.valueOf(apResult);
 			}

@@ -1,5 +1,7 @@
 package org.colorcoding.ibas.approvalprocess.bo.approvalrequest;
 
+import java.util.Objects;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -8,17 +10,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.approvalprocess.MyConfiguration;
+import org.colorcoding.ibas.bobas.approval.ApprovalDataProxy;
+import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
+import org.colorcoding.ibas.bobas.bo.BusinessObjectUnit;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.bobas.mapping.BusinessObjectUnit;
-import org.colorcoding.ibas.bobas.mapping.DbField;
-import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.bobas.db.DbField;
+import org.colorcoding.ibas.bobas.db.DbFieldType;
 
 /**
- * 获取-审批记录
+ * 获取-审批请求
  * 
  */
 @XmlAccessorType(XmlAccessType.NONE)
@@ -931,6 +935,40 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
 		this.setActivated(emYesNo.YES);
 
+	}
+
+	@Override
+	public emApprovalStatus getStatus() {
+		return this.getApprovalStatus();
+	}
+
+	@Override
+	public void setStatus(emApprovalStatus value) {
+		this.setApprovalStatus(value);
+	}
+
+	@Override
+	public IApprovalData getApprovalData() {
+		ApprovalDataProxy data = new ApprovalDataProxy();
+		data.setApprovalStatus(this.getApprovalStatus());
+		data.setDataOwner(this.getApprovalOwner());
+		data.setIdentifiers(this.getBOKeys());
+		data.setObjectCode(this.getApprovalObjectCode());
+		data.markOld();// 标记状态
+		return data;
+	}
+
+	@Override
+	public void setApprovalData(IApprovalData value) {
+		Objects.requireNonNull(value);
+		this.setApprovalStatus(value.getApprovalStatus());
+		this.setApprovalOwner(value.getDataOwner());
+		this.setBOKeys(value.getIdentifiers());
+		this.setBOInst(value.getLogInst());
+		this.setApprovalObjectCode(value.getObjectCode());
+		if (!(value instanceof ApprovalDataProxy)) {
+			this.setClassName(value.getClass().getName());
+		}
 	}
 
 }
