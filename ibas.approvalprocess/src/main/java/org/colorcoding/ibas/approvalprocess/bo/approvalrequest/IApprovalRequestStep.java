@@ -1,5 +1,6 @@
 package org.colorcoding.ibas.approvalprocess.bo.approvalrequest;
 
+import org.colorcoding.ibas.bobas.approval.IProcessStepData;
 import org.colorcoding.ibas.bobas.bo.IBOSimpleLine;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emApprovalStepStatus;
@@ -9,7 +10,7 @@ import org.colorcoding.ibas.bobas.data.emYesNo;
  * 审批请求步骤 接口
  * 
  */
-public interface IApprovalRequestStep extends IBOSimpleLine {
+public interface IApprovalRequestStep extends IBOSimpleLine, IProcessStepData {
 
 	/**
 	 * 获取-编号
