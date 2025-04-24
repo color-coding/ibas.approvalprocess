@@ -5,7 +5,6 @@ import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.ApprovalRequestStep;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.repository.BORepositoryApprovalProcess;
-import org.colorcoding.ibas.approvalprocess.repository.IBORepositoryApprovalProcessApp;
 import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.common.ConditionOperation;
 import org.colorcoding.ibas.bobas.common.ConditionRelationship;
@@ -17,7 +16,7 @@ import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emApprovalStepStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.bobas.message.Logger;
+import org.colorcoding.ibas.bobas.logging.Logger;
 import org.colorcoding.ibas.bobas.organization.IUser;
 import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
 import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
@@ -100,12 +99,14 @@ public class OwnershipJudger extends org.colorcoding.ibas.bobas.ownership.initia
 						condition.setValue(emApprovalStepStatus.PROCESSING);
 					}
 					// 查询审批请求
-					IBORepositoryApprovalProcessApp boRepository = new BORepositoryApprovalProcess();
-					boRepository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
-					IOperationResult<IApprovalRequest> operationResult = boRepository.fetchApprovalRequest(criteria);
-					if (!operationResult.getResultObjects().isEmpty()) {
-						// 有记录，则可以查看数据
-						result = true;
+					try (BORepositoryApprovalProcess boRepository = new BORepositoryApprovalProcess()) {
+						boRepository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
+						IOperationResult<IApprovalRequest> operationResult = boRepository
+								.fetchApprovalRequest(criteria);
+						if (!operationResult.getResultObjects().isEmpty()) {
+							// 有记录，则可以查看数据
+							result = true;
+						}
 					}
 				}
 			}

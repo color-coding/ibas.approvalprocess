@@ -13,12 +13,11 @@ import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplat
 import org.colorcoding.ibas.approvalprocess.data.emApprovalConditionType;
 import org.colorcoding.ibas.bobas.approval.IApprovalProcessStepCondition;
 import org.colorcoding.ibas.bobas.approval.ValueMode;
+import org.colorcoding.ibas.bobas.core.Serializable;
 import org.colorcoding.ibas.bobas.data.emConditionOperation;
 import org.colorcoding.ibas.bobas.data.emConditionRelationship;
 import org.colorcoding.ibas.bobas.serialization.ISerializer;
-import org.colorcoding.ibas.bobas.serialization.ISerializerManager;
-import org.colorcoding.ibas.bobas.serialization.Serializable;
-import org.colorcoding.ibas.bobas.serialization.SerializerFactory;
+import org.colorcoding.ibas.bobas.serialization.SerializationFactory;
 
 /**
  * 审批步骤条件
@@ -36,7 +35,7 @@ public class ApprovalProcessStepCondition extends Serializable
 
 	public static IApprovalProcessStepCondition[] create(String condition) {
 		if (condition != null) {
-			ISerializer<?> serializer = SerializerFactory.create().createManager().create(ISerializerManager.TYPE_JSON);
+			ISerializer serializer = SerializationFactory.createManager().create(SerializationFactory.TYPE_JSON);
 			@SuppressWarnings("unchecked")
 			ArrayList<ApprovalProcessStepCondition> stepConditions = (ArrayList<ApprovalProcessStepCondition>) serializer
 					.deserialize(condition, ArrayList.class, ApprovalProcessStepCondition.class);
@@ -66,8 +65,7 @@ public class ApprovalProcessStepCondition extends Serializable
 					stepCondition.setBracketClose(item.getBracketClose());
 					stepConditions.add(stepCondition);
 				}
-				ISerializer<?> serializer = SerializerFactory.create().createManager()
-						.create(ISerializerManager.TYPE_JSON);
+				ISerializer serializer = SerializationFactory.createManager().create(SerializationFactory.TYPE_JSON);
 				try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
 					serializer.serialize(stepConditions, writer, ApprovalProcessStepCondition.class);
 					return new String(writer.toByteArray(), "utf-8");
