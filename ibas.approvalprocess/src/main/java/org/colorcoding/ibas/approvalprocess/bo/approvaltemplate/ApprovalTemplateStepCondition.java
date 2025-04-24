@@ -9,13 +9,11 @@ import org.colorcoding.ibas.approvalprocess.MyConfiguration;
 import org.colorcoding.ibas.approvalprocess.data.emApprovalConditionType;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
-import org.colorcoding.ibas.bobas.core.PropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emConditionOperation;
 import org.colorcoding.ibas.bobas.data.emConditionRelationship;
-import org.colorcoding.ibas.bobas.db.DataConvert;
-import org.colorcoding.ibas.bobas.mapping.DbField;
-import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.bobas.db.DbField;
+import org.colorcoding.ibas.bobas.db.DbFieldType;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 
@@ -784,8 +782,8 @@ public class ApprovalTemplateStepCondition extends BusinessObject<ApprovalTempla
 
 	@Override
 	public void setPropertyName(IPropertyInfo<?> property) {
-		if (property instanceof PropertyInfo<?>) {
-			PropertyInfo<?> pInfo = (PropertyInfo<?>) property;
+		if (property instanceof IPropertyInfo<?>) {
+			IPropertyInfo<?> pInfo = (IPropertyInfo<?>) property;
 			Object dbAnnotation = pInfo.getAnnotation(DbField.class);
 			if (dbAnnotation != null) {
 				// 数据库字段
@@ -806,6 +804,7 @@ public class ApprovalTemplateStepCondition extends BusinessObject<ApprovalTempla
 		if (value == null) {
 			return "";
 		}
-		return DataConvert.toDbValue(value);
+		throw new RuntimeException("...");
+		// return DataConvert.toDbValue(value);
 	}
 }

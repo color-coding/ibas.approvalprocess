@@ -1,7 +1,6 @@
 package org.colorcoding.ibas.bobas.approval.initial;
 
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequestStep;
-import org.colorcoding.ibas.bobas.approval.IApprovalProcessStepItem;
 import org.colorcoding.ibas.bobas.data.ArrayList;
 import org.colorcoding.ibas.bobas.data.List;
 
@@ -20,19 +19,19 @@ public class ApprovalProcessStepMultiOwner extends ApprovalProcessStep
 
 	@Override
 	public int getApproversRequired() {
-		return this.getApprovalRequestStep().getApproversRequired();
+		return this.getStepData().getApproversRequired();
 	}
 
-	private IApprovalProcessStepItem[] items;
+	private ApprovalProcessStepItem[] items;
 
 	@Override
-	public IApprovalProcessStepItem[] getItems() {
+	public ApprovalProcessStepItem[] getItems() {
 		if (this.items == null) {
-			List<IApprovalProcessStepItem> items = new ArrayList<>();
-			for (IApprovalRequestStep item : this.getApprovalRequestStep().getApprovalRequestSubSteps()) {
+			List<ApprovalProcessStepItem> items = new ArrayList<>();
+			for (IApprovalRequestStep item : this.getStepData().getApprovalRequestSubSteps()) {
 				items.add(new ApprovalProcessStepItem(item, this));
 			}
-			this.items = items.toArray(new IApprovalProcessStepItem[] {});
+			this.items = items.toArray(new ApprovalProcessStepItem[] {});
 		}
 		return this.items;
 	}

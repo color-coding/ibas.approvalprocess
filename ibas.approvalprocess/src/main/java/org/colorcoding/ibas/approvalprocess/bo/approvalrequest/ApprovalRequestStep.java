@@ -12,8 +12,8 @@ import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emApprovalStepStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.bobas.mapping.DbField;
-import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.bobas.db.DbField;
+import org.colorcoding.ibas.bobas.db.DbFieldType;
 import org.colorcoding.ibas.bobas.rule.BusinessRuleException;
 import org.colorcoding.ibas.bobas.rule.ICheckRules;
 
@@ -908,5 +908,20 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 			builder.append(",");
 		}
 		this.setStepOwners(builder.toString());
+	}
+
+	@Override
+	public int getId() {
+		return this.getLineId();
+	}
+
+	@Override
+	public emApprovalStepStatus getStatus() {
+		return this.getStepStatus();
+	}
+
+	@Override
+	public void setStatus(emApprovalStepStatus value) {
+		this.setStepStatus(value);
 	}
 }

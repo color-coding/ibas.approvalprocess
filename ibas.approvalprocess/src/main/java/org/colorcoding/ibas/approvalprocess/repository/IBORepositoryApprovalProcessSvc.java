@@ -37,7 +37,7 @@ public interface IBORepositoryApprovalProcessSvc extends IBORepositorySmartServi
 
 	// --------------------------------------------------------------------------------------------//
 	/**
-	 * 查询-审批记录
+	 * 查询-审批请求
 	 * 
 	 * @param criteria
 	 *            查询
@@ -48,7 +48,7 @@ public interface IBORepositoryApprovalProcessSvc extends IBORepositorySmartServi
 	OperationResult<ApprovalRequest> fetchApprovalRequest(ICriteria criteria, String token);
 
 	/**
-	 * 保存-审批记录
+	 * 保存-审批请求
 	 * 
 	 * @param bo
 	 *            对象实例
