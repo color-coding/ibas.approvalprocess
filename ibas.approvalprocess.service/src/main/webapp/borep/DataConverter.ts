@@ -60,6 +60,8 @@ namespace approvalprocess {
                 } else if (boName === bo.ApprovalRequestStep.name) {
                     if (property === bo.ApprovalRequestStep.PROPERTY_STEPSTATUS_NAME) {
                         return ibas.enums.toString(ibas.emApprovalStepStatus, value);
+                    } else if (property === bo.ApprovalRequestStep.PROPERTY_STEPCANMODIFY_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
                     }
                 }
                 return super.convertData(boName, property, value);
@@ -91,6 +93,8 @@ namespace approvalprocess {
                 } else if (boName === bo.ApprovalRequestStep.name) {
                     if (property === bo.ApprovalRequestStep.PROPERTY_STEPSTATUS_NAME) {
                         return ibas.enums.valueOf(ibas.emApprovalStepStatus, value);
+                    } else if (property === bo.ApprovalRequestStep.PROPERTY_STEPCANMODIFY_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
                     }
                 }
                 return super.parsingData(boName, property, value);

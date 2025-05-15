@@ -147,7 +147,9 @@ namespace approvalprocess {
                     let user: number = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID);
                     let subStep: bo.ApprovalRequestStep = step.approvalRequestSubSteps.firstOrDefault(c =>
                         c.stepOwner === user
-                        && c.stepStatus === ibas.emApprovalStepStatus.PROCESSING
+                        && (result === ibas.emApprovalResult.PROCESSING ?
+                            (c.stepStatus === ibas.emApprovalStepStatus.REJECTED || c.stepStatus === ibas.emApprovalStepStatus.APPROVED) :
+                            (c.stepStatus === ibas.emApprovalStepStatus.PROCESSING))
                     );
                     if (ibas.objects.isNull(subStep)) {
                         this.messages(ibas.emMessageType.ERROR, ibas.i18n.prop("approvalprocess_msg_not_found_approvalrequest"));
