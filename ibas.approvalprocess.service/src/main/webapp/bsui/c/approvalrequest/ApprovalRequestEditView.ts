@@ -223,6 +223,13 @@ namespace approvalprocess {
                         editable: true,
                         content: [
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("approvalprocess_title_others") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_reentrant") }),
+                            new sap.extension.m.EnumSelect("", {
+                                enumType: ibas.emYesNo
+                            }).bindProperty("bindingValue", {
+                                path: "reentrant",
+                                type: new sap.extension.data.YesNo(),
+                            }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_remarks") }),
                             new sap.extension.m.TextArea("", {
                                 rows: 3,

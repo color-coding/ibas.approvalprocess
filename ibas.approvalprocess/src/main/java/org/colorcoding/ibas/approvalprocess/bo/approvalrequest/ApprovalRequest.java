@@ -890,6 +890,37 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	}
 
 	/**
+	* 属性名称-可重入审批
+	*/
+	private static final String PROPERTY_REENTRANT_NAME = "Reentrant";
+
+	/**
+	* 可重入审批 属性
+	*/
+	@DbField(name = "Reentrant", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<emYesNo> PROPERTY_REENTRANT = registerProperty(PROPERTY_REENTRANT_NAME,
+			emYesNo.class, MY_CLASS);
+
+	/**
+	* 获取-可重入审批
+	* 
+	* @return 值
+	*/
+	@XmlElement(name = PROPERTY_REENTRANT_NAME)
+	public final emYesNo getReentrant() {
+		return this.getProperty(PROPERTY_REENTRANT);
+	}
+
+	/**
+	* 设置-可重入审批
+	* 
+	* @param value 值
+	*/
+	public final void setReentrant(emYesNo value) {
+		this.setProperty(PROPERTY_REENTRANT, value);
+	}
+
+	/**
 	 * 属性名称-审批请求步骤
 	 */
 	private static final String PROPERTY_APPROVALREQUESTSTEPS_NAME = "ApprovalRequestSteps";

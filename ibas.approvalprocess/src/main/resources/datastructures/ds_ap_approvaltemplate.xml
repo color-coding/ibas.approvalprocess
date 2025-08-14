@@ -24,6 +24,7 @@
     <Property Name="ValidDate" Description="生效日期" DataType="Date" DataSubType="Default" EditSize="8" Mapped="ValidDate"/>
     <Property Name="InvalidDate" Description="失效日期" DataType="Date" DataSubType="Default" EditSize="8" Mapped="InvalidDate"/>
     <Property Name="Summary" Description="审批流程摘要" DataType="Alphanumeric" DataSubType="Default" EditSize="200" Mapped="Summary"/>
+    <Property Name="Reentrant" Description="可重入审批" DataType="Alphanumeric" DataSubType="Default" EditSize="1" DeclaredType="emYesNo" Mapped="Reentrant"/>
   </Model>
   <Model Name="ApprovalTemplateStep" Description="审批模板步骤" ModelType="SimpleLine" Mapped="${Company}_AP_APT1">
     <Property Name="ObjectKey" Description="编号" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="ObjectKey" PrimaryKey="Yes"/>

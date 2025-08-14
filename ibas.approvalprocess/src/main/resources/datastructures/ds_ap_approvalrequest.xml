@@ -29,6 +29,7 @@
     <Property Name="StartedTime" Description="开始时间" DataType="Date" DataSubType="Default" EditSize="8" Mapped="StartTime"/>
     <Property Name="FinishedTime" Description="结束时间" DataType="Date" DataSubType="Default" EditSize="8" Mapped="FinishTime"/>
     <Property Name="ClassName" Description="语言类型" DataType="Alphanumeric" DataSubType="Default" EditSize="200" Mapped="ClassName"/>
+    <Property Name="Reentrant" Description="可重入审批" DataType="Alphanumeric" DataSubType="Default" EditSize="1" DeclaredType="emYesNo" Mapped="Reentrant"/>
   </Model>
   <Model Name="ApprovalRequestStep" Description="审批请求步骤" ModelType="SimpleLine" Mapped="${Company}_AP_ARQ1">
     <Property Name="ObjectKey" Description="编号" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="ObjectKey" PrimaryKey="Yes"/>

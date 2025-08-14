@@ -57,10 +57,18 @@ namespace approvalprocess {
                     if (property === bo.ApprovalTemplateStepOwner.PROPERTY_STEPOWNERTYPE_NAME) {
                         return ibas.enums.toString(emApprovalStepOwnerType, value);
                     }
+                } else if (boName === bo.ApprovalTemplate.name) {
+                    if (property === bo.ApprovalTemplate.PROPERTY_REENTRANT_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    }
                 } else if (boName === bo.ApprovalRequestStep.name) {
                     if (property === bo.ApprovalRequestStep.PROPERTY_STEPSTATUS_NAME) {
                         return ibas.enums.toString(ibas.emApprovalStepStatus, value);
                     } else if (property === bo.ApprovalRequestStep.PROPERTY_STEPCANMODIFY_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    }
+                } else if (boName === bo.ApprovalRequest.name) {
+                    if (property === bo.ApprovalRequest.PROPERTY_REENTRANT_NAME) {
                         return ibas.enums.toString(ibas.emYesNo, value);
                     }
                 }
@@ -90,10 +98,18 @@ namespace approvalprocess {
                     if (property === bo.ApprovalTemplateStepOwner.PROPERTY_STEPOWNERTYPE_NAME) {
                         return ibas.enums.valueOf(emApprovalStepOwnerType, value);
                     }
+                } else if (boName === bo.ApprovalTemplate.name) {
+                    if (property === bo.ApprovalTemplate.PROPERTY_REENTRANT_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
+                    }
                 } else if (boName === bo.ApprovalRequestStep.name) {
                     if (property === bo.ApprovalRequestStep.PROPERTY_STEPSTATUS_NAME) {
                         return ibas.enums.valueOf(ibas.emApprovalStepStatus, value);
                     } else if (property === bo.ApprovalRequestStep.PROPERTY_STEPCANMODIFY_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
+                    }
+                } else if (boName === bo.ApprovalRequest.name) {
+                    if (property === bo.ApprovalRequest.PROPERTY_REENTRANT_NAME) {
                         return ibas.enums.valueOf(ibas.emYesNo, value);
                     }
                 }
