@@ -22,6 +22,8 @@ namespace approvalprocess {
                 deleteDataEvent: Function;
                 // 审批操作，参数1，审批请求；参数2，操作
                 approvalEvent: Function;
+                /** 查看待审批数据 */
+                viewApprovalDataEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
@@ -207,6 +209,15 @@ namespace approvalprocess {
                                     visible: ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_SUPER) === true ? true : false,
                                     press: function (): void {
                                         that.fireViewEvents(that.editDataEvent, that.table.getSelecteds().firstOrDefault());
+                                    }
+                                }),
+                                new sap.m.ToolbarSeparator(""),
+                                new sap.m.Button("", {
+                                    text: ibas.i18n.prop("approvalprocess_view_data"),
+                                    type: sap.m.ButtonType.Transparent,
+                                    icon: "sap-icon://display",
+                                    press: function (): void {
+                                        that.fireViewEvents(that.viewApprovalDataEvent, that.table.getSelecteds().firstOrDefault());
                                     }
                                 }),
                                 new sap.m.ToolbarSeparator(""),

@@ -46,9 +46,9 @@ namespace approvalprocess {
             /** 运行 */
             run(): void {
                 // 加载语言-框架默认
-                ibas.i18n.load([
-                    this.rootUrl + "resources/languages/approvalprocess.json",
-                    this.rootUrl + "resources/languages/bos.json"
+                this.loadResources([
+                    "resources/languages/approvalprocess.json",
+                    "resources/languages/bos.json"
                 ], () => {
                     // 设置资源属性
                     this.description = ibas.i18n.prop(this.name.toLowerCase());

@@ -20,10 +20,14 @@ import org.colorcoding.ibas.approvalprocess.data.DataConvert;
 import org.colorcoding.ibas.approvalprocess.data.emApprovalStepOwnerType;
 import org.colorcoding.ibas.approvalprocess.repository.BORepositoryApprovalProcess;
 import org.colorcoding.ibas.bobas.approval.ApprovalDataProxy;
+import org.colorcoding.ibas.bobas.approval.ApprovalFactory;
 import org.colorcoding.ibas.bobas.approval.ApprovalProcessException;
 import org.colorcoding.ibas.bobas.approval.IApprovalData;
+import org.colorcoding.ibas.bobas.approval.IApprovalProcess;
+import org.colorcoding.ibas.bobas.approval.IApprovalProcessManager;
 import org.colorcoding.ibas.bobas.approval.IApprovalProcessStep;
 import org.colorcoding.ibas.bobas.approval.IApprovalProcessStepItem;
+import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.bo.IBOStorageTag;
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
@@ -37,6 +41,7 @@ import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.organization.IUser;
 import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
+import org.colorcoding.ibas.bobas.serialization.SerializerFactory;
 import org.colorcoding.ibas.initialfantasy.bo.organization.IOrganization;
 import org.colorcoding.ibas.initialfantasy.bo.organization.Organization;
 import org.colorcoding.ibas.initialfantasy.bo.shell.User;
@@ -60,6 +65,7 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 		aq.setApprovalObjectCode(template.getApprovalObjectCode());
 		aq.setName(template.getName());
 		aq.setSummary(template.getSummary());
+		aq.setReentrant(template.getReentrant());
 		for (IApprovalTemplateStep item : template.getApprovalTemplateSteps()) {
 			ApprovalRequestStep aqStep = new ApprovalRequestStep();
 			aqStep.setStepOrder(item.getStepOrder());
@@ -392,6 +398,32 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 				return;
 			}
 		}
+		// 已批准，审批设置可重新触发审批
+		if (this.getStatus() == emApprovalStatus.APPROVED && this.approvalData instanceof BusinessObject<?>) {
+			// 可重新发起审批
+			if (this.getApprovalRequest().getReentrant() == emYesNo.YES) {
+				IApprovalProcessManager approvalManager = ApprovalFactory.create().createManager();
+				approvalManager.useRepository(this.getRepository());
+				IApprovalData nApprovalData = SerializerFactory.create().createManager().create()
+						.clone(this.approvalData);
+				if (nApprovalData instanceof BusinessObject<?>) {
+					BusinessObject<?> bo = (BusinessObject<?>) nApprovalData;
+					bo.reset();
+				}
+				IApprovalProcess approvalProcess = approvalManager.checkProcess(nApprovalData);
+				if (approvalProcess instanceof ApprovalProcess) {
+					this.getApprovalData().setApprovalStatus(emApprovalStatus.PROCESSING);
+					this.approvalRequest = ((ApprovalProcess) approvalProcess).getApprovalRequest();
+					this.processSteps = null;
+					return;
+				}
+			}
+		}
+		// 审批新建状态，可修改数据
+		if (this.isNew()) {
+			return;
+		}
+		// 步骤是否设置可修改
 		if (Integer.compare(this.getApprovalData().getDataOwner(), user.getId()) != 0) {
 			// 修改用户不是数据所有者时
 			IApprovalProcessStep tmpStep = this.currentStep();

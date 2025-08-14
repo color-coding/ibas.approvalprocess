@@ -65,6 +65,28 @@ namespace approvalprocess {
                                     maxLength: 30
                                 })
                             }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_summary") }),
+                            new sap.extension.m.TextArea("", {
+                                rows: 4,
+                            }).bindProperty("bindingValue", {
+                                path: "summary",
+                                type: new sap.extension.data.Alphanumeric()
+                            }),
+                            new sap.m.Label("", {}),
+                            new sap.m.Button("", {
+                                text: ibas.i18n.prop("approvalprocess_add_bo_property"),
+                                press: function (): void {
+                                    that.fireViewEvents(that.chooseApprovalTemplateBOPropertyEvent);
+                                }
+                            }),
+                            new sap.ui.core.Title("", { text: ibas.i18n.prop("approvalprocess_title_status") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_objectkey") }),
+                            new sap.extension.m.Input("", {
+                                editable: false,
+                            }).bindProperty("bindingValue", {
+                                path: "objectKey",
+                                type: new sap.extension.data.Numeric()
+                            }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_activated") }),
                             new sap.extension.m.EnumSelect("", {
                                 enumType: ibas.emYesNo
@@ -84,20 +106,12 @@ namespace approvalprocess {
                                 path: "invalidDate",
                                 type: new sap.extension.data.Date()
                             }),
-                            new sap.ui.core.Title("", { text: ibas.i18n.prop("approvalprocess_title_others") }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_summary") }),
-                            new sap.extension.m.TextArea("", {
-                                rows: 6,
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_reentrant") }),
+                            new sap.extension.m.EnumSelect("", {
+                                enumType: ibas.emYesNo
                             }).bindProperty("bindingValue", {
-                                path: "summary",
-                                type: new sap.extension.data.Alphanumeric()
-                            }),
-                            new sap.m.Label("", {}),
-                            new sap.m.Button("", {
-                                text: ibas.i18n.prop("approvalprocess_add_bo_property"),
-                                press: function (): void {
-                                    that.fireViewEvents(that.chooseApprovalTemplateBOPropertyEvent);
-                                }
+                                path: "reentrant",
+                                type: new sap.extension.data.YesNo(),
                             }),
                         ]
                     });
@@ -328,6 +342,7 @@ namespace approvalprocess {
                             }),
                         ],
                         sortProperty: "visOrder",
+                        sortIntervalStep: 1,
                     });
                     let formMiddle: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
                         editable: true,
@@ -689,6 +704,7 @@ namespace approvalprocess {
                             }),
                         ],
                         sortProperty: "visOrder",
+                        sortIntervalStep: 1,
                     });
                     return new sap.m.Dialog("", {
                         title: this.title,

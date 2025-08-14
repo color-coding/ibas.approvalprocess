@@ -49,6 +49,29 @@ namespace approvalprocess {
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_bokeys") }),
                             new sap.extension.m.Input("", {
                                 editable: false,
+                                showValueLink: true,
+                                valueLinkRequest(): void {
+                                    let data: any = (<any>this.getModel()).getData();
+                                    if (data instanceof bo.ApprovalRequest) {
+                                        if (!ibas.strings.isEmpty(data.boKeys)) {
+                                            let criteria: ibas.ICriteria = ibas.criterias.valueOf(data.boKeys);
+                                            if (!ibas.objects.isNull(criteria)) {
+                                                let done: boolean = ibas.servicesManager.runLinkService({
+                                                    boCode: criteria.businessObject,
+                                                    linkValue: criteria
+                                                });
+                                                if (!done) {
+                                                    that.application.viewShower.proceeding(
+                                                        that,
+                                                        ibas.emMessageType.WARNING,
+                                                        ibas.i18n.prop("approvalprocess_not_found_businessojbect_link_service",
+                                                            ibas.businessobjects.describe(criteria.businessObject))
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }).bindProperty("bindingValue", {
                                 path: "boKeys",
                                 formatter(data: any): any {
@@ -223,6 +246,13 @@ namespace approvalprocess {
                         editable: true,
                         content: [
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("approvalprocess_title_others") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_approvaltemplate_reentrant") }),
+                            new sap.extension.m.EnumSelect("", {
+                                enumType: ibas.emYesNo
+                            }).bindProperty("bindingValue", {
+                                path: "reentrant",
+                                type: new sap.extension.data.YesNo(),
+                            }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_approvalrequest_remarks") }),
                             new sap.extension.m.TextArea("", {
                                 rows: 3,
