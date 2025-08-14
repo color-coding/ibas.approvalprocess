@@ -33,6 +33,7 @@ namespace approvalprocess {
                 this.view.viewDataEvent = this.viewData;
                 this.view.deleteDataEvent = this.deleteData;
                 this.view.approvalEvent = this.approval;
+                this.view.viewApprovalDataEvent = this.viewApprovalData;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -331,6 +332,28 @@ namespace approvalprocess {
                 }
                 this.messages(caller);
             }
+            private viewApprovalData(data: bo.ApprovalRequest): void {
+                // 检查目标数据
+                if (ibas.objects.isNull(data)) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
+                        ibas.i18n.prop("shell_data_view")
+                    ));
+                    return;
+                }
+                let criteria: ibas.ICriteria = ibas.criterias.valueOf(data.boKeys);
+                if (!ibas.objects.isNull(criteria)) {
+                    let done: boolean = ibas.servicesManager.runLinkService({
+                        boCode: criteria.businessObject,
+                        linkValue: criteria
+                    });
+                    if (!done) {
+                        this.proceeding(ibas.emMessageType.WARNING,
+                            ibas.i18n.prop("approvalprocess_not_found_businessojbect_link_service",
+                                ibas.businessobjects.describe(criteria.businessObject))
+                        );
+                    }
+                }
+            }
         }
         /** 视图-审批请求 */
         export interface IApprovalRequestListView extends ibas.IBOListView {
@@ -342,6 +365,8 @@ namespace approvalprocess {
             approvalEvent: Function;
             /** 显示数据 */
             showData(datas: bo.ApprovalRequest[]): void;
+            /** 查看待审批数据 */
+            viewApprovalDataEvent: Function;
 
             smartMode(smart: boolean): void;
         }

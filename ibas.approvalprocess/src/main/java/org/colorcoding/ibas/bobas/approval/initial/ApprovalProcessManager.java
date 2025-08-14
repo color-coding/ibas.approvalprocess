@@ -49,7 +49,11 @@ public class ApprovalProcessManager extends org.colorcoding.ibas.bobas.approval.
 			// 设置用户口令，系统用户
 			try {
 				this.repository = new BORepositoryApprovalProcess();
-				this.repository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
+				if (super.getRepository() != null) {
+					this.repository.setRepository(super.getRepository());
+				} else {
+					this.repository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
+				}
 			} catch (InvalidTokenException e) {
 				throw new RuntimeException(e);
 			}
@@ -151,13 +155,17 @@ public class ApprovalProcessManager extends org.colorcoding.ibas.bobas.approval.
 		}
 		// 根据boKey查询审批请求
 		ICriteria criteria = new Criteria();
+		criteria.setResultCount(1);
 		ICondition condition = criteria.getConditions().create();
 		condition.setAlias(ApprovalRequest.PROPERTY_BOKEYS.getName());
 		condition.setValue(boKey);
 		condition = criteria.getConditions().create();
 		condition.setRelationship(ConditionRelationship.AND);
-		condition.setAlias(ApprovalTemplate.PROPERTY_ACTIVATED.getName());
+		condition.setAlias(ApprovalRequest.PROPERTY_ACTIVATED.getName());
 		condition.setValue(emYesNo.YES);
+		ISort sort = criteria.getSorts().create();
+		sort.setAlias(ApprovalRequest.PROPERTY_OBJECTKEY.getName());
+		sort.setSortType(SortType.DESCENDING);
 
 		IBORepositoryApprovalProcessApp boRepository = this.createRepository();
 		IOperationResult<IApprovalRequest> operationResult = boRepository.fetchApprovalRequest(criteria);

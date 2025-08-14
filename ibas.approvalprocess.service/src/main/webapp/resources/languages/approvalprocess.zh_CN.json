@@ -15,6 +15,8 @@
   "approvalprocess_app_approvaltemplatestepowner_edit": "审批步骤所有者编辑",
   "approvalprocess_title_general": "常规信息",
   "approvalprocess_title_others": "其他信息",
+  "approvalprocess_title_remarks": "备注信息",
+  "approvalprocess_title_status": "状态信息",
   "approvalprocess_app_approvalprocess": "审批请求",
   "approvalprocess_app_approvalprocess_title": "待审批列表",
   "approvalprocess_app_approvalprocess_seemore": "更多内容",

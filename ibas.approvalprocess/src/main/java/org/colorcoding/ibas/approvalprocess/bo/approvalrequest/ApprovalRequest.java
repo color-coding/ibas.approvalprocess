@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.approvalprocess.MyConfiguration;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
+import org.colorcoding.ibas.bobas.bo.IBOUserFields;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
@@ -25,7 +26,7 @@ import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 @XmlType(name = ApprovalRequest.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlRootElement(name = ApprovalRequest.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @BusinessObjectUnit(code = ApprovalRequest.BUSINESS_OBJECT_CODE)
-public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements IApprovalRequest {
+public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements IApprovalRequest, IBOUserFields {
 
 	/**
 	 * 序列化版本标记
@@ -887,6 +888,37 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	 */
 	public final void setClassName(String value) {
 		this.setProperty(PROPERTY_CLASSNAME, value);
+	}
+
+	/**
+	* 属性名称-可重入审批
+	*/
+	private static final String PROPERTY_REENTRANT_NAME = "Reentrant";
+
+	/**
+	* 可重入审批 属性
+	*/
+	@DbField(name = "Reentrant", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<emYesNo> PROPERTY_REENTRANT = registerProperty(PROPERTY_REENTRANT_NAME,
+			emYesNo.class, MY_CLASS);
+
+	/**
+	* 获取-可重入审批
+	* 
+	* @return 值
+	*/
+	@XmlElement(name = PROPERTY_REENTRANT_NAME)
+	public final emYesNo getReentrant() {
+		return this.getProperty(PROPERTY_REENTRANT);
+	}
+
+	/**
+	* 设置-可重入审批
+	* 
+	* @param value 值
+	*/
+	public final void setReentrant(emYesNo value) {
+		this.setProperty(PROPERTY_REENTRANT, value);
 	}
 
 	/**
