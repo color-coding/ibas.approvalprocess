@@ -248,6 +248,32 @@ namespace approvalprocess {
                                                                 icon: "sap-icon://decline",
                                                                 press(this: sap.m.Button): void {
                                                                     that.fireViewEvents(that.approvalEvent, this.getBindingContext().getObject(), ibas.emApprovalResult.REJECTED);
+                                                                },
+                                                                visible: {
+                                                                    path: "boKeys",
+                                                                    formatter(boKeys: string): boolean {
+                                                                        if (ibas.strings.count(boKeys, "Code = ") > 0) {
+                                                                            return false;
+                                                                        }
+                                                                        return true;
+                                                                    }
+                                                                }
+                                                            }),
+                                                            new sap.m.Button("", {
+                                                                tooltip: ibas.i18n.prop("approvalprocess_return"),
+                                                                type: sap.m.ButtonType.Attention,
+                                                                icon: "sap-icon://fallback",
+                                                                press(this: sap.m.Button): void {
+                                                                    that.fireViewEvents(that.approvalEvent, this.getBindingContext().getObject(), ibas.emApprovalResult.RETURNED);
+                                                                },
+                                                                visible: {
+                                                                    path: "boKeys",
+                                                                    formatter(boKeys: string): boolean {
+                                                                        if (ibas.strings.count(boKeys, "Code = ") > 0) {
+                                                                            return true;
+                                                                        }
+                                                                        return false;
+                                                                    }
                                                                 }
                                                             }),
                                                         ]

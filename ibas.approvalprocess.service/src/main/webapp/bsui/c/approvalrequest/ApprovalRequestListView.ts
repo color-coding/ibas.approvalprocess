@@ -213,9 +213,9 @@ namespace approvalprocess {
                                 }),
                                 new sap.m.ToolbarSeparator(""),
                                 new sap.m.Button("", {
-                                    text: ibas.i18n.prop("approvalprocess_view_data"),
+                                    text: ibas.i18n.prop("approvalprocess_view_approval_data"),
                                     type: sap.m.ButtonType.Transparent,
-                                    icon: "sap-icon://display",
+                                    icon: "sap-icon://detail-view",
                                     press: function (): void {
                                         that.fireViewEvents(that.viewApprovalDataEvent, that.table.getSelecteds().firstOrDefault());
                                     }
@@ -316,6 +316,106 @@ namespace approvalprocess {
 
                 smartMode(smart: boolean): void {
                     this.segmentedButton?.setVisible(smart);
+                }
+                private dataView: sap.ui.core.Control;
+                /** 显示数据 */
+                showDataView(request: bo.ApprovalRequest, view: ibas.IView): void {
+                    if (this.dataView) {
+                        this.dataView.destroy();
+                        delete (this.dataView);
+                    }
+                    let that: this = this;
+                    let page: any = view.draw();
+                    if (page instanceof sap.m.Page) {
+                        page.setShowSubHeader(false);
+                    } else if (page instanceof sap.extension.uxap.DataObjectPageLayout) {
+                        if (page.getHeaderTitle() instanceof sap.uxap.ObjectPageHeader) {
+                            let bar: any = (<sap.uxap.ObjectPageHeader>page.getHeaderTitle()).getNavigationBar();
+                            if (bar instanceof sap.m.Bar) {
+                                bar.destroyContentLeft();
+                                bar.destroyContentMiddle();
+                                if (!(bar.getContentRight().length > 0)) {
+                                    bar.setVisible(false);
+                                }
+                            }
+                            // (<sap.uxap.ObjectPageHeader>page.getHeaderTitle()).getNavigationBar()?.setVisible(false);
+                        }
+                        // page.setAlwaysShowContentHeader(true);
+                        // page.setToggleHeaderOnTitleClick(false);
+                        // page.setHeight(ibas.strings.format("{0}px", window.innerHeight * 0.8));
+                        // page.setPreserveHeaderStateOnScroll(true);
+                    }
+                    this.dataView = new sap.m.Dialog("", {
+                        title: ibas.strings.format("#{0} · {1} - {2}", request.objectKey, request.name, ibas.businessobjects.describe(request.boKeys)),
+                        type: sap.m.DialogType.Standard,
+                        state: request.approvalStatus === ibas.emApprovalStatus.PROCESSING ? sap.ui.core.ValueState.Warning :
+                            request.approvalStatus === ibas.emApprovalStatus.APPROVED ? sap.ui.core.ValueState.Success : sap.ui.core.ValueState.Error,
+                        horizontalScrolling: false,
+                        verticalScrolling: false,
+                        contentHeight: ibas.strings.format("{0}px", window.innerHeight * 0.8),
+                        contentWidth: ibas.strings.format("{0}px", window.innerWidth * 0.8),
+                        content: [
+                            page
+                        ],
+                        buttons: [
+                            new sap.m.Button("", {
+                                text: ibas.i18n.prop("approvalprocess_approve"),
+                                type: sap.m.ButtonType.Accept,
+                                press: function (): void {
+                                    that.fireViewEvents(that.approvalEvent, request, ibas.emApprovalResult.APPROVED);
+                                },
+                                visible: request.approvalStatus === ibas.emApprovalStatus.PROCESSING ? true : false,
+                            }),
+                            new sap.m.Button("", {
+                                text: ibas.i18n.prop("approvalprocess_reject"),
+                                type: sap.m.ButtonType.Reject,
+                                press: function (): void {
+                                    that.fireViewEvents(that.approvalEvent, request, ibas.emApprovalResult.REJECTED);
+                                },
+                                visible: request.approvalStatus === ibas.emApprovalStatus.PROCESSING ? true : false,
+                            }),
+                            new sap.m.Button("", {
+                                text: ibas.i18n.prop("approvalprocess_return"),
+                                type: sap.m.ButtonType.Attention,
+                                press: function (): void {
+                                    that.fireViewEvents(that.approvalEvent, request, ibas.emApprovalResult.RETURNED);
+                                },
+                                visible: request.approvalStatus === ibas.emApprovalStatus.PROCESSING ? true : false,
+                            }),
+                            /*
+                            new sap.m.Button("", {
+                                text: ibas.i18n.prop("approvalprocess_reset"),
+                                type: sap.m.ButtonType.Attention,
+                                press: function (): void {
+                                    that.fireViewEvents(that.approvalEvent, request, ibas.emApprovalResult.PROCESSING);
+                                },
+                                visible: request.approvalStatus === ibas.emApprovalStatus.PROCESSING ? false : true,
+                            }),
+                            */
+                            new sap.m.Button("", {
+                                text: ibas.i18n.prop("shell_exit"),
+                                type: sap.m.ButtonType.Emphasized,
+                                press: function (): void {
+                                    if (view instanceof ibas.View) {
+                                        view.closeEvent.apply(view.application);
+                                    }
+                                }
+                            }),
+                        ]
+                    }).addStyleClass("sapUiNoContentPadding").open();
+                }
+                /** 显示数据 */
+                destroyDataView(view: ibas.IView): void {
+                    if (this.dataView) {
+                        this.dataView.destroy();
+                        delete (this.dataView);
+                    }
+                }
+                /** 显示数据 */
+                busyDataView(busy: boolean, msg: string): void {
+                    if (this.dataView instanceof sap.ui.core.Control) {
+                        this.dataView.setBusy(busy);
+                    }
                 }
             }
         }
