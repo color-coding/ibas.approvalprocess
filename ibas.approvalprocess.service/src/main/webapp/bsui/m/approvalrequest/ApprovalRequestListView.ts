@@ -182,6 +182,12 @@ namespace approvalprocess {
                 }
                 smartMode(smart: boolean): void {
                 }
+                showDataView(request: bo.ApprovalRequest, view: ibas.IView): void {
+                }
+                destroyDataView(view: ibas.IView): void {
+                }
+                busyDataView(busy: boolean, msg: string): void {
+                }
             }
         }
     }
