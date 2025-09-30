@@ -219,8 +219,9 @@ namespace approvalprocess {
             /** 审批操作
              * @param step 审批请求步骤
              * @param result 操作
+             * @param judgment 意见
              */
-            protected approval(datas: bo.ApprovalRequest[], result: number): void {
+            protected approval(datas: bo.ApprovalRequest[], result: number, judgment: string): void {
                 let that: this = this;
                 let beApprovalDatas: {
                     /** 审批请求编号 */
@@ -250,7 +251,7 @@ namespace approvalprocess {
                                     apRequestId: step.objectKey,
                                     apStepId: sub.lineId,
                                     apResult: result,
-                                    judgment: ""
+                                    judgment: judgment
                                 });
                             }
                         } else {
@@ -261,7 +262,7 @@ namespace approvalprocess {
                                 apRequestId: step.objectKey,
                                 apStepId: step.lineId,
                                 apResult: result,
-                                judgment: ""
+                                judgment: judgment
                             });
                         }
                     }

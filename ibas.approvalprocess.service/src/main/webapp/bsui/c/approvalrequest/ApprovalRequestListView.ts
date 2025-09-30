@@ -355,52 +355,78 @@ namespace approvalprocess {
                         contentHeight: ibas.strings.format("{0}px", window.innerHeight * 0.8),
                         contentWidth: ibas.strings.format("{0}px", window.innerWidth * 0.8),
                         content: [
-                            page
+                            new sap.m.Page("", {
+                                showHeader: false,
+                                content: [
+                                    page,
+                                ],
+                                footer: new sap.m.Toolbar("", {
+                                    content: [
+                                        new sap.m.ToolbarSpacer(),
+                                        new sap.m.TextArea("", {
+                                            rows: 1,
+                                            width: "16rem",
+                                            placeholder: ibas.i18n.prop("bo_approvalrequeststep_judgment"),
+                                            visible: request.approvalStatus === ibas.emApprovalStatus.PROCESSING ? true : false,
+                                        }),
+                                        new sap.m.ToolbarSeparator("", {
+                                            visible: request.approvalStatus === ibas.emApprovalStatus.PROCESSING ? true : false,
+                                        }),
+                                        new sap.m.Button("", {
+                                            text: ibas.i18n.prop("approvalprocess_approve"),
+                                            type: sap.m.ButtonType.Accept,
+                                            press: function (): void {
+                                                let input: sap.m.TextArea = this.getParent().getContent()[1];
+                                                that.fireViewEvents(that.approvalEvent, request, ibas.emApprovalResult.APPROVED, input.getValue());
+                                            },
+                                            visible: request.approvalStatus === ibas.emApprovalStatus.PROCESSING ? true : false,
+                                        }),
+                                        new sap.m.Button("", {
+                                            text: ibas.i18n.prop("approvalprocess_reject"),
+                                            type: sap.m.ButtonType.Reject,
+                                            press: function (): void {
+                                                let input: sap.m.TextArea = this.getParent().getContent()[1];
+                                                that.fireViewEvents(that.approvalEvent, request, ibas.emApprovalResult.REJECTED, input.getValue());
+                                            },
+                                            visible: request.approvalStatus === ibas.emApprovalStatus.PROCESSING ? true : false,
+                                        }),
+                                        new sap.m.Button("", {
+                                            text: ibas.i18n.prop("approvalprocess_return"),
+                                            type: sap.m.ButtonType.Attention,
+                                            press: function (): void {
+                                                let input: sap.m.TextArea = this.getParent().getContent()[1];
+                                                that.fireViewEvents(that.approvalEvent, request, ibas.emApprovalResult.RETURNED, input.getValue());
+                                            },
+                                            visible: request.approvalStatus === ibas.emApprovalStatus.PROCESSING ? true : false,
+                                        }),
+                                        /*
+                                        new sap.m.Button("", {
+                                            text: ibas.i18n.prop("approvalprocess_reset"),
+                                            type: sap.m.ButtonType.Attention,
+                                            press: function (): void {
+                                                let input: sap.m.TextArea = this.getParent().getContent()[1];
+                                                that.fireViewEvents(that.approvalEvent, request, ibas.emApprovalResult.PROCESSING, input.getValue());
+                                            },
+                                            visible: request.approvalStatus === ibas.emApprovalStatus.PROCESSING ? false : true,
+                                        }),
+                                        */
+                                        new sap.m.ToolbarSeparator("", {
+                                            visible: request.approvalStatus === ibas.emApprovalStatus.PROCESSING ? true : false,
+                                        }),
+                                        new sap.m.Button("", {
+                                            text: ibas.i18n.prop("shell_exit"),
+                                            type: sap.m.ButtonType.Emphasized,
+                                            press: function (): void {
+                                                if (view instanceof ibas.View) {
+                                                    view.closeEvent.apply(view.application);
+                                                }
+                                            }
+                                        }),
+                                    ]
+                                })
+                            }),
                         ],
                         buttons: [
-                            new sap.m.Button("", {
-                                text: ibas.i18n.prop("approvalprocess_approve"),
-                                type: sap.m.ButtonType.Accept,
-                                press: function (): void {
-                                    that.fireViewEvents(that.approvalEvent, request, ibas.emApprovalResult.APPROVED);
-                                },
-                                visible: request.approvalStatus === ibas.emApprovalStatus.PROCESSING ? true : false,
-                            }),
-                            new sap.m.Button("", {
-                                text: ibas.i18n.prop("approvalprocess_reject"),
-                                type: sap.m.ButtonType.Reject,
-                                press: function (): void {
-                                    that.fireViewEvents(that.approvalEvent, request, ibas.emApprovalResult.REJECTED);
-                                },
-                                visible: request.approvalStatus === ibas.emApprovalStatus.PROCESSING ? true : false,
-                            }),
-                            new sap.m.Button("", {
-                                text: ibas.i18n.prop("approvalprocess_return"),
-                                type: sap.m.ButtonType.Attention,
-                                press: function (): void {
-                                    that.fireViewEvents(that.approvalEvent, request, ibas.emApprovalResult.RETURNED);
-                                },
-                                visible: request.approvalStatus === ibas.emApprovalStatus.PROCESSING ? true : false,
-                            }),
-                            /*
-                            new sap.m.Button("", {
-                                text: ibas.i18n.prop("approvalprocess_reset"),
-                                type: sap.m.ButtonType.Attention,
-                                press: function (): void {
-                                    that.fireViewEvents(that.approvalEvent, request, ibas.emApprovalResult.PROCESSING);
-                                },
-                                visible: request.approvalStatus === ibas.emApprovalStatus.PROCESSING ? false : true,
-                            }),
-                            */
-                            new sap.m.Button("", {
-                                text: ibas.i18n.prop("shell_exit"),
-                                type: sap.m.ButtonType.Emphasized,
-                                press: function (): void {
-                                    if (view instanceof ibas.View) {
-                                        view.closeEvent.apply(view.application);
-                                    }
-                                }
-                            }),
                         ]
                     }).addStyleClass("sapUiNoContentPadding").open();
                 }
