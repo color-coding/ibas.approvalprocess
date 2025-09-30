@@ -219,8 +219,9 @@ namespace approvalprocess {
             /** 审批操作
              * @param step 审批请求步骤
              * @param result 操作
+             * @param judgment 意见
              */
-            protected approval(datas: bo.ApprovalRequest[], result: number): void {
+            protected approval(datas: bo.ApprovalRequest[], result: number, judgment: string): void {
                 let that: this = this;
                 let beApprovalDatas: {
                     /** 审批请求编号 */
@@ -235,34 +236,69 @@ namespace approvalprocess {
                 let user: number = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID);
                 for (let data of ibas.arrays.create(datas)) {
                     for (let step of data.approvalRequestSteps) {
-                        if (step.stepStatus !== ibas.emApprovalStepStatus.PROCESSING) {
-                            continue;
-                        }
-                        if (step.approvalRequestSubSteps.length > 0) {
-                            for (let sub of step.approvalRequestSubSteps) {
-                                if (sub.stepStatus !== ibas.emApprovalStepStatus.PROCESSING) {
-                                    continue;
+                        if (result === ibas.emApprovalResult.PROCESSING) {
+                            // 撤回，仅批准和拒绝有效
+                            if (step.stepStatus !== ibas.emApprovalStepStatus.REJECTED
+                                && step.stepStatus !== ibas.emApprovalStepStatus.APPROVED) {
+                                continue;
+                            }
+                            if (step.approvalRequestSubSteps.length > 0) {
+                                for (let sub of step.approvalRequestSubSteps) {
+                                    if (step.stepStatus !== ibas.emApprovalStepStatus.REJECTED
+                                        && step.stepStatus !== ibas.emApprovalStepStatus.APPROVED) {
+                                        continue;
+                                    }
+                                    if (sub.stepOwner !== user) {
+                                        continue;
+                                    }
+                                    beApprovalDatas.push({
+                                        apRequestId: step.objectKey,
+                                        apStepId: sub.lineId,
+                                        apResult: result,
+                                        judgment: judgment
+                                    });
                                 }
-                                if (sub.stepOwner !== user) {
+                            } else {
+                                if (step.stepOwner !== user) {
                                     continue;
                                 }
                                 beApprovalDatas.push({
                                     apRequestId: step.objectKey,
-                                    apStepId: sub.lineId,
+                                    apStepId: step.lineId,
                                     apResult: result,
-                                    judgment: ""
+                                    judgment: judgment
                                 });
                             }
                         } else {
-                            if (step.stepOwner !== user) {
+                            if (step.stepStatus !== ibas.emApprovalStepStatus.PROCESSING) {
                                 continue;
                             }
-                            beApprovalDatas.push({
-                                apRequestId: step.objectKey,
-                                apStepId: step.lineId,
-                                apResult: result,
-                                judgment: ""
-                            });
+                            if (step.approvalRequestSubSteps.length > 0) {
+                                for (let sub of step.approvalRequestSubSteps) {
+                                    if (sub.stepStatus !== ibas.emApprovalStepStatus.PROCESSING) {
+                                        continue;
+                                    }
+                                    if (sub.stepOwner !== user) {
+                                        continue;
+                                    }
+                                    beApprovalDatas.push({
+                                        apRequestId: step.objectKey,
+                                        apStepId: sub.lineId,
+                                        apResult: result,
+                                        judgment: judgment
+                                    });
+                                }
+                            } else {
+                                if (step.stepOwner !== user) {
+                                    continue;
+                                }
+                                beApprovalDatas.push({
+                                    apRequestId: step.objectKey,
+                                    apStepId: step.lineId,
+                                    apResult: result,
+                                    judgment: judgment
+                                });
+                            }
                         }
                     }
                 }
