@@ -15,6 +15,8 @@ namespace approvalprocess {
             export class ApprovalProcessServiceView extends ibas.View implements app.IApprovalProcessServiceView {
                 // 审批操作，参数1，审批请求；参数2，操作
                 approvalEvent: Function;
+                /** 查看待审批数据 */
+                viewApprovalDataEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
@@ -649,6 +651,15 @@ namespace approvalprocess {
                             }).setModel(new sap.extension.model.JSONModel(data)));
                         }
                     }
+                }
+                /** 显示数据 */
+                showDataView(request: bo.ApprovalRequest, view: ibas.IView): void {
+                }
+                /** 显示数据 */
+                destroyDataView(view: ibas.IView): void {
+                }
+                /** 显示数据 */
+                busyDataView(busy: boolean, msg: string): void {
                 }
             }
         }

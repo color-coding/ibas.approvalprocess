@@ -391,6 +391,20 @@ public interface IApprovalRequest extends IBOSimple, IProcessData {
 	void setClassName(String value);
 
 	/**
+	* 获取-可重入审批
+	* 
+	* @return 值
+	*/
+	emYesNo getReentrant();
+
+	/**
+	* 设置-可重入审批
+	* 
+	* @param value 值
+	*/
+	void setReentrant(emYesNo value);
+
+	/**
 	 * 获取-审批请求步骤集合
 	 * 
 	 * @return 值

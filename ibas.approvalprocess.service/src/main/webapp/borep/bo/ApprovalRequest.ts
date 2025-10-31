@@ -313,6 +313,17 @@ namespace approvalprocess {
                 this.setProperty(ApprovalRequest.PROPERTY_CLASSNAME_NAME, value);
             }
 
+            /** 映射的属性名称-可重入审批 */
+            static PROPERTY_REENTRANT_NAME: string = "Reentrant";
+            /** 获取-可重入审批 */
+            get reentrant(): ibas.emYesNo {
+                return this.getProperty<ibas.emYesNo>(ApprovalRequest.PROPERTY_REENTRANT_NAME);
+            }
+            /** 设置-可重入审批 */
+            set reentrant(value: ibas.emYesNo) {
+                this.setProperty(ApprovalRequest.PROPERTY_REENTRANT_NAME, value);
+            }
+
 
             /** 映射的属性名称-审批请求步骤集合 */
             static PROPERTY_APPROVALREQUESTSTEPS_NAME: string = "ApprovalRequestSteps";

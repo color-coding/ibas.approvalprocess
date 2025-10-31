@@ -319,6 +319,20 @@ public interface IApprovalTemplate extends IBOSimple {
 	void setSummary(String value);
 
 	/**
+	* 获取-可重入审批
+	* 
+	* @return 值
+	*/
+	emYesNo getReentrant();
+
+	/**
+	* 设置-可重入审批
+	* 
+	* @param value 值
+	*/
+	void setReentrant(emYesNo value);
+
+	/**
 	 * 获取-审批模板步骤集合
 	 * 
 	 * @return 值

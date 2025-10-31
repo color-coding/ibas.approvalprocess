@@ -25,6 +25,7 @@ namespace approvalprocess {
                 super.registerView();
                 // 其他事件
                 this.view.approvalEvent = this.approval;
+                this.view.viewApprovalDataEvent = this.viewApprovalData;
             }
             /** 运行,覆盖原方法 */
             run(): void;
@@ -147,7 +148,9 @@ namespace approvalprocess {
                     let user: number = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID);
                     let subStep: bo.ApprovalRequestStep = step.approvalRequestSubSteps.firstOrDefault(c =>
                         c.stepOwner === user
-                        && c.stepStatus === ibas.emApprovalStepStatus.PROCESSING
+                        && (result === ibas.emApprovalResult.PROCESSING ?
+                            (c.stepStatus === ibas.emApprovalStepStatus.REJECTED || c.stepStatus === ibas.emApprovalStepStatus.APPROVED) :
+                            (c.stepStatus === ibas.emApprovalStepStatus.PROCESSING))
                     );
                     if (ibas.objects.isNull(subStep)) {
                         this.messages(ibas.emMessageType.ERROR, ibas.i18n.prop("approvalprocess_msg_not_found_approvalrequest"));
@@ -202,6 +205,81 @@ namespace approvalprocess {
                 }
                 this.messages(caller);
             }
+            protected viewApprovalData(data: bo.ApprovalRequest): void {
+                // 检查目标数据
+                if (ibas.objects.isNull(data)) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
+                        ibas.i18n.prop("shell_data_view")
+                    ));
+                    return;
+                }
+                let criteria: ibas.ICriteria = ibas.criterias.valueOf(data.boKeys);
+                if (!ibas.objects.isNull(criteria)) {
+                    let proxy: ibas.BOLinkServiceProxy = new ibas.BOLinkServiceProxy({
+                        boCode: criteria.businessObject,
+                        linkValue: criteria,
+                        changeHashUrl: false,
+                    });
+                    let serviceAgents: ibas.IServiceAgent[] = ibas.servicesManager.getServices({
+                        category: criteria.businessObject,
+                        proxy: proxy
+                    });
+                    if (serviceAgents.length > 0) {
+                        let serviceMapping: ibas.IServiceMapping = ibas.servicesManager.getServiceMapping(serviceAgents[0].id);
+                        if (!ibas.objects.isNull(serviceMapping)) {
+                            let service: ibas.IService<ibas.IServiceContract> = serviceMapping.create();
+                            if (!ibas.objects.isNull(service)) {
+                                // 运行服务
+                                if (ibas.objects.instanceOf(service, ibas.Application)) {
+                                    let that: this = this;
+                                    (<ibas.Application<ibas.IView>>service).navigation = serviceMapping.navigation;
+                                    (<ibas.Application<ibas.IView>>service).viewShower = {
+                                        show(view: ibas.IView): void {
+                                            that.view.showDataView(data, view);
+                                            if (view instanceof ibas.View) {
+                                                view.isDisplayed = true;
+                                            }
+                                        },
+                                        destroy(view: ibas.IView): void {
+                                            that.view.destroyDataView(view);
+                                            if (view instanceof ibas.View) {
+                                                view.isDisplayed = false;
+                                            }
+                                        },
+                                        busy(view: ibas.IView, busy: boolean, msg: string): void {
+                                            that.view.busyDataView(busy, msg);
+                                        },
+                                        proceeding(view: ibas.IView, type: ibas.emMessageType, msg: string): void {
+                                            that.viewShower.proceeding(view, type, msg);
+                                        },
+                                        messages(caller: ibas.IMessgesCaller): void {
+                                            that.viewShower.messages(caller);
+                                        },
+                                    };
+                                }
+                                for (let name in serviceAgents[0].caller.proxy.contract) {
+                                    if (typeof name === "string") {
+                                        (<any>serviceAgents[0].caller)[name] = serviceAgents[0].caller.proxy.contract[name];
+                                    }
+                                }
+                                service.run(
+                                    serviceAgents[0].caller
+                                ); return;
+                            }
+                        }
+                    }
+                    let done: boolean = ibas.servicesManager.runLinkService({
+                        boCode: criteria.businessObject,
+                        linkValue: criteria
+                    });
+                    if (!done) {
+                        this.proceeding(ibas.emMessageType.WARNING,
+                            ibas.i18n.prop("approvalprocess_not_found_businessojbect_link_service",
+                                ibas.businessobjects.describe(criteria.businessObject))
+                        );
+                    }
+                }
+            }
         }
         /** 视图-审批流程 */
         export interface IApprovalProcessServiceView extends ibas.IView {
@@ -211,6 +289,15 @@ namespace approvalprocess {
             showApprovalRequest(data: bo.ApprovalRequest): void;
             /** 显示数据 */
             showApprovalRequestSteps(datas: bo.ApprovalRequestStep[]): void;
+
+            /** 查看待审批数据 */
+            viewApprovalDataEvent: Function;
+            /** 显示数据 */
+            showDataView(request: bo.ApprovalRequest, view: ibas.IView): void;
+            /** 显示数据 */
+            destroyDataView(view: ibas.IView): void;
+            /** 显示数据 */
+            busyDataView(busy: boolean, msg: string): void;
         }
         /** 业务对象审批流程服务映射 */
         export class ApprovalProcessServiceMapping extends ibas.ServiceMapping {

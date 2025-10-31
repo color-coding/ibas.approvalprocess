@@ -75,6 +75,9 @@ namespace approvalprocess {
             /** 审批摘要 */
             summary: string;
 
+            /** 可重入审批 */
+            reentrant: ibas.emYesNo;
+
             /** 审批模板步骤集合 */
             approvalTemplateSteps: IApprovalTemplateSteps;
 

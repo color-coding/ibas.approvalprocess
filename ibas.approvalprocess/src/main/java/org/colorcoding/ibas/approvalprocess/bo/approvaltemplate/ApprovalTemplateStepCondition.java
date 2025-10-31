@@ -8,6 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 import org.colorcoding.ibas.approvalprocess.MyConfiguration;
 import org.colorcoding.ibas.approvalprocess.data.emApprovalConditionType;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
+import org.colorcoding.ibas.bobas.common.DateTimes;
+import org.colorcoding.ibas.bobas.common.Enums;
+import org.colorcoding.ibas.bobas.common.Strings;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emConditionOperation;
@@ -802,9 +805,16 @@ public class ApprovalTemplateStepCondition extends BusinessObject<ApprovalTempla
 
 	protected String toValue(Object value) {
 		if (value == null) {
-			return "";
+			return Strings.VALUE_EMPTY;
 		}
-		throw new RuntimeException("...");
-		// return DataConvert.toDbValue(value);
+		Class<?> valueType = value.getClass();
+		if (valueType.isEnum()) {
+			return Enums.annotationValue(value);
+		} else if (valueType == DateTime.class) {
+			if (DateTimes.equals((DateTime) value, DateTime.MIN_VALUE)) {
+				return null;
+			}
+		}
+		return Strings.valueOf(value);
 	}
 }

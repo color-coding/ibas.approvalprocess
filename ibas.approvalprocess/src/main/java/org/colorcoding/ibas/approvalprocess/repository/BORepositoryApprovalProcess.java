@@ -226,6 +226,9 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 				}
 				ApprovalProcess<?> approvalProcess = ApprovalFactory.createManager(this.getTransaction())
 						.startProcess(operationResult.getResultObjects().firstOrDefault());
+				if (approvalProcess == null) {
+					throw new Exception(I18N.prop("msg_ap_not_found_approval_process", apRequestId));
+				}
 				approvalProcess.approval(apStepId, apResult, token, judgment);
 				approvalProcess.save();
 				if (trans) {

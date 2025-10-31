@@ -33,6 +33,7 @@ namespace approvalprocess {
                 this.view.viewDataEvent = this.viewData;
                 this.view.deleteDataEvent = this.deleteData;
                 this.view.approvalEvent = this.approval;
+                this.view.viewApprovalDataEvent = this.viewApprovalData;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -63,9 +64,11 @@ namespace approvalprocess {
                         criteria.conditions.lastOrDefault().bracketClose++;
                     }
                     // 有效的审批请求
+                    /*
                     condition = criteria.conditions.create();
                     condition.alias = bo.ApprovalRequest.PROPERTY_ACTIVATED_NAME;
                     condition.value = ibas.emYesNo.YES.toString();
+                    */
                     condition = criteria.conditions.create();
                     condition.alias = bo.ApprovalRequest.PROPERTY_APPROVALSTATUS_NAME;
                     condition.value = ibas.emApprovalStatus.CANCELLED.toString();
@@ -216,8 +219,9 @@ namespace approvalprocess {
             /** 审批操作
              * @param step 审批请求步骤
              * @param result 操作
+             * @param judgment 意见
              */
-            protected approval(datas: bo.ApprovalRequest[], result: number): void {
+            protected approval(datas: bo.ApprovalRequest[], result: number, judgment: string): void {
                 let that: this = this;
                 let beApprovalDatas: {
                     /** 审批请求编号 */
@@ -230,36 +234,71 @@ namespace approvalprocess {
                     judgment: string
                 }[] = new ibas.ArrayList<any>();
                 let user: number = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID);
-                for (let data of datas) {
+                for (let data of ibas.arrays.create(datas)) {
                     for (let step of data.approvalRequestSteps) {
-                        if (step.stepStatus !== ibas.emApprovalStepStatus.PROCESSING) {
-                            continue;
-                        }
-                        if (step.approvalRequestSubSteps.length > 0) {
-                            for (let sub of step.approvalRequestSubSteps) {
-                                if (sub.stepStatus !== ibas.emApprovalStepStatus.PROCESSING) {
-                                    continue;
+                        if (result === ibas.emApprovalResult.PROCESSING) {
+                            // 撤回，仅批准和拒绝有效
+                            if (step.stepStatus !== ibas.emApprovalStepStatus.REJECTED
+                                && step.stepStatus !== ibas.emApprovalStepStatus.APPROVED) {
+                                continue;
+                            }
+                            if (step.approvalRequestSubSteps.length > 0) {
+                                for (let sub of step.approvalRequestSubSteps) {
+                                    if (step.stepStatus !== ibas.emApprovalStepStatus.REJECTED
+                                        && step.stepStatus !== ibas.emApprovalStepStatus.APPROVED) {
+                                        continue;
+                                    }
+                                    if (sub.stepOwner !== user) {
+                                        continue;
+                                    }
+                                    beApprovalDatas.push({
+                                        apRequestId: step.objectKey,
+                                        apStepId: sub.lineId,
+                                        apResult: result,
+                                        judgment: judgment
+                                    });
                                 }
-                                if (sub.stepOwner !== user) {
+                            } else {
+                                if (step.stepOwner !== user) {
                                     continue;
                                 }
                                 beApprovalDatas.push({
                                     apRequestId: step.objectKey,
-                                    apStepId: sub.lineId,
+                                    apStepId: step.lineId,
                                     apResult: result,
-                                    judgment: ""
+                                    judgment: judgment
                                 });
                             }
                         } else {
-                            if (step.stepOwner !== user) {
+                            if (step.stepStatus !== ibas.emApprovalStepStatus.PROCESSING) {
                                 continue;
                             }
-                            beApprovalDatas.push({
-                                apRequestId: step.objectKey,
-                                apStepId: step.lineId,
-                                apResult: result,
-                                judgment: ""
-                            });
+                            if (step.approvalRequestSubSteps.length > 0) {
+                                for (let sub of step.approvalRequestSubSteps) {
+                                    if (sub.stepStatus !== ibas.emApprovalStepStatus.PROCESSING) {
+                                        continue;
+                                    }
+                                    if (sub.stepOwner !== user) {
+                                        continue;
+                                    }
+                                    beApprovalDatas.push({
+                                        apRequestId: step.objectKey,
+                                        apStepId: sub.lineId,
+                                        apResult: result,
+                                        judgment: judgment
+                                    });
+                                }
+                            } else {
+                                if (step.stepOwner !== user) {
+                                    continue;
+                                }
+                                beApprovalDatas.push({
+                                    apRequestId: step.objectKey,
+                                    apStepId: step.lineId,
+                                    apResult: result,
+                                    judgment: judgment
+                                });
+                            }
                         }
                     }
                 }
@@ -289,7 +328,7 @@ namespace approvalprocess {
                                         if (opRslt.resultCode !== 0) {
                                             next(new Error(opRslt.message));
                                         } else {
-                                            for (let item of datas) {
+                                            for (let item of ibas.arrays.create(datas)) {
                                                 if (data.apRequestId = item.objectKey) {
                                                     continue;
                                                 }
@@ -314,6 +353,7 @@ namespace approvalprocess {
                                     that.messages(error);
                                 } else {
                                     that.messages(ibas.emMessageType.SUCCESS, ibas.i18n.prop("shell_sucessful"));
+                                    that.view.destroyDataView(undefined);
                                 }
                             }
                         );
@@ -331,6 +371,81 @@ namespace approvalprocess {
                 }
                 this.messages(caller);
             }
+            private viewApprovalData(data: bo.ApprovalRequest): void {
+                // 检查目标数据
+                if (ibas.objects.isNull(data)) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
+                        ibas.i18n.prop("shell_data_view")
+                    ));
+                    return;
+                }
+                let criteria: ibas.ICriteria = ibas.criterias.valueOf(data.boKeys);
+                if (!ibas.objects.isNull(criteria)) {
+                    let proxy: ibas.BOLinkServiceProxy = new ibas.BOLinkServiceProxy({
+                        boCode: criteria.businessObject,
+                        linkValue: criteria,
+                        changeHashUrl: false,
+                    });
+                    let serviceAgents: ibas.IServiceAgent[] = ibas.servicesManager.getServices({
+                        category: criteria.businessObject,
+                        proxy: proxy
+                    });
+                    if (serviceAgents.length > 0) {
+                        let serviceMapping: ibas.IServiceMapping = ibas.servicesManager.getServiceMapping(serviceAgents[0].id);
+                        if (!ibas.objects.isNull(serviceMapping)) {
+                            let service: ibas.IService<ibas.IServiceContract> = serviceMapping.create();
+                            if (!ibas.objects.isNull(service)) {
+                                // 运行服务
+                                if (ibas.objects.instanceOf(service, ibas.Application)) {
+                                    let that: this = this;
+                                    (<ibas.Application<ibas.IView>>service).navigation = serviceMapping.navigation;
+                                    (<ibas.Application<ibas.IView>>service).viewShower = {
+                                        show(view: ibas.IView): void {
+                                            that.view.showDataView(data, view);
+                                            if (view instanceof ibas.View) {
+                                                view.isDisplayed = true;
+                                            }
+                                        },
+                                        destroy(view: ibas.IView): void {
+                                            that.view.destroyDataView(view);
+                                            if (view instanceof ibas.View) {
+                                                view.isDisplayed = false;
+                                            }
+                                        },
+                                        busy(view: ibas.IView, busy: boolean, msg: string): void {
+                                            that.view.busyDataView(busy, msg);
+                                        },
+                                        proceeding(view: ibas.IView, type: ibas.emMessageType, msg: string): void {
+                                            that.viewShower.proceeding(view, type, msg);
+                                        },
+                                        messages(caller: ibas.IMessgesCaller): void {
+                                            that.viewShower.messages(caller);
+                                        },
+                                    };
+                                }
+                                for (let name in serviceAgents[0].caller.proxy.contract) {
+                                    if (typeof name === "string") {
+                                        (<any>serviceAgents[0].caller)[name] = serviceAgents[0].caller.proxy.contract[name];
+                                    }
+                                }
+                                service.run(
+                                    serviceAgents[0].caller
+                                ); return;
+                            }
+                        }
+                    }
+                    let done: boolean = ibas.servicesManager.runLinkService({
+                        boCode: criteria.businessObject,
+                        linkValue: criteria
+                    });
+                    if (!done) {
+                        this.proceeding(ibas.emMessageType.WARNING,
+                            ibas.i18n.prop("approvalprocess_not_found_businessojbect_link_service",
+                                ibas.businessobjects.describe(criteria.businessObject))
+                        );
+                    }
+                }
+            }
         }
         /** 视图-审批请求 */
         export interface IApprovalRequestListView extends ibas.IBOListView {
@@ -344,6 +459,15 @@ namespace approvalprocess {
             showData(datas: bo.ApprovalRequest[]): void;
 
             smartMode(smart: boolean): void;
+
+            /** 查看待审批数据 */
+            viewApprovalDataEvent: Function;
+            /** 显示数据 */
+            showDataView(request: bo.ApprovalRequest, view: ibas.IView): void;
+            /** 显示数据 */
+            destroyDataView(view: ibas.IView): void;
+            /** 显示数据 */
+            busyDataView(busy: boolean, msg: string): void;
         }
     }
 }

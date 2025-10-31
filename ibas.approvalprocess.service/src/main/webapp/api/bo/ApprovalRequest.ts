@@ -91,6 +91,8 @@ namespace approvalprocess {
             /** 语言类型 */
             className: string;
 
+            /** 可重入审批 */
+            reentrant: ibas.emYesNo;
 
             /** 审批请求步骤集合 */
             approvalRequestSteps: IApprovalRequestSteps;

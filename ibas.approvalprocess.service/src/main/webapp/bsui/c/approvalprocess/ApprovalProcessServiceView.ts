@@ -14,6 +14,8 @@ namespace approvalprocess {
             export class ApprovalProcessServiceView extends ibas.View implements app.IApprovalProcessServiceView {
                 // 审批操作，参数1，审批请求；参数2，操作
                 approvalEvent: Function;
+                /** 查看待审批数据 */
+                viewApprovalDataEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
@@ -39,8 +41,7 @@ namespace approvalprocess {
                                         }
                                     },
                                 }).addStyleClass("sapUiTinyMarginBegin"),
-                                new sap.m.ToolbarSeparator("", {
-                                }),
+                                new sap.m.ToolbarSeparator(),
                                 new sap.m.Title("", {
                                     text: {
                                         path: "/boKeys",
@@ -50,8 +51,7 @@ namespace approvalprocess {
                                         }
                                     },
                                 }),
-                                new sap.m.ToolbarSeparator("", {
-                                }),
+                                new sap.m.ToolbarSeparator(),
                                 new sap.m.ToolbarSpacer(""),
                                 new sap.m.Button("", {
                                     text: ibas.i18n.prop("approvalprocess_view_data"),
@@ -60,23 +60,7 @@ namespace approvalprocess {
                                     press(this: sap.m.Button): void {
                                         let data: any = (<any>this.getModel()).getData();
                                         if (data instanceof bo.ApprovalRequest) {
-                                            if (!ibas.strings.isEmpty(data.boKeys)) {
-                                                let criteria: ibas.ICriteria = ibas.criterias.valueOf(data.boKeys);
-                                                if (!ibas.objects.isNull(criteria)) {
-                                                    let done: boolean = ibas.servicesManager.runLinkService({
-                                                        boCode: criteria.businessObject,
-                                                        linkValue: criteria
-                                                    });
-                                                    if (!done) {
-                                                        that.application.viewShower.proceeding(
-                                                            that,
-                                                            ibas.emMessageType.WARNING,
-                                                            ibas.i18n.prop("approvalprocess_not_found_businessojbect_link_service",
-                                                                ibas.businessobjects.describe(criteria.businessObject))
-                                                        );
-                                                    }
-                                                }
-                                            }
+                                            that.fireViewEvents(that.viewApprovalDataEvent, data);
                                         }
                                     },
                                     visible: shell.app.privileges.canRun({
@@ -680,6 +664,74 @@ namespace approvalprocess {
                         if (data.stepStatus === ibas.emApprovalStepStatus.PROCESSING && ibas.strings.isEmpty(this.stepBar.getSelectedKey())) {
                             this.stepBar.setSelectedKey(String(data.lineId));
                         }
+                    }
+                }
+
+
+                private dataView: sap.ui.core.Control;
+                /** 显示数据 */
+                showDataView(request: bo.ApprovalRequest, view: ibas.IView): void {
+                    if (this.dataView) {
+                        this.dataView.destroy();
+                        delete (this.dataView);
+                    }
+                    let that: this = this;
+                    let page: any = view.draw();
+                    if (page instanceof sap.m.Page) {
+                        page.setShowSubHeader(false);
+                    } else if (page instanceof sap.extension.uxap.DataObjectPageLayout) {
+                        if (page.getHeaderTitle() instanceof sap.uxap.ObjectPageHeader) {
+                            let bar: any = (<sap.uxap.ObjectPageHeader>page.getHeaderTitle()).getNavigationBar();
+                            if (bar instanceof sap.m.Bar) {
+                                bar.destroyContentLeft();
+                                bar.destroyContentMiddle();
+                                if (!(bar.getContentRight().length > 0)) {
+                                    bar.setVisible(false);
+                                }
+                            }
+                            // (<sap.uxap.ObjectPageHeader>page.getHeaderTitle()).getNavigationBar()?.setVisible(false);
+                        }
+                        // page.setAlwaysShowContentHeader(true);
+                        // page.setToggleHeaderOnTitleClick(false);
+                        // page.setHeight(ibas.strings.format("{0}px", window.innerHeight * 0.8));
+                        // page.setPreserveHeaderStateOnScroll(true);
+                    }
+                    this.dataView = new sap.m.Dialog("", {
+                        title: ibas.strings.format("#{0} · {1} - {2}", request.objectKey, request.name, ibas.businessobjects.describe(request.boKeys)),
+                        type: sap.m.DialogType.Standard,
+                        state: request.approvalStatus === ibas.emApprovalStatus.PROCESSING ? sap.ui.core.ValueState.Warning :
+                            request.approvalStatus === ibas.emApprovalStatus.APPROVED ? sap.ui.core.ValueState.Success : sap.ui.core.ValueState.Error,
+                        horizontalScrolling: false,
+                        verticalScrolling: false,
+                        contentHeight: ibas.strings.format("{0}px", window.innerHeight * 0.8),
+                        contentWidth: ibas.strings.format("{0}px", window.innerWidth * 0.8),
+                        content: [
+                            page
+                        ],
+                        buttons: [
+                            new sap.m.Button("", {
+                                text: ibas.i18n.prop("shell_exit"),
+                                type: sap.m.ButtonType.Emphasized,
+                                press: function (): void {
+                                    if (view instanceof ibas.View) {
+                                        view.closeEvent.apply(view.application);
+                                    }
+                                }
+                            }),
+                        ]
+                    }).addStyleClass("sapUiNoContentPadding").open();
+                }
+                /** 显示数据 */
+                destroyDataView(view: ibas.IView): void {
+                    if (this.dataView) {
+                        this.dataView.destroy();
+                        delete (this.dataView);
+                    }
+                }
+                /** 显示数据 */
+                busyDataView(busy: boolean, msg: string): void {
+                    if (this.dataView instanceof sap.ui.core.Control) {
+                        this.dataView.setBusy(busy);
                     }
                 }
             }
