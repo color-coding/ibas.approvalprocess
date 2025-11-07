@@ -8,6 +8,7 @@ import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.ApprovalTemplate
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplate;
 import org.colorcoding.ibas.approvalprocess.repository.BORepositoryApprovalProcess;
 import org.colorcoding.ibas.approvalprocess.repository.IBORepositoryApprovalProcessApp;
+import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.approval.IApprovalProcess;
 import org.colorcoding.ibas.bobas.common.ConditionOperation;
 import org.colorcoding.ibas.bobas.common.ConditionRelationship;
@@ -197,5 +198,9 @@ public class ApprovalProcessManager extends org.colorcoding.ibas.bobas.approval.
 			Logger.log(operationResult.getError());
 		}
 		return ApprovalProcess.create(operationResult.getResultObjects().firstOrDefault());
+	}
+
+	public boolean checkDataStatus(IApprovalData data) {
+		return super.checkDataStatus(data);
 	}
 }
