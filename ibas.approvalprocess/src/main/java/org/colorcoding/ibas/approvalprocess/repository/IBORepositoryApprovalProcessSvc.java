@@ -64,11 +64,13 @@ public interface IBORepositoryApprovalProcessSvc extends IBORepositorySmartServi
 	 * 
 	 * @param user
 	 *            用户
+	 * @param criteria
+	 *            查询
 	 * @param token
 	 *            口令
 	 * @return 操作结果
 	 */
-	OperationResult<ApprovalRequest> fetchUserApprovalRequest(String user, String token);
+	OperationResult<ApprovalRequest> fetchUserApprovalRequest(String user, ICriteria criteria, String token);
 
 	// --------------------------------------------------------------------------------------------//
 	/**
