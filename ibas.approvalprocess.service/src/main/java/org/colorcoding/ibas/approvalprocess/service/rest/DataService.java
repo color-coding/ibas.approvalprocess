@@ -126,9 +126,9 @@ public class DataService extends BORepositoryApprovalProcess {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("fetchUserApprovalRequest")
-	public OperationResult<ApprovalRequest> fetchUserApprovalRequest(@QueryParam("user") String user,
+	public OperationResult<ApprovalRequest> fetchUserApprovalRequest(@QueryParam("user") String user, Criteria criteria,
 			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
-		return super.fetchUserApprovalRequest(user, MyConfiguration.optToken(authorization, token));
+		return super.fetchUserApprovalRequest(user, criteria, MyConfiguration.optToken(authorization, token));
 	}
 	// --------------------------------------------------------------------------------------------//
 }

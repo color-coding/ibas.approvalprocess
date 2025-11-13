@@ -63,6 +63,8 @@ namespace approvalprocess {
             user: string;
             /** 平台 */
             platform?: string;
+            /** 补充查询条件 */
+            criteria?: ibas.ICriteria;
             /**
              * 调用完成
              * @param opRslt 结果

@@ -56,9 +56,11 @@ public interface IBORepositoryApprovalProcessApp extends IBORepositoryApplicatio
 	 * 
 	 * @param user
 	 *            用户
+	 * @param criteria
+	 *            查询
 	 * @return 操作结果
 	 */
-	IOperationResult<IApprovalRequest> fetchUserApprovalRequest(String user);
+	IOperationResult<IApprovalRequest> fetchUserApprovalRequest(String user, ICriteria criteria);
 
 	// --------------------------------------------------------------------------------------------//
 	/**
@@ -76,8 +78,7 @@ public interface IBORepositoryApprovalProcessApp extends IBORepositoryApplicatio
 	 *            口令
 	 * @return
 	 */
-	IOperationMessage approval(int apRequestId, int apStepId, emApprovalResult apResult, String judgment,
-			String token);
+	IOperationMessage approval(int apRequestId, int apStepId, emApprovalResult apResult, String judgment, String token);
 
 	// --------------------------------------------------------------------------------------------//
 

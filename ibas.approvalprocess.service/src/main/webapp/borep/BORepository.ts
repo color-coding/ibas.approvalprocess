@@ -49,7 +49,7 @@ namespace approvalprocess {
                 let method: string =
                     ibas.strings.format("fetchUserApprovalRequest?user={0}&token={1}",
                         fetcher.user, ibas.tokens.content(this.token));
-                boRepository.callRemoteMethod(method, undefined, (opRslt) => {
+                boRepository.callRemoteMethod(method, fetcher.criteria ? JSON.stringify(boRepository.converter.convert(fetcher.criteria, "")) : "{}", (opRslt) => {
                     fetcher.onCompleted.call(ibas.objects.isNull(fetcher.caller) ? fetcher : fetcher.caller, opRslt);
                 });
             }
