@@ -41,6 +41,7 @@ namespace approvalprocess {
                 super.viewShowed();
                 this.view.smartMode(this.smart);
             }
+
             run(criteria?: ibas.ICriteria): void {
                 if (!ibas.objects.isNull(criteria)) {
                     this.smart = false;
@@ -51,82 +52,104 @@ namespace approvalprocess {
                 super.run.apply(this, arguments);
             }
             private smart: boolean = true;
+
             /** 查询数据 */
             protected fetchData(criteria: ibas.ICriteria, type?: string): void {
                 if (ibas.objects.isNull(criteria)) {
                     criteria = new ibas.Criteria();
                     criteria.noChilds = true;
                 }
-                if (this.smart === true) {
-                    let condition: ibas.ICondition = null;
-                    if (criteria.conditions.length > 1) {
-                        criteria.conditions.firstOrDefault().bracketOpen++;
-                        criteria.conditions.lastOrDefault().bracketClose++;
+                let condition: ibas.ICondition = null;
+                if (ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_SUPER) !== true
+                    && ibas.strings.equalsIgnoreCase(type, "participated")) {
+                    // 我参与的审批请求
+                    let cCriteria: ibas.IChildCriteria = criteria.childCriterias.firstOrDefault(
+                        c => ibas.strings.equalsIgnoreCase(c.propertyPath, bo.ApprovalRequest.PROPERTY_APPROVALREQUESTSTEPS_NAME));
+                    if (ibas.objects.isNull(cCriteria)) {
+                        cCriteria = criteria.childCriterias.create();
+                        cCriteria.propertyPath = bo.ApprovalRequest.PROPERTY_APPROVALREQUESTSTEPS_NAME;
+                        cCriteria.onlyHasChilds = true;
                     }
-                    // 有效的审批请求
-                    /*
-                    condition = criteria.conditions.create();
-                    condition.alias = bo.ApprovalRequest.PROPERTY_ACTIVATED_NAME;
-                    condition.value = ibas.emYesNo.YES.toString();
-                    */
-                    condition = criteria.conditions.create();
-                    condition.alias = bo.ApprovalRequest.PROPERTY_APPROVALSTATUS_NAME;
-                    condition.value = ibas.emApprovalStatus.CANCELLED.toString();
+                    condition = cCriteria.conditions.create();
+                    condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPSTATUS_NAME;
+                    condition.value = ibas.emApprovalStepStatus.SKIPPED.toString();
                     condition.operation = ibas.emConditionOperation.NOT_EQUAL;
+                    condition = cCriteria.conditions.create();
+                    condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPSTATUS_NAME;
+                    condition.value = ibas.emApprovalStepStatus.PENDING.toString();
+                    condition.operation = ibas.emConditionOperation.NOT_EQUAL;
+
+                    this.busy(true);
+                    let that: this = this;
+                    let boRepository: bo.BORepositoryApprovalProcess = new bo.BORepositoryApprovalProcess();
+                    boRepository.fetchUserApprovalRequest({
+                        user: ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID),
+                        criteria: criteria,
+                        onCompleted(opRslt: ibas.IOperationResult<bo.ApprovalRequest>): void {
+                            try {
+                                that.busy(false);
+                                if (opRslt.resultCode !== 0) {
+                                    throw new Error(opRslt.message);
+                                }
+                                if (!that.isViewShowed()) {
+                                    that.show();
+                                }
+                                if (opRslt.resultObjects.length === 0) {
+                                    that.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("shell_data_fetched_none"));
+                                }
+                                that.view.showData(opRslt.resultObjects);
+                            } catch (error) {
+                                that.messages(error);
+                            }
+                        }
+                    });
+                    this.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("shell_fetching_data"));
+                } else {
                     if (ibas.strings.equalsIgnoreCase(type, "initiated")) {
                         // 我发起的审批请求
+                        if (criteria.conditions.length > 1) {
+                            criteria.conditions.firstOrDefault().bracketOpen++;
+                            criteria.conditions.lastOrDefault().bracketClose++;
+                        }
+                        // 有效的审批请求
+                        /*
+                        condition = criteria.conditions.create();
+                        condition.alias = bo.ApprovalRequest.PROPERTY_ACTIVATED_NAME;
+                        condition.value = ibas.emYesNo.YES.toString();
+                        */
+                        condition = criteria.conditions.create();
+                        condition.alias = bo.ApprovalRequest.PROPERTY_APPROVALSTATUS_NAME;
+                        condition.value = ibas.emApprovalStatus.CANCELLED.toString();
+                        condition.operation = ibas.emConditionOperation.NOT_EQUAL;
                         condition = criteria.conditions.create();
                         condition.alias = bo.ApprovalRequest.PROPERTY_APPROVALOWNER_NAME;
                         condition.value = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID);
-                    } else {
-                        // 我参与的审批请求
-                        let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
-                        cCriteria.propertyPath = bo.ApprovalRequest.PROPERTY_APPROVALREQUESTSTEPS_NAME;
-                        cCriteria.onlyHasChilds = true;
-                        condition = cCriteria.conditions.create();
-                        condition.bracketOpen = 1;
-                        condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPOWNER_NAME;
-                        condition.value = ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID);
-                        condition = cCriteria.conditions.create();
-                        condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPOWNERS_NAME;
-                        condition.value = ibas.strings.format("!{0},", ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_ID));
-                        condition.operation = ibas.emConditionOperation.CONTAIN;
-                        condition.relationship = ibas.emConditionRelationship.OR;
-                        condition.bracketClose = 1;
-                        condition = cCriteria.conditions.create();
-                        condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPSTATUS_NAME;
-                        condition.value = ibas.emApprovalStepStatus.SKIPPED.toString();
-                        condition.operation = ibas.emConditionOperation.NOT_EQUAL;
-                        condition = cCriteria.conditions.create();
-                        condition.alias = bo.ApprovalRequestStep.PROPERTY_STEPSTATUS_NAME;
-                        condition.value = ibas.emApprovalStepStatus.PENDING.toString();
-                        condition.operation = ibas.emConditionOperation.NOT_EQUAL;
                     }
-                }
-                this.busy(true);
-                let that: this = this;
-                let boRepository: bo.BORepositoryApprovalProcess = new bo.BORepositoryApprovalProcess();
-                boRepository.fetchApprovalRequest({
-                    criteria: criteria,
-                    onCompleted(opRslt: ibas.IOperationResult<bo.ApprovalRequest>): void {
-                        try {
-                            that.busy(false);
-                            if (opRslt.resultCode !== 0) {
-                                throw new Error(opRslt.message);
+                    this.busy(true);
+                    let that: this = this;
+                    let boRepository: bo.BORepositoryApprovalProcess = new bo.BORepositoryApprovalProcess();
+                    boRepository.fetchApprovalRequest({
+                        criteria: criteria,
+                        onCompleted(opRslt: ibas.IOperationResult<bo.ApprovalRequest>): void {
+                            try {
+                                that.busy(false);
+                                if (opRslt.resultCode !== 0) {
+                                    throw new Error(opRslt.message);
+                                }
+                                if (!that.isViewShowed()) {
+                                    that.show();
+                                }
+                                if (opRslt.resultObjects.length === 0) {
+                                    that.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("shell_data_fetched_none"));
+                                }
+                                that.view.showData(opRslt.resultObjects);
+                            } catch (error) {
+                                that.messages(error);
                             }
-                            if (!that.isViewShowed()) {
-                                that.show();
-                            }
-                            if (opRslt.resultObjects.length === 0) {
-                                that.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("shell_data_fetched_none"));
-                            }
-                            that.view.showData(opRslt.resultObjects);
-                        } catch (error) {
-                            that.messages(error);
                         }
-                    }
-                });
-                this.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("shell_fetching_data"));
+                    });
+                    this.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("shell_fetching_data"));
+                }
             }
             /** 新建数据 */
             protected newData(): void {

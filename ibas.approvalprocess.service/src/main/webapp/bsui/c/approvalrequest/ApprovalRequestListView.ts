@@ -187,7 +187,7 @@ namespace approvalprocess {
                                 return;
                             }
                             ibas.logger.log(ibas.emMessageLevel.DEBUG, "result: {0}", criteria.toString());
-                            that.fireViewEvents(that.fetchDataEvent, criteria);
+                            that.fireViewEvents(that.fetchDataEvent, criteria, that.segmentedButton?.getSelectedKey());
                         }
                     });
                     return new sap.extension.m.Page("", {
@@ -266,6 +266,7 @@ namespace approvalprocess {
                                             text: ibas.i18n.prop("approvalprocess_my_initiated"),
                                         }),
                                     ],
+                                    selectedKey: "participated",
                                     selectionChange(this: sap.m.SearchField): void {
                                         let page: any = sap.ui.getCore().byId(that.id);
                                         if (page instanceof sap.m.Page) {
@@ -358,12 +359,47 @@ namespace approvalprocess {
                     let that: this = this;
                     let page: any = view.draw();
                     if (page instanceof sap.m.Page) {
-                        page.setShowSubHeader(false);
+                        // 保留编辑页的保存钮
+                        if (view instanceof ibas.BOEditView) {
+                            let bar: any = page.getSubHeader();
+                            if (bar instanceof sap.m.Toolbar) {
+                                for (let item of bar.getContent()) {
+                                    if (item instanceof sap.m.ToolbarSpacer) {
+                                        continue;
+                                    }
+                                    if (item instanceof sap.m.Button) {
+                                        if (item.getIcon() === "sap-icon://save"
+                                            || item.getIcon() === "sap-icon://action") {
+                                            continue;
+                                        }
+                                    }
+                                    bar.removeContent(item);
+                                }
+                                if (!(bar.getContent().length > 0)) {
+                                    bar.setVisible(false);
+                                }
+                            }
+                        } else {
+                            page.setShowSubHeader(false);
+                        }
                     } else if (page instanceof sap.extension.uxap.DataObjectPageLayout) {
                         if (page.getHeaderTitle() instanceof sap.uxap.ObjectPageHeader) {
                             let bar: any = (<sap.uxap.ObjectPageHeader>page.getHeaderTitle()).getNavigationBar();
                             if (bar instanceof sap.m.Bar) {
-                                bar.destroyContentLeft();
+                                if (view instanceof ibas.BOViewView) {
+                                    // 保留查看页编辑钮
+                                    for (let item of bar.getContentLeft()) {
+                                        if (item instanceof sap.m.Button) {
+                                            if (item.getIcon() === "sap-icon://edit") {
+                                                continue;
+                                            }
+                                        }
+                                        bar.removeContentLeft(item);
+                                    }
+                                } else {
+                                    bar.destroyContentLeft();
+                                }
+
                                 bar.destroyContentMiddle();
                                 if (!(bar.getContentRight().length > 0)) {
                                     bar.setVisible(false);
