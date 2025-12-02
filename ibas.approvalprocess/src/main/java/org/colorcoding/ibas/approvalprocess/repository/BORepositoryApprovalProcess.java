@@ -272,7 +272,7 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 						condition.setRelationship(ConditionRelationship.OR);
 					}
 				}
-				if (criteria.getConditions().size() > index + 2) {
+				if (criteria.getConditions().size() > index + 1) {
 					condition = criteria.getConditions().get(index);
 					condition.setBracketOpen(condition.getBracketOpen() + 1);
 					condition = criteria.getConditions().lastOrDefault();

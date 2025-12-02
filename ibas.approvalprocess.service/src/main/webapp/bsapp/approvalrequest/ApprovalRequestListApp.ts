@@ -260,15 +260,11 @@ namespace approvalprocess {
                 for (let data of ibas.arrays.create(datas)) {
                     for (let step of data.approvalRequestSteps) {
                         if (result === ibas.emApprovalResult.PROCESSING) {
-                            // 撤回，仅批准和拒绝有效
-                            if (step.stepStatus !== ibas.emApprovalStepStatus.REJECTED
-                                && step.stepStatus !== ibas.emApprovalStepStatus.APPROVED) {
-                                continue;
-                            }
                             if (step.approvalRequestSubSteps.length > 0) {
                                 for (let sub of step.approvalRequestSubSteps) {
-                                    if (step.stepStatus !== ibas.emApprovalStepStatus.REJECTED
-                                        && step.stepStatus !== ibas.emApprovalStepStatus.APPROVED) {
+                                    // 撤回，仅批准和拒绝有效
+                                    if (sub.stepStatus !== ibas.emApprovalStepStatus.REJECTED
+                                        && sub.stepStatus !== ibas.emApprovalStepStatus.APPROVED) {
                                         continue;
                                     }
                                     if (sub.stepOwner !== user) {
@@ -282,6 +278,11 @@ namespace approvalprocess {
                                     });
                                 }
                             } else {
+                                // 撤回，仅批准和拒绝有效
+                                if (step.stepStatus !== ibas.emApprovalStepStatus.REJECTED
+                                    && step.stepStatus !== ibas.emApprovalStepStatus.APPROVED) {
+                                    continue;
+                                }
                                 if (step.stepOwner !== user) {
                                     continue;
                                 }
@@ -356,13 +357,37 @@ namespace approvalprocess {
                                                     continue;
                                                 }
                                                 for (let sItem of item.approvalRequestSteps) {
-                                                    if (data.apStepId !== sItem.lineId) {
-                                                        continue;
+                                                    if (sItem.approvalRequestSubSteps.length > 0) {
+                                                        for (let ssItem of sItem.approvalRequestSubSteps) {
+                                                            if (data.apStepId !== ssItem.lineId) {
+                                                                continue;
+                                                            }
+                                                            ssItem.stepStatus = bo.emums.approval.stepStatus.valueOf(result);
+                                                        }
+                                                        if (result === ibas.emApprovalResult.PROCESSING
+                                                            || result === ibas.emApprovalResult.RETURNED
+                                                            || result === ibas.emApprovalResult.REJECTED) {
+                                                            sItem.stepStatus = bo.emums.approval.stepStatus.valueOf(result);
+                                                        } else {
+                                                            if (sItem.approvalRequestSubSteps.firstOrDefault(c => c.stepStatus !== bo.emums.approval.stepStatus.valueOf(result)) == null) {
+                                                                sItem.stepStatus = bo.emums.approval.stepStatus.valueOf(result);
+                                                            }
+                                                        }
+                                                    } else {
+                                                        if (data.apStepId !== sItem.lineId) {
+                                                            continue;
+                                                        }
+                                                        sItem.stepStatus = bo.emums.approval.stepStatus.valueOf(result);
                                                     }
-                                                    sItem.stepStatus = bo.emums.approval.stepStatus.valueOf(result);
                                                 }
-                                                if (item.approvalRequestSteps.firstOrDefault(c => c.stepStatus !== bo.emums.approval.stepStatus.valueOf(result)) == null) {
+                                                if (result === ibas.emApprovalResult.PROCESSING
+                                                    || result === ibas.emApprovalResult.RETURNED
+                                                    || result === ibas.emApprovalResult.REJECTED) {
                                                     item.approvalStatus = bo.emums.approval.status.valueOf(result);
+                                                } else {
+                                                    if (item.approvalRequestSteps.firstOrDefault(c => c.stepStatus !== bo.emums.approval.stepStatus.valueOf(result)) == null) {
+                                                        item.approvalStatus = bo.emums.approval.status.valueOf(result);
+                                                    }
                                                 }
                                             }
                                             next();
