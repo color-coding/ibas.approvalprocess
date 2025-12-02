@@ -204,7 +204,7 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 	@Override
 	protected void changeApprovalDataStatus(emApprovalStatus status) {
 		super.changeApprovalDataStatus(status);
-		if (status == emApprovalStatus.RETURNED) {
+		if (status == emApprovalStatus.RETURNED || status == emApprovalStatus.CANCELLED) {
 			// 退回时，审批流程不激活
 			if (this.getApprovalRequest().getActivated() != emYesNo.NO) {
 				this.getApprovalRequest().setActivated(emYesNo.NO);
