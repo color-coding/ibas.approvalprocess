@@ -49,5 +49,37 @@ namespace approvalprocess {
             /** SQL脚本 */
             SQL_SCRIPT,
         }
+        export namespace emums {
+            export namespace approval {
+                export namespace status {
+                    export function valueOf(value: ibas.emApprovalResult): ibas.emApprovalStatus {
+                        if (value === ibas.emApprovalResult.APPROVED) {
+                            return ibas.emApprovalStatus.APPROVED;
+                        } else if (value === ibas.emApprovalResult.REJECTED) {
+                            return ibas.emApprovalStatus.REJECTED;
+                        } else if (value === ibas.emApprovalResult.RETURNED) {
+                            return ibas.emApprovalStatus.RETURNED;
+                        } else if (value === ibas.emApprovalResult.PROCESSING) {
+                            return ibas.emApprovalStatus.PROCESSING;
+                        }
+                        return ibas.emApprovalStatus.UNAFFECTED;
+                    }
+                }
+                export namespace stepStatus {
+                    export function valueOf(value: ibas.emApprovalResult): ibas.emApprovalStepStatus {
+                        if (value === ibas.emApprovalResult.APPROVED) {
+                            return ibas.emApprovalStepStatus.APPROVED;
+                        } else if (value === ibas.emApprovalResult.REJECTED) {
+                            return ibas.emApprovalStepStatus.REJECTED;
+                        } else if (value === ibas.emApprovalResult.RETURNED) {
+                            return ibas.emApprovalStepStatus.RETURNED;
+                        } else if (value === ibas.emApprovalResult.PROCESSING) {
+                            return ibas.emApprovalStepStatus.PROCESSING;
+                        }
+                        return ibas.emApprovalStepStatus.PENDING;
+                    }
+                }
+            }
+        }
     }
 }

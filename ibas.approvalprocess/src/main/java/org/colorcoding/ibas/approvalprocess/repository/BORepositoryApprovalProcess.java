@@ -346,6 +346,9 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 				if (approvalProcess == null) {
 					throw new Exception(I18N.prop("msg_ap_not_found_approval_process", apRequestId));
 				}
+				if (approvalProcess.getStatus() == emApprovalStatus.CANCELLED) {
+					throw new Exception(I18N.prop("msg_ap_approval_process_invaild", apRequestId));
+				}
 				approvalProcess.approval(apStepId, apResult, token, judgment);
 				approvalProcess.save();
 				if (trans) {

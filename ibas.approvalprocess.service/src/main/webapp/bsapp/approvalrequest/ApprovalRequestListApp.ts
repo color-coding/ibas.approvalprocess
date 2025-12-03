@@ -244,7 +244,7 @@ namespace approvalprocess {
              * @param result 操作
              * @param judgment 意见
              */
-            protected approval(datas: bo.ApprovalRequest[], result: number, judgment: string): void {
+            protected approval(datas: bo.ApprovalRequest[], result: ibas.emApprovalResult, judgment: string): void {
                 let that: this = this;
                 let beApprovalDatas: {
                     /** 审批请求编号 */
@@ -352,17 +352,17 @@ namespace approvalprocess {
                                             next(new Error(opRslt.message));
                                         } else {
                                             for (let item of ibas.arrays.create(datas)) {
-                                                if (data.apRequestId = item.objectKey) {
+                                                if (data.apRequestId !== item.objectKey) {
                                                     continue;
                                                 }
                                                 for (let sItem of item.approvalRequestSteps) {
-                                                    if (data.apStepId === sItem.lineId) {
+                                                    if (data.apStepId !== sItem.lineId) {
                                                         continue;
                                                     }
-                                                    sItem.stepStatus = result;
+                                                    sItem.stepStatus = bo.emums.approval.stepStatus.valueOf(result);
                                                 }
-                                                if (item.approvalRequestSteps.firstOrDefault(c => c.stepStatus !== result) == null) {
-                                                    item.approvalStatus = result;
+                                                if (item.approvalRequestSteps.firstOrDefault(c => c.stepStatus !== bo.emums.approval.stepStatus.valueOf(result)) == null) {
+                                                    item.approvalStatus = bo.emums.approval.status.valueOf(result);
                                                 }
                                             }
                                             next();
@@ -391,6 +391,9 @@ namespace approvalprocess {
                 } else if (result === ibas.emApprovalResult.RETURNED) {
                     caller.type = ibas.emMessageType.WARNING;
                     caller.message = ibas.i18n.prop("approvalprocess_return_process_continue", ibas.i18n.prop("approvalprocess_step_owner_count", beApprovalDatas.length));
+                } else if (result === ibas.emApprovalResult.PROCESSING) {
+                    caller.type = ibas.emMessageType.WARNING;
+                    caller.message = ibas.i18n.prop("approvalprocess_reset_process_continue", ibas.i18n.prop("approvalprocess_step_owner_count", beApprovalDatas.length), "*");
                 }
                 this.messages(caller);
             }
