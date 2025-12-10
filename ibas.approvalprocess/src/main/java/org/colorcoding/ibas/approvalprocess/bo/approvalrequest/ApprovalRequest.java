@@ -21,6 +21,7 @@ import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.db.DbField;
 import org.colorcoding.ibas.bobas.db.DbFieldType;
+import org.colorcoding.ibas.bobas.organization.IUser;
 
 /**
  * 获取-审批请求
@@ -980,10 +981,34 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	}
 
 	@Override
+	public IUser getOwner() {
+		return new IUser() {
+			@Override
+			public int getId() {
+				return ApprovalRequest.this.getApprovalOwner();
+			}
+
+			@Override
+			public String getToken() {
+				throw new RuntimeException("not support.");
+			}
+
+			@Override
+			public String getBelong() {
+				throw new RuntimeException("not support.");
+			}
+		};
+	}
+
+	@Override
+	public void setOwner(IUser value) {
+		this.setApprovalOwner(value.getId());
+	}
+
+	@Override
 	public IApprovalData getApprovalData() {
 		ApprovalDataProxy data = new ApprovalDataProxy();
 		data.setApprovalStatus(this.getApprovalStatus());
-		data.setDataOwner(this.getApprovalOwner());
 		data.setIdentifiers(this.getBOKeys());
 		data.setObjectCode(this.getApprovalObjectCode());
 		data.markOld();// 标记状态
@@ -994,7 +1019,6 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	public void setApprovalData(IApprovalData value) {
 		Objects.requireNonNull(value);
 		this.setApprovalStatus(value.getApprovalStatus());
-		this.setApprovalOwner(value.getDataOwner());
 		this.setBOKeys(value.getIdentifiers());
 		this.setBOInst(value.getLogInst());
 		this.setApprovalObjectCode(value.getObjectCode());
