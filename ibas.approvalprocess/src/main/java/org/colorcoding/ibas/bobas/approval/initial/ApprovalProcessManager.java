@@ -48,6 +48,9 @@ public class ApprovalProcessManager extends org.colorcoding.ibas.bobas.approval.
 		condition.setRelationship(ConditionRelationship.AND);
 		condition.setAlias(ApprovalRequest.PROPERTY_ACTIVATED.getName());
 		condition.setValue(emYesNo.YES);
+		ISort sort = criteria.getSorts().create();
+		sort.setAlias(ApprovalRequest.PROPERTY_OBJECTKEY);
+		sort.setSortType(SortType.DESCENDING);
 		// 先在缓存中查询
 		if (this.getTransaction() instanceof DbTransaction) {
 			DbTransaction transaction = (DbTransaction) this.getTransaction();
