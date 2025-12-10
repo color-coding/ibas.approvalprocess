@@ -332,13 +332,15 @@ namespace approvalprocess {
                                 for (let sub of step.approvalRequestSubSteps) {
                                     if (sub.stepOwner === user) {
                                         if (request.approvalStatus === ibas.emApprovalStatus.PROCESSING
-                                            && step.stepStatus === ibas.emApprovalStepStatus.PROCESSING) {
+                                            && step.stepStatus === ibas.emApprovalStepStatus.PROCESSING
+                                            && sub.stepStatus === ibas.emApprovalStepStatus.PROCESSING) {
                                             return true;
                                         }
                                         if (sub.stepStatus === ibas.emApprovalStepStatus.REJECTED
                                             || sub.stepStatus === ibas.emApprovalStepStatus.APPROVED) {
                                             return false;
                                         }
+                                        break;
                                     }
                                 }
                             } else {
@@ -351,6 +353,7 @@ namespace approvalprocess {
                                         || step.stepStatus === ibas.emApprovalStepStatus.APPROVED) {
                                         return false;
                                     }
+                                    break;
                                 }
                             }
                         }
