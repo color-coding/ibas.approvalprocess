@@ -6,6 +6,7 @@ import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequest;
 import org.colorcoding.ibas.approvalprocess.bo.approvalrequest.IApprovalRequestStep;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.ApprovalTemplate;
 import org.colorcoding.ibas.approvalprocess.bo.approvaltemplate.IApprovalTemplate;
+import org.colorcoding.ibas.bobas.approval.ApprovalException;
 import org.colorcoding.ibas.bobas.approval.ApprovalFactory;
 import org.colorcoding.ibas.bobas.approval.ApprovalProcess;
 import org.colorcoding.ibas.bobas.common.ConditionOperation;
@@ -266,7 +267,7 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 						condition.setRelationship(ConditionRelationship.OR);
 					}
 				}
-				if (criteria.getConditions().size() > index + 2) {
+				if (criteria.getConditions().size() > index + 1) {
 					condition = criteria.getConditions().get(index);
 					condition.setBracketOpen(condition.getBracketOpen() + 1);
 					condition = criteria.getConditions().lastOrDefault();
@@ -339,15 +340,15 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 					throw operationResult.getError();
 				}
 				if (operationResult.getResultObjects().isEmpty()) {
-					throw new Exception(I18N.prop("msg_ap_not_found_approval_request", apRequestId));
+					throw new ApprovalException(I18N.prop("msg_ap_not_found_approval_request", apRequestId));
 				}
 				ApprovalProcess<?> approvalProcess = ApprovalFactory.createManager(this.getTransaction())
 						.startProcess(operationResult.getResultObjects().firstOrDefault());
 				if (approvalProcess == null) {
-					throw new Exception(I18N.prop("msg_ap_not_found_approval_process", apRequestId));
+					throw new ApprovalException(I18N.prop("msg_ap_not_found_approval_process", apRequestId));
 				}
 				if (approvalProcess.getStatus() == emApprovalStatus.CANCELLED) {
-					throw new Exception(I18N.prop("msg_ap_approval_process_invaild", apRequestId));
+					throw new ApprovalException(I18N.prop("msg_ap_approval_process_invaild", apRequestId));
 				}
 				approvalProcess.approval(apStepId, apResult, token, judgment);
 				approvalProcess.save();

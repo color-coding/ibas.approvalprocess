@@ -24,7 +24,6 @@ import org.colorcoding.ibas.bobas.data.ArrayList;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.db.DbTransaction;
-import org.colorcoding.ibas.bobas.message.Logger;
 import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
 
 /**
@@ -45,9 +44,11 @@ public class ApprovalProcessManager extends org.colorcoding.ibas.bobas.approval.
 		condition.setAlias(ApprovalRequest.PROPERTY_BOKEYS);
 		condition.setValue(approvalData.getIdentifiers());
 		condition = criteria.getConditions().create();
-		condition.setRelationship(ConditionRelationship.AND);
 		condition.setAlias(ApprovalRequest.PROPERTY_ACTIVATED.getName());
 		condition.setValue(emYesNo.YES);
+		ISort sort = criteria.getSorts().create();
+		sort.setAlias(ApprovalRequest.PROPERTY_OBJECTKEY);
+		sort.setSortType(SortType.DESCENDING);
 		// 先在缓存中查询
 		if (this.getTransaction() instanceof DbTransaction) {
 			DbTransaction transaction = (DbTransaction) this.getTransaction();
@@ -136,21 +137,40 @@ public class ApprovalProcessManager extends org.colorcoding.ibas.bobas.approval.
 			// 新事务查询，避免锁表
 			// boRepository.setTransaction(this.getTransaction());
 			boRepository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
-			IOperationResult<IApprovalTemplate> operationResult = boRepository.fetchApprovalTemplate(criteria);
-			if (operationResult.getError() != null) {
-				Logger.log(operationResult.getError());
-			}
 			return new Iterator<ApprovalProcess>() {
-				Iterator<IApprovalTemplate> tpltIteraor = operationResult.getResultObjects().iterator();
+				ICondition nextCondition = null;
+				Iterator<IApprovalTemplate> tpltIteraor = null;
 
 				@Override
 				public boolean hasNext() {
+					if (this.tpltIteraor == null) {
+						if (this.nextCondition == null) {
+							criteria.setResultCount(1);
+						}
+						IOperationResult<IApprovalTemplate> opRslt = boRepository.fetchApprovalTemplate(criteria);
+						if (opRslt.getResultObjects().isEmpty()) {
+							return false;
+						}
+						if (this.nextCondition == null) {
+							this.nextCondition = criteria.getConditions().create();
+							this.nextCondition.setAlias(ApprovalTemplate.PROPERTY_OBJECTKEY);
+							this.nextCondition.setOperation(ConditionOperation.LESS_THAN);
+						}
+						for (IApprovalTemplate item : opRslt.getResultObjects()) {
+							this.nextCondition.setValue(item.getObjectKey());
+						}
+						this.tpltIteraor = opRslt.getResultObjects().iterator();
+					}
 					return this.tpltIteraor.hasNext();
 				}
 
 				@Override
 				public ApprovalProcess next() {
-					return ApprovalProcess.create(this.tpltIteraor.next());
+					ApprovalProcess process = ApprovalProcess.create(this.tpltIteraor.next());
+					if (!this.tpltIteraor.hasNext()) {
+						this.tpltIteraor = null;
+					}
+					return process;
 				}
 			};
 		} catch (Exception e) {

@@ -19,7 +19,7 @@
         <!-- 配置项目-序列化管理方式 -->
         <add key="SerializationWay" value="jersey" />
         <!-- 配置项目-审批方法 -->
-        <add key="ApprovalWay" value="" />
+        <add key="ApprovalWay" value="initial" />
         <!-- 配置项目-组织方式 -->
         <add key="OrganizationWay" value="initial" />
         <!-- 配置项目-权限判断方式 -->

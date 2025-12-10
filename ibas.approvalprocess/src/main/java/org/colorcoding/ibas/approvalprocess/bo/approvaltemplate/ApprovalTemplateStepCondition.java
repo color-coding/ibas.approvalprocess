@@ -811,7 +811,7 @@ public class ApprovalTemplateStepCondition extends BusinessObject<ApprovalTempla
 		if (valueType.isEnum()) {
 			return Enums.annotationValue(value);
 		} else if (valueType == DateTime.class) {
-			if (DateTimes.equals((DateTime) value, DateTime.MIN_VALUE)) {
+			if (DateTimes.equals((DateTime) value, DateTimes.VALUE_MIN)) {
 				return null;
 			}
 		}

@@ -22,7 +22,6 @@ import org.colorcoding.ibas.bobas.approval.ApprovalException;
 import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.approval.IApprovalProcessStepItem;
 import org.colorcoding.ibas.bobas.bo.BOFactory;
-import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.bo.IBOStorageTag;
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
@@ -33,7 +32,6 @@ import org.colorcoding.ibas.bobas.core.fields.IFieldData;
 import org.colorcoding.ibas.bobas.core.fields.IManagedFields;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.bobas.i18n.I18N;
 import org.colorcoding.ibas.bobas.organization.IUser;
 import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
 import org.colorcoding.ibas.initialfantasy.bo.organization.IOrganization;
@@ -162,8 +160,6 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 			this.getProcessData().setBOKeys(this.getApprovalData().getIdentifiers());
 			// 保存对象语言类型
 			this.getProcessData().setClassName(this.getApprovalData().getClass().getName());
-			// 保存审批所有者
-			this.getProcessData().setApprovalOwner(this.getApprovalData().getDataOwner());
 		}
 		if (!this.getApprovalData().isDeleted() && this.getApprovalData() instanceof IBOStorageTag) {
 			IBOStorageTag boTag = (IBOStorageTag) this.getApprovalData();
@@ -312,29 +308,12 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 				return;
 			}
 		}
-		// 已批准，审批设置可重新触发审批
-		if (this.getStatus() == emApprovalStatus.APPROVED && this.getApprovalData() instanceof BusinessObject) {
-			if (this.getProcessData().getReentrant() == emYesNo.YES) {
-				// 可重新发起审批
-				this.processSteps = null;
-				if (this.start(this.getApprovalData())) {
-					// 重新激活审批流程
-					if (this.getProcessData() instanceof BusinessObject) {
-						// 保存新的审批请求
-						((BusinessObject<?>) this.getProcessData()).markNew();
-					}
-					return;
-				}
-			}
-			throw new ApprovalException(
-					I18N.prop("msg_bobas_data_was_approved_not_allow_to_update", this.getApprovalData().toString()));
-		}
 		// 审批新建状态，可修改数据
 		if (this.getProcessData().isNew()) {
 			return;
 		}
 		// 步骤是否设置可修改
-		if (Integer.compare(this.getApprovalData().getDataOwner(), user.getId()) != 0) {
+		if (Integer.compare(this.getOwner().getId(), user.getId()) != 0) {
 			// 修改用户不是数据所有者时
 			ApprovalProcessStep tmpStep = (ApprovalProcessStep) this.currentStep();
 			if (tmpStep instanceof ApprovalProcessStepMultiOwner) {
