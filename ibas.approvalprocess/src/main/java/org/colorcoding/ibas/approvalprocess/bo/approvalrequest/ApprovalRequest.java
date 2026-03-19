@@ -97,7 +97,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 类型 属性
 	 */
-	@DbField(name = "Object", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "Object", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_OBJECTCODE = registerProperty(PROPERTY_OBJECTCODE_NAME,
 			String.class, MY_CLASS);
 
@@ -128,7 +128,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 实例号（版本） 属性
 	 */
-	@DbField(name = "LogInst", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "LogInst", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_LOGINST = registerProperty(PROPERTY_LOGINST_NAME, Integer.class,
 			MY_CLASS);
 
@@ -159,7 +159,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 服务系列 属性
 	 */
-	@DbField(name = "Series", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "Series", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_SERIES = registerProperty(PROPERTY_SERIES_NAME, Integer.class,
 			MY_CLASS);
 
@@ -190,7 +190,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 数据源 属性
 	 */
-	@DbField(name = "DataSource", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "DataSource", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_DATASOURCE = registerProperty(PROPERTY_DATASOURCE_NAME,
 			String.class, MY_CLASS);
 
@@ -221,7 +221,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 创建日期 属性
 	 */
-	@DbField(name = "CreateDate", type = DbFieldType.DATE, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "CreateDate", type = DbFieldType.DATE, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<DateTime> PROPERTY_CREATEDATE = registerProperty(PROPERTY_CREATEDATE_NAME,
 			DateTime.class, MY_CLASS);
 
@@ -252,7 +252,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 创建时间 属性
 	 */
-	@DbField(name = "CreateTime", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "CreateTime", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Short> PROPERTY_CREATETIME = registerProperty(PROPERTY_CREATETIME_NAME,
 			Short.class, MY_CLASS);
 
@@ -283,7 +283,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 修改日期 属性
 	 */
-	@DbField(name = "UpdateDate", type = DbFieldType.DATE, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "UpdateDate", type = DbFieldType.DATE, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<DateTime> PROPERTY_UPDATEDATE = registerProperty(PROPERTY_UPDATEDATE_NAME,
 			DateTime.class, MY_CLASS);
 
@@ -314,7 +314,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 修改时间 属性
 	 */
-	@DbField(name = "UpdateTime", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "UpdateTime", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Short> PROPERTY_UPDATETIME = registerProperty(PROPERTY_UPDATETIME_NAME,
 			Short.class, MY_CLASS);
 
@@ -345,7 +345,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 创建动作标识 属性
 	 */
-	@DbField(name = "CreateActId", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "CreateActId", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_CREATEACTIONID = registerProperty(PROPERTY_CREATEACTIONID_NAME,
 			String.class, MY_CLASS);
 
@@ -376,7 +376,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 更新动作标识 属性
 	 */
-	@DbField(name = "UpdateActId", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "UpdateActId", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_UPDATEACTIONID = registerProperty(PROPERTY_UPDATEACTIONID_NAME,
 			String.class, MY_CLASS);
 
@@ -407,7 +407,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 创建用户 属性
 	 */
-	@DbField(name = "Creator", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "Creator", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_CREATEUSERSIGN = registerProperty(PROPERTY_CREATEUSERSIGN_NAME,
 			Integer.class, MY_CLASS);
 
@@ -438,7 +438,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 修改用户 属性
 	 */
-	@DbField(name = "Updator", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "Updator", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_UPDATEUSERSIGN = registerProperty(PROPERTY_UPDATEUSERSIGN_NAME,
 			Integer.class, MY_CLASS);
 
@@ -469,7 +469,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 数据所有者 属性
 	 */
-	@DbField(name = "DataOwner", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "DataOwner", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_DATAOWNER = registerProperty(PROPERTY_DATAOWNER_NAME,
 			Integer.class, MY_CLASS);
 
@@ -500,7 +500,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 备注 属性
 	 */
-	@DbField(name = "Remarks", type = DbFieldType.MEMO, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "Remarks", type = DbFieldType.MEMO, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_REMARKS = registerProperty(PROPERTY_REMARKS_NAME, String.class,
 			MY_CLASS);
 
@@ -531,7 +531,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 审批请求名称 属性
 	 */
-	@DbField(name = "Name", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "Name", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_NAME = registerProperty(PROPERTY_NAME_NAME, String.class,
 			MY_CLASS);
 
@@ -562,7 +562,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 激活的 属性
 	 */
-	@DbField(name = "Activated", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "Activated", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<emYesNo> PROPERTY_ACTIVATED = registerProperty(PROPERTY_ACTIVATED_NAME,
 			emYesNo.class, MY_CLASS);
 
@@ -593,7 +593,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 审批对象类型 属性
 	 */
-	@DbField(name = "ApvlCode", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "ApvlCode", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_APPROVALOBJECTCODE = registerProperty(
 			PROPERTY_APPROVALOBJECTCODE_NAME, String.class, MY_CLASS);
 
@@ -624,7 +624,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 审批模板 属性
 	 */
-	@DbField(name = "ApvlTplat", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "ApvlTplat", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_APPROVALTEMPLATE = registerProperty(
 			PROPERTY_APPROVALTEMPLATE_NAME, Integer.class, MY_CLASS);
 
@@ -655,7 +655,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 审批状态 属性
 	 */
-	@DbField(name = "ApvlStatus", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "ApvlStatus", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<emApprovalStatus> PROPERTY_APPROVALSTATUS = registerProperty(
 			PROPERTY_APPROVALSTATUS_NAME, emApprovalStatus.class, MY_CLASS);
 
@@ -686,7 +686,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 审批所有者 属性
 	 */
-	@DbField(name = "ApvlOwner", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "ApvlOwner", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_APPROVALOWNER = registerProperty(PROPERTY_APPROVALOWNER_NAME,
 			Integer.class, MY_CLASS);
 
@@ -717,7 +717,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 业务对象标识 属性
 	 */
-	@DbField(name = "BOKeys", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "BOKeys", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_BOKEYS = registerProperty(PROPERTY_BOKEYS_NAME, String.class,
 			MY_CLASS);
 
@@ -779,7 +779,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 审批摘要 属性
 	 */
-	@DbField(name = "Summary", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "Summary", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_SUMMARY = registerProperty(PROPERTY_SUMMARY_NAME, String.class,
 			MY_CLASS);
 
@@ -810,7 +810,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 开始时间 属性
 	 */
-	@DbField(name = "StartTime", type = DbFieldType.DATE, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "StartTime", type = DbFieldType.DATE, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<DateTime> PROPERTY_STARTEDTIME = registerProperty(PROPERTY_STARTEDTIME_NAME,
 			DateTime.class, MY_CLASS);
 
@@ -841,7 +841,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 结束时间 属性
 	 */
-	@DbField(name = "FinishTime", type = DbFieldType.DATE, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "FinishTime", type = DbFieldType.DATE, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<DateTime> PROPERTY_FINISHEDTIME = registerProperty(PROPERTY_FINISHEDTIME_NAME,
 			DateTime.class, MY_CLASS);
 
@@ -872,7 +872,7 @@ public class ApprovalRequest extends BusinessObject<ApprovalRequest> implements 
 	/**
 	 * 语言类型 属性
 	 */
-	@DbField(name = "ClassName", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "ClassName", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_CLASSNAME = registerProperty(PROPERTY_CLASSNAME_NAME,
 			String.class, MY_CLASS);
 
