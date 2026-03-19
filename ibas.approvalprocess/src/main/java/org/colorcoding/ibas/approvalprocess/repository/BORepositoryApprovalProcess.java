@@ -197,27 +197,77 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 				condition.setAlias(ApprovalRequestStep.PROPERTY_STEPSTATUS.getName());
 				condition.setValue(emApprovalStepStatus.PROCESSING);
 			}
-			// 先用子项查询查子项
-			ICriteria cCriteria = childCriteria.clone();
-			cCriteria.setNoChilds(true);
-			cCriteria.setResultCount(criteria.getResultCount());
-			if (uCriteria != null && !uCriteria.getSorts().isEmpty()) {
-				for (ISort item : uCriteria.getSorts()) {
-					if (!ApprovalRequestStep.PROPERTY_OBJECTKEY.getName().equalsIgnoreCase(item.getAlias())) {
-						continue;
-					}
-					cCriteria.getSorts().add(item);
-				}
-			} else {
-				ISort sort = cCriteria.getSorts().create();
-				sort.setAlias(ApprovalRequestStep.PROPERTY_OBJECTKEY.getName());
-				sort.setSortType(SortType.DESCENDING);
-			}
 
 			index = criteria.getConditions().size();
+			OperationResult<ApprovalRequest> opRslt = null;
 			OperationResult<ApprovalRequestStep> opRsltStep = null;
-			OperationResult<ApprovalRequest> operationResult = new OperationResult<ApprovalRequest>();
+			OperationResult<ApprovalRequest> operationResult = new OperationResult<>();
 			do {
+				// 先用子项查询查子项
+				ICriteria cCriteria = childCriteria.clone();
+				cCriteria.setNoChilds(true);
+				cCriteria.setResultCount(criteria.getResultCount());
+				if (uCriteria != null && !uCriteria.getSorts().isEmpty()) {
+					for (ISort item : uCriteria.getSorts()) {
+						if (!ApprovalRequestStep.PROPERTY_OBJECTKEY.getName().equalsIgnoreCase(item.getAlias())) {
+							continue;
+						}
+						cCriteria.getSorts().add(item);
+					}
+				} else {
+					ISort sort = cCriteria.getSorts().create();
+					sort.setAlias(ApprovalRequestStep.PROPERTY_OBJECTKEY.getName());
+					sort.setSortType(SortType.DESCENDING);
+				}
+				if (uCriteria != null && !uCriteria.getConditions().isEmpty()) {
+					// 父项查询有条件，则先满足
+					Criteria pCriteria = new Criteria();
+					pCriteria.setResultCount(criteria.getResultCount());
+					pCriteria.setNoChilds(true);
+					for (ICondition item : uCriteria.getConditions()) {
+						pCriteria.getConditions().add(item);
+					}
+					pCriteria.getSorts().addAll(cCriteria.getSorts());
+					if (opRslt != null && !opRslt.getResultObjects().isEmpty()) {
+						if (pCriteria.getConditions().size() > 1) {
+							condition = pCriteria.getConditions().firstOrDefault();
+							condition.setBracketOpen(condition.getBracketOpen() + 1);
+							condition = pCriteria.getConditions().lastOrDefault();
+							condition.setBracketClose(condition.getBracketClose() + 1);
+						}
+						condition = pCriteria.getConditions().create();
+						condition.setAlias(ApprovalRequest.PROPERTY_OBJECTKEY.getName());
+						for (ISort item : pCriteria.getSorts()) {
+							if (condition.getAlias().equalsIgnoreCase(item.getAlias())) {
+								if (item.getSortType() == SortType.ASCENDING) {
+									condition.setOperation(ConditionOperation.GRATER_THAN);
+								} else {
+									condition.setOperation(ConditionOperation.LESS_THAN);
+								}
+							}
+						}
+						condition.setValue(opRslt.getResultObjects().lastOrDefault().getObjectKey());
+					}
+					opRslt = this.fetchApprovalRequest(pCriteria, token);
+					if (opRslt.getResultObjects().isEmpty()) {
+						return operationResult;
+					}
+					int j = cCriteria.getConditions().size();
+					for (ApprovalRequest item : opRslt.getResultObjects()) {
+						condition = cCriteria.getConditions().create();
+						condition.setAlias(ApprovalRequest.PROPERTY_OBJECTKEY.getName());
+						condition.setValue(item.getObjectKey());
+						if (cCriteria.getConditions().size() > j + 1) {
+							condition.setRelationship(ConditionRelationship.OR);
+						}
+					}
+					if (cCriteria.getConditions().size() > j + 1) {
+						condition = cCriteria.getConditions().get(j);
+						condition.setBracketOpen(condition.getBracketOpen() + 1);
+						condition = cCriteria.getConditions().lastOrDefault();
+						condition.setBracketClose(condition.getBracketClose() + 1);
+					}
+				}
 				if (opRsltStep != null) {
 					// 第二次执行，则从上次结果后取值
 					if (cCriteria.getConditions().size() > childCriteria.getConditions().size()) {

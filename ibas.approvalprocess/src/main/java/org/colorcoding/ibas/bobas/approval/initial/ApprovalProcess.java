@@ -103,9 +103,10 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 	 * 状态发生变化时调用
 	 * 
 	 * @param value 当前状态
+	 * @throws ApprovalException
 	 */
 	@Override
-	protected void changeApprovalDataStatus(emApprovalStatus status) {
+	protected void changeApprovalDataStatus(emApprovalStatus status) throws ApprovalException {
 		super.changeApprovalDataStatus(status);
 		if (status == emApprovalStatus.RETURNED || status == emApprovalStatus.CANCELLED) {
 			// 退回时，审批流程不激活
