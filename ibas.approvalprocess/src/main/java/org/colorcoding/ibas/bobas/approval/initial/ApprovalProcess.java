@@ -22,17 +22,19 @@ import org.colorcoding.ibas.bobas.approval.ApprovalException;
 import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.approval.IApprovalProcessStepItem;
 import org.colorcoding.ibas.bobas.bo.BOFactory;
-import org.colorcoding.ibas.bobas.bo.IBOStorageTag;
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
 import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
+import org.colorcoding.ibas.bobas.common.Numbers;
 import org.colorcoding.ibas.bobas.common.Strings;
 import org.colorcoding.ibas.bobas.core.fields.IFieldData;
 import org.colorcoding.ibas.bobas.core.fields.IManagedFields;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.organization.IUser;
+import org.colorcoding.ibas.bobas.organization.InvalidAuthorizationException;
+import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
 import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
 import org.colorcoding.ibas.initialfantasy.bo.organization.IOrganization;
 import org.colorcoding.ibas.initialfantasy.bo.organization.Organization;
@@ -155,65 +157,71 @@ public class ApprovalProcess extends org.colorcoding.ibas.bobas.approval.Approva
 	}
 
 	@Override
-	public void save() throws ApprovalException {
-		if (this.getProcessData().isNew()) {
-			// 保存检索值
-			this.getProcessData().setBOKeys(this.getApprovalData().getIdentifiers());
-			// 保存对象语言类型
-			this.getProcessData().setClassName(this.getApprovalData().getClass().getName());
-		}
-		if (!this.getApprovalData().isDeleted() && this.getApprovalData() instanceof IBOStorageTag) {
-			IBOStorageTag boTag = (IBOStorageTag) this.getApprovalData();
-			// 新版业务对象，更新摘要
-			if (this.getApprovalData().isNew() || boTag.getLogInst() > this.getProcessData().getBOInst()) {
-				ICriteria criteria = new Criteria();
-				criteria.setResultCount(1);
-				criteria.setNoChilds(true);
-				ICondition condition = criteria.getConditions().create();
-				condition.setAlias(ApprovalTemplate.PROPERTY_OBJECTKEY.getName());
-				condition.setValue(this.getProcessData().getApprovalTemplate());
-				try (BORepositoryApprovalProcess apRepository = new BORepositoryApprovalProcess()) {
-					apRepository.setTransaction(this.getTransaction());
-					IOperationResult<IApprovalTemplate> opRslt = apRepository.fetchApprovalTemplate(criteria);
-					if (!opRslt.getResultObjects().isEmpty()) {
-						String summary = opRslt.getResultObjects().firstOrDefault().getSummary();
-						if (!Strings.isNullOrEmpty(summary)) {
-							// 替换摘要中的变量
-							if (this.getApprovalData() instanceof IManagedFields) {
-								IManagedFields boFields = (IManagedFields) this.getApprovalData();
-								Matcher matcher = Pattern.compile(MyConfiguration.VARIABLE_PATTERN).matcher(summary);
-								while (matcher.find()) {
-									// 带格式名称${}
-									String pName = matcher.group(0);
-									IFieldData field = boFields.getField(pName.substring(2, pName.length() - 1));
-									if (field != null) {
-										summary = summary.replace(pName,
-												String.valueOf(field.getValue() == null ? "" : field.getValue()));
-									}
-								}
-								this.getProcessData().setSummary(summary);
-							}
-						}
+	public void perfecting() throws ApprovalException {
+		try {
+			// 版本发生变化，则重新生成摘要
+			if (this.getProcessData().isNew()
+					|| (Numbers.lessEqual(this.getProcessData().getBOInst(), this.getApprovalData().getLogInst()))) {
+				String summary = this.getDataSummary(this.getApprovalData());
+				if (summary != null) {
+					this.getProcessData().setSummary(summary);
+				}
+			}
+			// 修正步骤所有者
+			for (IApprovalRequestStep step : this.getProcessData().getApprovalRequestSteps()) {
+				if (Numbers.lessEqual(step.getStepOwner(), STEP_OWNER_TYPE_GROUP)) {
+					// 未明确步骤所有者
+					step.setStepOwner(this.getStepOwner(step.getStepOwner()));
+				}
+				for (IApprovalRequestStep item : step.getApprovalRequestSubSteps()) {
+					if (Numbers.lessEqual(item.getStepOwner(), STEP_OWNER_TYPE_GROUP)) {
+						// 未明确步骤所有者
+						item.setStepOwner(this.getStepOwner(item.getStepOwner()));
 					}
 				}
 			}
-			// 设置版本号
-			this.getProcessData().setBOInst(boTag.getLogInst());
+		} catch (ApprovalException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ApprovalException(e);
 		}
-		// 修正步骤所有者
-		for (IApprovalRequestStep step : this.getProcessData().getApprovalRequestSteps()) {
-			if (step.getStepOwner() <= STEP_OWNER_TYPE_GROUP) {
-				// 未明确步骤所有者
-				step.setStepOwner(this.getStepOwner(step.getStepOwner()));
-			}
-			for (IApprovalRequestStep item : step.getApprovalRequestSubSteps()) {
-				if (item.getStepOwner() <= STEP_OWNER_TYPE_GROUP) {
-					// 未明确步骤所有者
-					item.setStepOwner(this.getStepOwner(item.getStepOwner()));
+	}
+
+	protected String getDataSummary(IApprovalData approvalData)
+			throws ApprovalException, InvalidAuthorizationException {
+		ICriteria criteria = new Criteria();
+		criteria.setResultCount(1);
+		criteria.setNoChilds(true);
+		ICondition condition = criteria.getConditions().create();
+		condition.setAlias(ApprovalTemplate.PROPERTY_OBJECTKEY.getName());
+		condition.setValue(this.getProcessData().getApprovalTemplate());
+		try (BORepositoryApprovalProcess boRepository = new BORepositoryApprovalProcess()) {
+			boRepository.setUserToken(OrganizationFactory.SYSTEM_USER);
+			// 独立链接避免事务卡住
+			// boRepository.setTransaction(this.getTransaction());
+			IOperationResult<IApprovalTemplate> opRslt = boRepository.fetchApprovalTemplate(criteria);
+			if (!opRslt.getResultObjects().isEmpty()) {
+				String summary = opRslt.getResultObjects().firstOrDefault().getSummary();
+				if (!Strings.isNullOrEmpty(summary)) {
+					// 替换摘要中的变量
+					if (approvalData instanceof IManagedFields) {
+						IManagedFields boFields = (IManagedFields) approvalData;
+						Matcher matcher = Pattern.compile(MyConfiguration.VARIABLE_PATTERN).matcher(summary);
+						while (matcher.find()) {
+							// 带格式名称${}
+							String pName = matcher.group(0);
+							IFieldData field = boFields.getField(pName.substring(2, pName.length() - 1));
+							if (field != null) {
+								summary = summary.replace(pName, String
+										.valueOf(field.getValue() == null ? Strings.VALUE_EMPTY : field.getValue()));
+							}
+						}
+						return summary;
+					}
 				}
 			}
 		}
-		super.save();
+		return null;
 	}
 
 	protected Integer getStepOwner(Integer sign) throws ApprovalException {

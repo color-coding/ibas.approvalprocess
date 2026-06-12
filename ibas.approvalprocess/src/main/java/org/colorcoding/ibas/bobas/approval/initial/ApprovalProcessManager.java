@@ -127,7 +127,7 @@ public class ApprovalProcessManager extends org.colorcoding.ibas.bobas.approval.
 		condition = criteria.getConditions().create();
 		condition.setBracketClose(2);
 		condition.setAlias(ApprovalTemplate.PROPERTY_INVALIDDATE.getName());
-		condition.setOperation(ConditionOperation.GRATER_EQUAL);
+		condition.setOperation(ConditionOperation.GREATER_EQUAL);
 		condition.setValue(today);
 		// 排序，最新优先
 		ISort sort = criteria.getSorts().create();

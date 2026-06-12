@@ -156,8 +156,8 @@ namespace approvalprocess {
                                     ap.logInst += 1;
                                     that.messages({
                                         type: ibas.emMessageType.SUCCESS,
-                                        message: result === ibas.emApprovalResult.APPROVED ? ibas.i18n.prop(["approvalprocess_approve", "shell_sucessful"])
-                                            : result === ibas.emApprovalResult.REJECTED ? ibas.i18n.prop(["approvalprocess_reject", "shell_sucessful"]) : ibas.i18n.prop("shell_sucessful"),
+                                        message: result === ibas.emApprovalResult.APPROVED ? ibas.i18n.prop(["approvalprocess_approve", "shell_successful"])
+                                            : result === ibas.emApprovalResult.REJECTED ? ibas.i18n.prop(["approvalprocess_reject", "shell_successful"]) : ibas.i18n.prop("shell_successful"),
                                         onCompleted: () => {
                                             that.busy(false);
                                         },

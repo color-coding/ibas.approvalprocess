@@ -13,7 +13,8 @@ import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emApprovalStepStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.db.DbField;
-import org.colorcoding.ibas.bobas.db.DbFieldType;
+import org.colorcoding.ibas.bobas.db.DataType;
+import org.colorcoding.ibas.bobas.db.EditType;
 import org.colorcoding.ibas.bobas.rule.BusinessRuleException;
 import org.colorcoding.ibas.bobas.rule.ICheckRules;
 
@@ -59,7 +60,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 编号 属性
 	 */
-	@DbField(name = "ObjectKey", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = true)
+	@DbField(name = "ObjectKey", type = DataType.NUMERIC, table = DB_TABLE_NAME, primaryKey = true)
 	public static final IPropertyInfo<Integer> PROPERTY_OBJECTKEY = registerProperty(PROPERTY_OBJECTKEY_NAME,
 			Integer.class, MY_CLASS);
 
@@ -90,7 +91,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 类型 属性
 	 */
-	@DbField(name = "Object", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
+	@DbField(name = "Object", type = DataType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_OBJECTCODE = registerProperty(PROPERTY_OBJECTCODE_NAME,
 			String.class, MY_CLASS);
 
@@ -121,7 +122,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 行号 属性
 	 */
-	@DbField(name = "LineId", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = true)
+	@DbField(name = "LineId", type = DataType.NUMERIC, table = DB_TABLE_NAME, primaryKey = true)
 	public static final IPropertyInfo<Integer> PROPERTY_LINEID = registerProperty(PROPERTY_LINEID_NAME, Integer.class,
 			MY_CLASS);
 
@@ -152,7 +153,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 实例号（版本） 属性
 	 */
-	@DbField(name = "LogInst", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
+	@DbField(name = "LogInst", type = DataType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_LOGINST = registerProperty(PROPERTY_LOGINST_NAME, Integer.class,
 			MY_CLASS);
 
@@ -183,7 +184,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 数据源 属性
 	 */
-	@DbField(name = "DataSource", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
+	@DbField(name = "DataSource", type = DataType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_DATASOURCE = registerProperty(PROPERTY_DATASOURCE_NAME,
 			String.class, MY_CLASS);
 
@@ -214,7 +215,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 创建日期 属性
 	 */
-	@DbField(name = "CreateDate", type = DbFieldType.DATE, table = DB_TABLE_NAME)
+	@DbField(name = "CreateDate", type = DataType.DATE, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<DateTime> PROPERTY_CREATEDATE = registerProperty(PROPERTY_CREATEDATE_NAME,
 			DateTime.class, MY_CLASS);
 
@@ -245,7 +246,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 创建时间 属性
 	 */
-	@DbField(name = "CreateTime", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
+	@DbField(name = "CreateTime", type = DataType.NUMERIC, editType = EditType.TIME, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Short> PROPERTY_CREATETIME = registerProperty(PROPERTY_CREATETIME_NAME,
 			Short.class, MY_CLASS);
 
@@ -276,7 +277,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 修改日期 属性
 	 */
-	@DbField(name = "UpdateDate", type = DbFieldType.DATE, table = DB_TABLE_NAME)
+	@DbField(name = "UpdateDate", type = DataType.DATE, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<DateTime> PROPERTY_UPDATEDATE = registerProperty(PROPERTY_UPDATEDATE_NAME,
 			DateTime.class, MY_CLASS);
 
@@ -307,7 +308,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 修改时间 属性
 	 */
-	@DbField(name = "UpdateTime", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
+	@DbField(name = "UpdateTime", type = DataType.NUMERIC, editType = EditType.TIME, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Short> PROPERTY_UPDATETIME = registerProperty(PROPERTY_UPDATETIME_NAME,
 			Short.class, MY_CLASS);
 
@@ -338,7 +339,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 创建用户 属性
 	 */
-	@DbField(name = "Creator", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
+	@DbField(name = "Creator", type = DataType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_CREATEUSERSIGN = registerProperty(PROPERTY_CREATEUSERSIGN_NAME,
 			Integer.class, MY_CLASS);
 
@@ -369,7 +370,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 修改用户 属性
 	 */
-	@DbField(name = "Updator", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
+	@DbField(name = "Updator", type = DataType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_UPDATEUSERSIGN = registerProperty(PROPERTY_UPDATEUSERSIGN_NAME,
 			Integer.class, MY_CLASS);
 
@@ -400,7 +401,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 创建动作标识 属性
 	 */
-	@DbField(name = "CreateActId", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
+	@DbField(name = "CreateActId", type = DataType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_CREATEACTIONID = registerProperty(PROPERTY_CREATEACTIONID_NAME,
 			String.class, MY_CLASS);
 
@@ -431,7 +432,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 更新动作标识 属性
 	 */
-	@DbField(name = "UpdateActId", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
+	@DbField(name = "UpdateActId", type = DataType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_UPDATEACTIONID = registerProperty(PROPERTY_UPDATEACTIONID_NAME,
 			String.class, MY_CLASS);
 
@@ -462,7 +463,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 备注 属性
 	 */
-	@DbField(name = "Remarks", type = DbFieldType.MEMO, table = DB_TABLE_NAME)
+	@DbField(name = "Remarks", type = DataType.MEMO, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_REMARKS = registerProperty(PROPERTY_REMARKS_NAME, String.class,
 			MY_CLASS);
 
@@ -493,7 +494,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 父项 属性
 	 */
-	@DbField(name = "ParentId", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
+	@DbField(name = "ParentId", type = DataType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_PARENTID = registerProperty(PROPERTY_PARENTID_NAME,
 			Integer.class, MY_CLASS);
 
@@ -524,7 +525,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 步骤名称 属性
 	 */
-	@DbField(name = "StepName", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
+	@DbField(name = "StepName", type = DataType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_STEPNAME = registerProperty(PROPERTY_STEPNAME_NAME, String.class,
 			MY_CLASS);
 
@@ -555,7 +556,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 步骤所有者 属性
 	 */
-	@DbField(name = "StepOwner", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
+	@DbField(name = "StepOwner", type = DataType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_STEPOWNER = registerProperty(PROPERTY_STEPOWNER_NAME,
 			Integer.class, MY_CLASS);
 
@@ -586,7 +587,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 步骤执行顺序 属性
 	 */
-	@DbField(name = "StepOrder", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
+	@DbField(name = "StepOrder", type = DataType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_STEPORDER = registerProperty(PROPERTY_STEPORDER_NAME,
 			Integer.class, MY_CLASS);
 
@@ -617,7 +618,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 步骤状态 属性
 	 */
-	@DbField(name = "StepStatus", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
+	@DbField(name = "StepStatus", type = DataType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<emApprovalStepStatus> PROPERTY_STEPSTATUS = registerProperty(
 			PROPERTY_STEPSTATUS_NAME, emApprovalStepStatus.class, MY_CLASS);
 
@@ -648,7 +649,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 步骤条件 属性
 	 */
-	@DbField(name = "StepConditions", type = DbFieldType.MEMO, table = DB_TABLE_NAME)
+	@DbField(name = "StepConditions", type = DataType.MEMO, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_STEPCONDITIONS = registerProperty(PROPERTY_STEPCONDITIONS_NAME,
 			String.class, MY_CLASS);
 
@@ -679,7 +680,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 开始时间 属性
 	 */
-	@DbField(name = "StartTime", type = DbFieldType.DATE, table = DB_TABLE_NAME)
+	@DbField(name = "StartTime", type = DataType.DATE, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<DateTime> PROPERTY_STARTEDTIME = registerProperty(PROPERTY_STARTEDTIME_NAME,
 			DateTime.class, MY_CLASS);
 
@@ -710,7 +711,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 结束时间 属性
 	 */
-	@DbField(name = "FinishTime", type = DbFieldType.DATE, table = DB_TABLE_NAME)
+	@DbField(name = "FinishTime", type = DataType.DATE, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<DateTime> PROPERTY_FINISHEDTIME = registerProperty(PROPERTY_FINISHEDTIME_NAME,
 			DateTime.class, MY_CLASS);
 
@@ -741,7 +742,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 审批意见 属性
 	 */
-	@DbField(name = "Judgment", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
+	@DbField(name = "Judgment", type = DataType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_JUDGMENT = registerProperty(PROPERTY_JUDGMENT_NAME, String.class,
 			MY_CLASS);
 
@@ -772,7 +773,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 步骤所有者可修改 属性
 	 */
-	@DbField(name = "StepModify", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
+	@DbField(name = "StepModify", type = DataType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<emYesNo> PROPERTY_STEPCANMODIFY = registerProperty(PROPERTY_STEPCANMODIFY_NAME,
 			emYesNo.class, MY_CLASS);
 
@@ -803,7 +804,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 步骤所有者 属性
 	 */
-	@DbField(name = "StepOwners", type = DbFieldType.MEMO, table = DB_TABLE_NAME)
+	@DbField(name = "StepOwners", type = DataType.MEMO, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_STEPOWNERS = registerProperty(PROPERTY_STEPOWNERS_NAME,
 			String.class, MY_CLASS);
 
@@ -834,7 +835,7 @@ public class ApprovalRequestStep extends BusinessObject<ApprovalRequestStep>
 	/**
 	 * 所需批准者 属性
 	 */
-	@DbField(name = "AprversReq", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
+	@DbField(name = "AprversReq", type = DataType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_APPROVERSREQUIRED = registerProperty(
 			PROPERTY_APPROVERSREQUIRED_NAME, Integer.class, MY_CLASS);
 

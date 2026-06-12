@@ -240,7 +240,7 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 						for (ISort item : pCriteria.getSorts()) {
 							if (condition.getAlias().equalsIgnoreCase(item.getAlias())) {
 								if (item.getSortType() == SortType.ASCENDING) {
-									condition.setOperation(ConditionOperation.GRATER_THAN);
+									condition.setOperation(ConditionOperation.GREATER_THAN);
 								} else {
 									condition.setOperation(ConditionOperation.LESS_THAN);
 								}
@@ -280,7 +280,7 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 					for (ISort item : cCriteria.getSorts()) {
 						if (condition.getAlias().equalsIgnoreCase(item.getAlias())) {
 							if (item.getSortType() == SortType.ASCENDING) {
-								condition.setOperation(ConditionOperation.GRATER_THAN);
+								condition.setOperation(ConditionOperation.GREATER_THAN);
 							} else {
 								condition.setOperation(ConditionOperation.LESS_THAN);
 							}
@@ -395,7 +395,7 @@ public class BORepositoryApprovalProcess extends BORepositoryServiceApplication
 					throw new ApprovalException(I18N.prop("msg_ap_not_found_approval_process", apRequestId));
 				}
 				if (approvalProcess.getStatus() == emApprovalStatus.CANCELLED) {
-					throw new ApprovalException(I18N.prop("msg_ap_approval_process_invaild", apRequestId));
+					throw new ApprovalException(I18N.prop("msg_ap_approval_process_invalid", apRequestId));
 				}
 				approvalProcess.approval(apStepId, apResult, token, judgment);
 				approvalProcess.save();

@@ -40,5 +40,6 @@
     "approvalprocess_day": "Day",
     "approvalprocess_add_bo_property": "Add Business Object Property",
     "approvalprocess_code_pretty": "Beautify",
-    "approvalprocess_closing_delimiter": "----End----"
+    "approvalprocess_view_approvalprocess_data": "View Approval Data",
+    "approvalprocess_bo_approval_service": "Approval Service"
 }
