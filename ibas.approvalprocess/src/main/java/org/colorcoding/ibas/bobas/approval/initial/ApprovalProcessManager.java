@@ -133,20 +133,21 @@ public class ApprovalProcessManager extends org.colorcoding.ibas.bobas.approval.
 		ISort sort = criteria.getSorts().create();
 		sort.setAlias(ApprovalTemplate.PROPERTY_OBJECTKEY.getName());
 		sort.setSortType(SortType.DESCENDING);
-		try (BORepositoryApprovalProcess boRepository = new BORepositoryApprovalProcess()) {
-			// 新事务查询，避免锁表
-			// boRepository.setTransaction(this.getTransaction());
-			boRepository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
-			return new Iterator<ApprovalProcess>() {
-				ICondition nextCondition = null;
-				Iterator<IApprovalTemplate> tpltIteraor = null;
+		return new Iterator<ApprovalProcess>() {
+			ICondition nextCondition = null;
+			Iterator<IApprovalTemplate> tpltIteraor = null;
 
-				@Override
-				public boolean hasNext() {
-					if (this.tpltIteraor == null) {
-						if (this.nextCondition == null) {
-							criteria.setResultCount(1);
-						}
+			@Override
+			public boolean hasNext() {
+				if (this.tpltIteraor == null) {
+					if (this.nextCondition == null) {
+						criteria.setResultCount(1);
+					}
+					// 每次查询独立开关仓库，避免连接泄漏
+					try (BORepositoryApprovalProcess boRepository = new BORepositoryApprovalProcess()) {
+						// 新事务查询，避免锁表
+						// boRepository.setTransaction(this.getTransaction());
+						boRepository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
 						IOperationResult<IApprovalTemplate> opRslt = boRepository.fetchApprovalTemplate(criteria);
 						if (opRslt.getResultObjects().isEmpty()) {
 							return false;
@@ -160,22 +161,22 @@ public class ApprovalProcessManager extends org.colorcoding.ibas.bobas.approval.
 							this.nextCondition.setValue(item.getObjectKey());
 						}
 						this.tpltIteraor = opRslt.getResultObjects().iterator();
+					} catch (Exception e) {
+						throw new RuntimeException(e);
 					}
-					return this.tpltIteraor.hasNext();
 				}
+				return this.tpltIteraor.hasNext();
+			}
 
-				@Override
-				public ApprovalProcess next() {
-					ApprovalProcess process = ApprovalProcess.create(this.tpltIteraor.next());
-					if (!this.tpltIteraor.hasNext()) {
-						this.tpltIteraor = null;
-					}
-					return process;
+			@Override
+			public ApprovalProcess next() {
+				ApprovalProcess process = ApprovalProcess.create(this.tpltIteraor.next());
+				if (!this.tpltIteraor.hasNext()) {
+					this.tpltIteraor = null;
 				}
-			};
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+				return process;
+			}
+		};
 	}
 
 }
