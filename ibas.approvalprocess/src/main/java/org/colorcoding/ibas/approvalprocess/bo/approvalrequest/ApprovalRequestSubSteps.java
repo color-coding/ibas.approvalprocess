@@ -2,8 +2,8 @@ package org.colorcoding.ibas.approvalprocess.bo.approvalrequest;
 
 import java.beans.PropertyChangeEvent;
 
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
+import jakarta.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.approvalprocess.MyConfiguration;
 import org.colorcoding.ibas.bobas.bo.BusinessObjects;
@@ -27,7 +27,7 @@ public class ApprovalRequestSubSteps extends BusinessObjects<IApprovalRequestSte
 	/**
 	 * 业务对象名称
 	 */
-	public static final String BUSINESS_OBJECT_NAME = "ApprovalRequestSteps";
+	public static final String BUSINESS_OBJECT_NAME = "ApprovalRequestSubSteps";
 
 	/**
 	 * 构造方法
