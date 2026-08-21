@@ -9,7 +9,7 @@ namespace approvalprocess {
     export namespace app {
 
         /** 应用-审批模板 */
-        export class ApprovalTemplateEditApp extends ibas.BOEditApplication<IApprovalTemplateEditView, bo.ApprovalTemplate> {
+        export class ApprovalTemplateEditApp extends ibas.BOEditService<IApprovalTemplateEditView, bo.ApprovalTemplate> {
 
             /** 应用标识 */
             static APPLICATION_ID: string = "dd924e76-424b-47f2-8ee0-8334b7414685";
@@ -470,6 +470,21 @@ namespace approvalprocess {
             chooseApprovalTemplateStepUserEvent: Function;
             /** 显示步骤所有者 */
             showApprovalTemplateStepOwners(datas: bo.ApprovalTemplateStepOwner[]): void;
+        }
+        /** ApprovalTemplate编辑服务映射 */
+        export class ApprovalTemplateEditServiceMapping extends ibas.BOEditServiceMapping {
+            /** 构造函数 */
+            constructor() {
+                super();
+                this.id = ApprovalTemplateEditApp.APPLICATION_ID;
+                this.name = ApprovalTemplateEditApp.APPLICATION_NAME;
+                this.boCode = ApprovalTemplateEditApp.BUSINESS_OBJECT_CODE;
+                this.description = ibas.i18n.prop(this.name);
+            }
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IBOEditServiceCaller<bo.ApprovalTemplate>> {
+                return new ApprovalTemplateEditApp();
+            }
         }
     }
 }
