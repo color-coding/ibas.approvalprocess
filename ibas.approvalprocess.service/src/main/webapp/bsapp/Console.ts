@@ -28,6 +28,8 @@ namespace approvalprocess {
                 this.register(new ApprovalRequestFunc());
                 this.register(new ApprovalTemplateFunc());
                 // 注册服务应用
+                this.register(new ApprovalTemplateEditServiceMapping());
+                this.register(new ApprovalRequestEditServiceMapping());
                 this.register(new ApprovalRequestChooseServiceMapping());
                 this.register(new ApprovalRequestLinkServiceMapping());
                 this.register(new ApprovalTemplateChooseServiceMapping());
